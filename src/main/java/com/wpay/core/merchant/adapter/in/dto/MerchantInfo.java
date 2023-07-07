@@ -1,6 +1,7 @@
 package com.wpay.core.merchant.adapter.in.dto;
 
 import com.wpay.core.merchant.global.dto.SelfValidating;
+import com.wpay.core.merchant.global.enums.JobCode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -18,6 +19,9 @@ import java.util.Objects;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class MerchantInfo extends SelfValidating<MerchantInfo> {
+
+    public static final JobCode jobCode = JobCode.SendMpiBasicInfo;
+
     @NotNull
     MerchantInfoVersion version;
     @NotNull
