@@ -21,6 +21,8 @@ class MerchantController {
     ResponseEntity<BaseRestFulResponse> merchantInfo (
             @PathVariable String version, @PathVariable String mid, @PathVariable String option) {
 
+        log.info("====== Search Merchant Basic Info Start =====");
+
         final MerchantInfo merchantInfo = MerchantInfo.builder()
                 .version(version).mid(mid).option(option).build();
 
