@@ -4,6 +4,7 @@ import com.wpay.core.merchant.adapter.in.dto.MerchantInfo;
 import com.wpay.core.merchant.application.port.in.PortInFactory;
 import com.wpay.core.merchant.global.annotation.WebAdapter;
 import com.wpay.core.merchant.global.dto.BaseRestFulResponse;
+import com.wpay.core.merchant.global.enums.ApiVersion;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -29,11 +30,7 @@ class MerchantController {
         log.info("====== Search Merchant Basic Info Start =====");
 
         return ResponseEntity.ok().body(
-                portInFactory.getUseCase(MerchantInfo.jobCode).execute(
-                        MerchantInfo.builder()
-                                .version(version)
-                                .mid(mid)
-                                .option(option)
-                                .build()));
+                portInFactory.getUseCase(MerchantInfo.jobCode, ApiVersion.getInstance(version))
+                        .execute(MerchantInfo.builder().mid(mid).option(option).build()));
     }
 }

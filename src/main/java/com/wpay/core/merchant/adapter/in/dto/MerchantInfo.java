@@ -2,12 +2,7 @@ package com.wpay.core.merchant.adapter.in.dto;
 
 import com.wpay.core.merchant.global.dto.SelfValidating;
 import com.wpay.core.merchant.global.enums.JobCode;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Value;
+import lombok.*;
 
 import javax.validation.ValidationException;
 import javax.validation.constraints.NotNull;
@@ -23,33 +18,22 @@ public class MerchantInfo extends SelfValidating<MerchantInfo> {
     public static final JobCode jobCode = JobCode.SendMpiBasicInfo;
 
     @NotNull
-    MerchantInfoVersion version;
-    @NotNull
     MerchantInfoSearchOptions option;
     @NotNull
     @Size(min=10, max=20)
     String mid;
 
     @Builder
-    public MerchantInfo(@NonNull String version, @NonNull String mid, @NonNull String option) {
-        this.version = MerchantInfoVersion.getInstance(version.toUpperCase());
+    public MerchantInfo(@NonNull String mid, @NonNull String option) {
+
         this.option = MerchantInfoSearchOptions.getInstance(option.toUpperCase());
-        if(Objects.isNull(this.version)) throw new ValidationException("This is the wrong version.");
-        if(Objects.isNull(this.option)) throw new ValidationException("This is the wrong option.");
+
+        if(Objects.isNull(this.option))
+            throw new ValidationException("지원 하지 않은 가맹점 기준 정보 조회 option 입니다.");
 
         this.mid = mid;
 
         this.validateSelf();
-    }
-
-    /** 기준 정보 조회 API 버전 정보 */
-    public enum MerchantInfoVersion {
-        V1;
-        public static MerchantInfoVersion getInstance(String version) {
-            for(MerchantInfoVersion o : MerchantInfoVersion.values())
-                if(o.toString().equals(version)) return o;
-            return null;
-        }
     }
 
     /** 가맹점 기준 정보 조회 옵션 */
