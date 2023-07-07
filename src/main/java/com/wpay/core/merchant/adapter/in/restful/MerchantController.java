@@ -25,8 +25,7 @@ class MerchantController {
                 .version(version).mid(mid).option(option).build();
 
         final BaseRestFulResponse response = BaseRestFulResponse.builder()
-                .status(HttpStatus.OK.value())
-                .message(HttpStatus.OK.getReasonPhrase())
+                .httpStatus(HttpStatus.OK)
                 .data(merchantInfo).build();
 
         return ResponseEntity.ok().body(response);

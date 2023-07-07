@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.ToString;
+import org.springframework.http.HttpStatus;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,14 +18,10 @@ public class BaseRestFulResponse {
     private final Object data;
 
     @Builder
-    private BaseRestFulResponse(@NonNull Integer status, @NonNull String message, @NonNull Object data){
+    private BaseRestFulResponse(@NonNull HttpStatus httpStatus, @NonNull Object data){
         this.timestamp = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new Date());
-        this.status=status;
-        this.message=message;
+        this.status=httpStatus.value();
+        this.message=httpStatus.getReasonPhrase();
         this.data=data;
-    }
-
-    public static BaseRestFulResponse createRestFulBaseResponse(@NonNull Integer status, @NonNull String message, @NonNull Object data) {
-        return new BaseRestFulResponse(status, message, data);
     }
 }
