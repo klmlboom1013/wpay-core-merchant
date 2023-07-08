@@ -1,9 +1,9 @@
-package com.wpay.core.merchant.adapter.in.restful;
+package com.wpay.core.merchant.adapter.in.web;
 
 import com.wpay.core.merchant.adapter.in.dto.MerchantInfo;
 import com.wpay.core.merchant.application.port.in.PortInFactory;
 import com.wpay.core.merchant.global.annotation.WebAdapter;
-import com.wpay.core.merchant.global.dto.BaseRestFulResponse;
+import com.wpay.core.merchant.global.dto.BaseResponse;
 import com.wpay.core.merchant.global.enums.ApiVersion;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -24,7 +24,7 @@ class MerchantController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(path = "/{version}/merchant-info/{mid}/{option}")
-    ResponseEntity<BaseRestFulResponse> merchantInfo (
+    ResponseEntity<BaseResponse> merchantInfo (
             @PathVariable String version, @PathVariable String mid, @PathVariable String option) {
 
         log.info("====== Search Merchant Basic Info Start =====");

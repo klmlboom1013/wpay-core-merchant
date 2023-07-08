@@ -1,6 +1,6 @@
 package com.wpay.core.merchant.application.port.in;
 
-import com.wpay.core.merchant.global.dto.BaseRestFulResponse;
+import com.wpay.core.merchant.global.dto.BaseResponse;
 import com.wpay.core.merchant.global.enums.ApiVersion;
 import com.wpay.core.merchant.global.enums.JobCode;
 
@@ -12,5 +12,5 @@ public interface BasePortInUseCase {
     ApiVersion getVersion();
 
     /** controller 와 service 를 연결 해주는 기능. s*/
-    BaseRestFulResponse execute (Object dto);
+    BaseResponse execute (Object dto);
 }

@@ -11,14 +11,14 @@ import java.util.Date;
 
 @Getter
 @ToString
-public class BaseRestFulResponse {
+public class BaseResponse {
     private final String timestamp;
     private final Integer status;
     private final String message;
     private final Object data;
 
     @Builder
-    private BaseRestFulResponse(@NonNull HttpStatus httpStatus, @NonNull Object data){
+    private BaseResponse(@NonNull HttpStatus httpStatus, @NonNull Object data){
         this.timestamp = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new Date());
         this.status=httpStatus.value();
         this.message=httpStatus.getReasonPhrase();
