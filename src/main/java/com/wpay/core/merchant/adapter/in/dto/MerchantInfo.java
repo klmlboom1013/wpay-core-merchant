@@ -22,16 +22,27 @@ public class MerchantInfo extends SelfValidating<MerchantInfo> {
     public static final JobCode jobCode = JobCode.SendMpiBasicInfo;
 
     @NotNull
+    @Size(min = 2, max = 2)
     MerchantInfoSearchOptions option;
 
     @NotNull
     @Size(min=10, max=20)
     String mid;
 
+    @NotNull
+    @Size(max = 64)
+    String wtid;
+
+    @NotNull
+    @Size(max = 100)
+    String wpayUserKey;
+
     @Builder
-    public MerchantInfo(@NonNull String mid, @NonNull String option) {
+    public MerchantInfo(String mid, String option, String wtid, String wpayUserKey) {
         this.option = MerchantInfoSearchOptions.getInstance(option.toUpperCase());
         this.mid = mid;
+        this.wtid = wtid;
+        this.wpayUserKey = wpayUserKey;
         this.validateSelf();
     }
 }

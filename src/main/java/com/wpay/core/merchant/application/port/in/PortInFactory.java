@@ -26,8 +26,12 @@ public final class PortInFactory {
             this.useCases.put(makeMapperKey(useCase.getApiType().getCode(), useCase.getVersion().toString()), useCase);
     }
 
-    public BasePortInUseCase getUseCase(final JobCode jobCode, final ApiVersion apiVersion) {
-        final BasePortInUseCase useCase = this.useCases.get(new StringBuilder(jobCode.getCode()).append(apiVersion.toString()).toString());
+    public BasePortInUseCase getUseCase(final JobCode jobCode, final String version) {
+        final BasePortInUseCase useCase =
+                this.useCases.get(
+                        new StringBuilder(jobCode.getCode())
+                                .append(ApiVersion.getInstance(version))
+                                .toString());
         if(Objects.isNull(useCase)) {
             throw new NullPointerException("일치 하는 UseCase 가 없습니다. API URL version 과 Require Data 정보를 다시 확인 바랍니다.");
         }

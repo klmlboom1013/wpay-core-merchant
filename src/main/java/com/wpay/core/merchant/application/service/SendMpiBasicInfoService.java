@@ -21,6 +21,7 @@ public class SendMpiBasicInfoService implements SendMpiBasicInfoUseCase {
 
     @Override
     public BaseResponse sendMpiBasicInfo(MerchantInfo merchantInfo) {
+
         return BaseResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .data(merchantInfo)
