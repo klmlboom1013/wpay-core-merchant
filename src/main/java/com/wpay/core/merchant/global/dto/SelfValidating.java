@@ -3,7 +3,7 @@ package com.wpay.core.merchant.global.dto;
 import javax.validation.*;
 import java.util.Set;
 
-public abstract class SelfValidating<T> {
+public abstract class SelfValidating<T> implements BaseValidation {
 
   private final Validator validator;
 
@@ -17,10 +17,11 @@ public abstract class SelfValidating<T> {
    * Evaluates all Bean Validations on the attributes of this
    * instance.
    */
-  protected void validateSelf() {
+  @Override
+  public boolean validateSelf() {
     Set<ConstraintViolation<T>> violations = validator.validate((T) this);
-    if (Boolean.FALSE.equals(violations.isEmpty())) {
+    if (Boolean.FALSE.equals(violations.isEmpty()))
       throw new ConstraintViolationException(violations);
-    }
+    return true;
   }
 }
