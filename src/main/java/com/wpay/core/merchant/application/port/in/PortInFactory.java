@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Log4j2
 @Factory
@@ -20,22 +21,22 @@ public final class PortInFactory {
 
     public PortInFactory(List<BasePortInUseCase> useCases) {
         if(CollectionUtils.isEmpty(useCases))
-            throw new IllegalArgumentException("BasePortInUseCase Implement class does not found.");
+            throw new NullPointerException("BasePortInUseCase Interface 가 구현된 객체를 찾지 못했 습니다.");
         for(BasePortInUseCase useCase : useCases)
-            this.useCases.put((new Type(useCase.getApiType(), useCase.getVersion()).getKey()), useCase);
+            this.useCases.put(makeMapperKey(useCase.getApiType().getCode(), useCase.getVersion().toString()), useCase);
     }
 
     public BasePortInUseCase getUseCase(final JobCode jobCode, final ApiVersion apiVersion) {
-        return this.useCases.get(new StringBuilder(jobCode.getCode()).append(apiVersion.toString()).toString());
+        final BasePortInUseCase useCase = this.useCases.get(new StringBuilder(jobCode.getCode()).append(apiVersion.toString()).toString());
+        if(Objects.isNull(useCase)) {
+            throw new NullPointerException("일치 하는 UseCase 가 없습니다. API URL version 과 Require Data 정보를 다시 확인 바랍니다.");
+        }
+        return this.useCases.get(makeMapperKey(useCase.getApiType().getCode(), useCase.getVersion().toString()));
     }
 
-    @Value
-    @AllArgsConstructor
-    private static class Type {
-        JobCode jobCode;
-        ApiVersion apiVersion;
-        String getKey() {
-            return new StringBuilder(jobCode.getCode()).append(apiVersion.toString()).toString();
-        }
+    private String makeMapperKey (String... strs) {
+        final StringBuilder result = new StringBuilder();
+        for(String s : strs) result.append(s);
+        return result.toString();
     }
 }
