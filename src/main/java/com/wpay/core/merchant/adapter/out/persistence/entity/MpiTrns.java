@@ -1,4 +1,4 @@
-package com.wpay.core.merchant.domain;
+package com.wpay.core.merchant.adapter.out.persistence.entity;
 
 import lombok.*;
 
@@ -99,7 +99,9 @@ public class MpiTrns {
 
     @Data
     @Embeddable
-    static class MpiTrnsPrimaryKey implements Serializable {
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MpiTrnsPrimaryKey implements Serializable {
         private String wtid;
         private String srlno;
     }

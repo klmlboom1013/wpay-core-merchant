@@ -21,7 +21,6 @@ class MerchantController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(path = "/{version}/merchant-info")
     ResponseEntity<BaseResponse> merchantInfo (@PathVariable String version, @RequestBody MerchantInfo merchantInfo) {
-        log.info("====== Search Merchant Basic Info Start =====");
         return ResponseEntity.ok().body(portInFactory
                         .getUseCase(MerchantInfo.jobCode, version)
                         .execute(merchantInfo));

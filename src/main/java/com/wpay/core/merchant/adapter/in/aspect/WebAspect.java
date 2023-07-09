@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Log4j2
 @Aspect
 @Component
-public class AdapterInAccessAspect extends BaseAspect {
+public class WebAspect extends BaseAspect {
 
     @Before("execution(* com.wpay.core.merchant.adapter.in.web.*.*(..))")
     public void before(JoinPoint joinPoint) {
