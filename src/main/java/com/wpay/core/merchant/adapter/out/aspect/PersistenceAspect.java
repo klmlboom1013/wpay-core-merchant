@@ -16,13 +16,6 @@ public class PersistenceAspect extends BaseAspect {
     @Before("execution(* com.wpay.core.merchant.adapter.out.persistence.*.*(..))")
     public void before(JoinPoint joinPoint) {
         log.info("[Before] => {}", joinPoint.getSignature().getName());
-
-        /* Entity DB Encryption */
-        final Object object = joinPoint.getArgs()[1];
-        if(Objects.nonNull(object.getClass().getAnnotation(Entity.class))){
-            log.info("Entity field data DB encryption >>>>>");
-        }
-
     }
 
     @After("execution(* com.wpay.core.merchant.adapter.out.persistence.*.*(..))")

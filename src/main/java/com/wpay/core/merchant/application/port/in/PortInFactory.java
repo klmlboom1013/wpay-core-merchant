@@ -3,8 +3,6 @@ package com.wpay.core.merchant.application.port.in;
 import com.wpay.core.merchant.global.annotation.Factory;
 import com.wpay.core.merchant.global.enums.ApiVersion;
 import com.wpay.core.merchant.global.enums.JobCode;
-import lombok.AllArgsConstructor;
-import lombok.Value;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.util.CollectionUtils;
 
@@ -21,7 +19,7 @@ public final class PortInFactory {
 
     public PortInFactory(List<BasePortInUseCase> useCases) {
         if(CollectionUtils.isEmpty(useCases))
-            throw new NullPointerException("BasePortInUseCase Interface 가 구현된 객체를 찾지 못했 습니다.");
+            throw new NullPointerException("BasePortInUseCase Interface 가 구현된 객체를 찾지 못했습니다.");
         for(BasePortInUseCase useCase : useCases)
             this.useCases.put(makeMapperKey(useCase.getApiType().getCode(), useCase.getVersion().toString()), useCase);
     }

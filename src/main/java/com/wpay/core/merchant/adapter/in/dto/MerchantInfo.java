@@ -2,7 +2,7 @@ package com.wpay.core.merchant.adapter.in.dto;
 
 import com.wpay.core.merchant.global.dto.SelfValidating;
 import com.wpay.core.merchant.global.enums.JobCode;
-import com.wpay.core.merchant.global.enums.MerchantInfoSearchOptions;
+import com.wpay.core.merchant.global.enums.SearchMpiBasicInfoOption;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -27,16 +27,12 @@ public class MerchantInfo extends SelfValidating<MerchantInfo> {
     @Size(max = 64, message = "wtid 값 길이는 64를 초과 하면 안됩니다.")
     String wtid;
 
-    @NotNull(message = "wpayUserKey 값이 Null 이면 안됩니다.")
-    @Size(max = 100, message = "wtid 값 길이는 100를 초과 하면 안됩니다.")
-    String wpayUserKey;
-
     @Override
     public boolean validateSelf() {
         return super.validateSelf();
     }
 
-    public MerchantInfoSearchOptions getOption() {
-        return MerchantInfoSearchOptions.getInstance(this.option.toUpperCase());
+    public SearchMpiBasicInfoOption getOption() {
+        return SearchMpiBasicInfoOption.getInstance(this.option.toUpperCase());
     }
 }

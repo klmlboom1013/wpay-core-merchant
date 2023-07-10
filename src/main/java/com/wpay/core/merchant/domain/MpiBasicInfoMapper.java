@@ -1,4 +1,4 @@
-package com.wpay.core.merchant.adapter.out.dto;
+package com.wpay.core.merchant.domain;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -11,4 +11,5 @@ import lombok.Value;
 @EqualsAndHashCode(callSuper = false)
 public class MpiBasicInfoMapper {
     String wtid;
+    String message;
 }

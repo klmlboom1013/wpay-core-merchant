@@ -1,6 +1,7 @@
 package com.wpay.core.merchant.domain;
 
 import com.wpay.core.merchant.global.enums.JobCode;
+import com.wpay.core.merchant.global.enums.SearchMpiBasicInfoOption;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,14 +15,15 @@ import lombok.Value;
 public class ActivityMpiBasicInfo {
 
     MpiTrnsId mpiTrnsId;
-    JobCode jobCode;
 
-    String wpayUserId;
+    JobCode jobCode;
+    SearchMpiBasicInfoOption option;
+
     String mid;
 
     @Value
+    @Getter
     @Builder
-    @AllArgsConstructor
     public static class MpiTrnsId {
         String wtid;
         Long srlno;

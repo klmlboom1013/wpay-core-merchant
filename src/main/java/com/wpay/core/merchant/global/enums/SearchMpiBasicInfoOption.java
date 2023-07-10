@@ -1,11 +1,9 @@
 package com.wpay.core.merchant.global.enums;
 
-import javax.validation.ValidationException;
-
 /**
  * 가맹점 기준 정보 조회 옵션
  */
-public enum MerchantInfoSearchOptions {
+public enum SearchMpiBasicInfoOption {
     /** 최대 할부 개월 수 */
     MQ,
     /** 카드 포인트 사용 여부 */
@@ -22,8 +20,8 @@ public enum MerchantInfoSearchOptions {
     BI,
     /** 모든 옵션 ALL */
     AL;
-    public static MerchantInfoSearchOptions getInstance(String code) {
-        for(MerchantInfoSearchOptions o : MerchantInfoSearchOptions.values())
+    public static SearchMpiBasicInfoOption getInstance(String code) {
+        for(SearchMpiBasicInfoOption o : SearchMpiBasicInfoOption.values())
             if(o.toString().equals(code)) return o;
         throw new NullPointerException("지원 하지 않은 가맹점 기준 정보 조회 option 입니다.");
     }
