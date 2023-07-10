@@ -7,7 +7,7 @@ Configutation:
       - name: "log-path"
         value: "./logs"
       - name: "pattern"
-        value: "%highlight{[%-5level]} %d{yyyy-MM-dd HH:mm:ss.SSS} [%t][%F] %c{1} - %msg%n"
+        value: "%style{%d{yyyy-MM-dd HH:mm:ss.SSS}}{cyan} %style{[%t]}{yellow} %l %highlight{[%-5p]}{FATAL=bg_red, ERROR=red, INFO=green, DEBUG=blue} %m%n"
       - name: "charset-UTF-8"
         value: "UTF-8"
 
@@ -36,14 +36,15 @@ Configutation:
         fileIndex: "max"
   Loggers:
     Root:
-      level: debug
+      level: error
       AppenderRef:
         - ref: Console_Appender
         - ref: RollingFile_Appender
     Logger:
-      name: example.demospringboot
+      #name: example.demospringboot
+      name: com.wpay.core.merchant
       additivity: false
-      level: debug
+      level: info
       AppenderRef:
         - ref: Console_Appender
         - ref: RollingFile_Appender
