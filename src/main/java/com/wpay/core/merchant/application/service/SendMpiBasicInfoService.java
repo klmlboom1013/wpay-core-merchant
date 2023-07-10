@@ -29,7 +29,7 @@ public class SendMpiBasicInfoService implements SendMpiBasicInfoUseCase {
 
         return BaseResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .data(merchantInfo)
+                .data(mpiBasicInfo)
                 .build();
     }
 }

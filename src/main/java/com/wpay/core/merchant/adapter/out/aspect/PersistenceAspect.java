@@ -1,7 +1,6 @@
 package com.wpay.core.merchant.adapter.out.aspect;
 
 import com.wpay.core.merchant.global.aspect.BaseAspect;
-import com.wpay.core.merchant.global.dto.BaseValidation;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;

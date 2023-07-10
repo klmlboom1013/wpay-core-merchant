@@ -1,9 +1,20 @@
 package com.wpay.core.merchant.adapter.out.persistence.entity;
 
-import lombok.*;
+import com.wpay.core.merchant.adapter.out.persistence.entity.pk.MpiTrnsPrimaryKey;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,10 +27,10 @@ import java.io.Serializable;
         name="WPAY_MPI_TRNS",
         indexes = {
                 @Index(name = "IA01_WPAY_MPI_TRNS", columnList = "REGI_DT"),
-                @Index(name = "IA02_WPAY_MPI_TRNS", columnList = "OTRNS_WTID")
+                @Index(name = "IA02_WPAY_MPI_TRNS", columnList = "OTRANS_WTID")
         }
 )
-@IdClass(MpiTrns.MpiTrnsPrimaryKey.class)
+@IdClass(MpiTrnsPrimaryKey.class)
 public class MpiTrns {
 
     @Id @Column(name="WTID", length=64, unique=true)
@@ -45,6 +56,9 @@ public class MpiTrns {
 
     @Column(name="JNOFFC_ID", length=20)
     private String jnoffcId;
+
+    @Column(name="MOBIL_TRANS_NO", length=20)
+    private String mobilTransNo;
 
     @Column(name="JNOFFC_USER_KEY_VALUE")
     private String jnoffcUserKeyValue;
@@ -88,21 +102,12 @@ public class MpiTrns {
     @Column(name="RSLT_MSG_CONTS", length=1000)
     private String rsltMsgConts;
 
-    @Column(name="REPS_GRM_CONTS", length=1000)
+    @Column(name="RSPS_GRM_CONTS", length=1000)
     private String rspsGrmConts;
 
     @Column(name="CONN_URL", length=500)
     private String connUrl;
 
-    @Column(name="OTRNS_WTID", length=64)
-    private String otrnsWtid;
-
-    @Data
-    @Embeddable
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class MpiTrnsPrimaryKey implements Serializable {
-        private String wtid;
-        private String srlno;
-    }
+    @Column(name="OTRANS_WTID", length=64)
+    private String otransWtid;
 }

@@ -6,21 +6,32 @@ logging:
   config: classpath:log4j2.yml
 
 spring:
+  datasource:
+    # H2 접속 정보
+    #url: jdbc:h2:~/wpay
+    url: jdbc:h2:mem:wpay
+    # Database H2로 사용 하겠다.
+    driver-class-name: org.h2.Driver
+    # H2 접속 시 입력할 username 정보 (원하는 것으로 입력)
+    username: wpay
+    # H2 접속 시 입력할 password 정보 (원하는 것으로 입력)
+    password: wpay123!
+
   jpa:
     hibernate:
       ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      data-locations: classpath:import.sql
   h2:
     console:
       # H2 Console 사용 여부 (H2 Database UI로 제공 기능)
       enabled: true
       # H2 Console Path [example: http://localhost/h2-console]
       path: /h2-console
-  datasource:
-    # Database H2로 사용 하겠다.
-    driver-class-name: org.h2.Driver
-    # H2 접속 정보
-    url: jdbc:h2:~/wpay
-    # H2 접속 시 입력할 username 정보 (원하는 것으로 입력)
-    username: wpay
-    # H2 접속 시 입력할 password 정보 (원하는 것으로 입력)
-    password: wpay123!
+
