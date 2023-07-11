@@ -43,5 +43,6 @@ public class WebAdapterAspect extends BaseAspect {
     @AfterThrowing(pointcut = "execution(* com.wpay.core.merchant.adapter.in.web.*.*(..))", throwing = "e")
     public void afterThrowing(JoinPoint joinPoint, Throwable e) {
         log.debug("[AfterThrowing] => {} [{}] => {}", joinPoint.getSignature().getName(), e.getClass().getName(), e.getMessage());
+        super.logWriteExceptionStackTrace(e, this);
     }
 }

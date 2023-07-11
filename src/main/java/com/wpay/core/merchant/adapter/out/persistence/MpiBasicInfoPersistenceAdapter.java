@@ -27,7 +27,7 @@ public class MpiBasicInfoPersistenceAdapter  implements LoadMpiBasicInfoPort, Re
 
         final MpiTrnsJpaEntity mpiTrnsJpaEntity = this.mpiTrnsRepository
                 .findById(new MpiTrnsJpaEntity.MpiTrnsId(wtid, srlno))
-                .orElseThrow(EntityNotFoundException::new);
+                .orElseThrow(() -> new EntityNotFoundException("MpiTrns 조회 결과가 없습니다."));
 
         return MpiBasicInfo.builder()
                 .wtid(activityMpiBasicInfo.getMpiTrnsId().getWtid())

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Log4j2
 @Aspect
 @Component
-public class PersistenceAdapterAspect {
+public class PersistenceAdapterAspect extends BaseAspect {
 
     @Before("execution(* com.wpay.core.merchant.adapter.out.persistence.*PersistenceAdapter.*Run(..))")
     public void before(JoinPoint joinPoint) {
