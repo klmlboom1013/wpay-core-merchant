@@ -28,8 +28,8 @@ public class MpiBasicInfoCommand extends SelfValidating<MpiBasicInfoCommand> {
     String wtid;
 
     @Override
-    public boolean validateSelf() {
-        return super.validateSelf();
+    public void validateSelf() {
+        super.validateSelf();
     }
 
     public SearchMpiBasicInfoOption getOption() {

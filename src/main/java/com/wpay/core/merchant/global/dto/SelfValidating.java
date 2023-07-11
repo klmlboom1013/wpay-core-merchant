@@ -18,10 +18,9 @@ public abstract class SelfValidating<T> implements BaseValidation {
    * instance.
    */
   @Override
-  public boolean validateSelf() {
+  public void validateSelf() {
     Set<ConstraintViolation<T>> violations = validator.validate((T) this);
     if (Boolean.FALSE.equals(violations.isEmpty()))
       throw new ConstraintViolationException(violations);
-    return true;
   }
 }
