@@ -1,9 +1,9 @@
 package com.wpay.core.merchant.application.port.out;
 
 import com.wpay.core.merchant.domain.ActivityMpiBasicInfo;
-import com.wpay.core.merchant.domain.MpiBasicInfoMapper;
+import com.wpay.core.merchant.domain.MpiBasicInfo;
 
 public interface LoadMpiBasicInfoPort {
 
-    MpiBasicInfoMapper readActivities (ActivityMpiBasicInfo activityMpiBasicInfo);
+    MpiBasicInfo loadActivitiesRun (ActivityMpiBasicInfo activityMpiBasicInfo);
 }

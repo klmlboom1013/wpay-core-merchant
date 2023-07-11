@@ -9,7 +9,7 @@ import lombok.Value;
 @Getter
 @Builder
 @EqualsAndHashCode(callSuper = false)
-public class MpiBasicInfoMapper {
+public class MpiBasicInfo {
     String wtid;
     String message;
 }

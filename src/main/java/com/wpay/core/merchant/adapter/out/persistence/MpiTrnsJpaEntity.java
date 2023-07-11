@@ -1,20 +1,22 @@
-package com.wpay.core.merchant.adapter.out.persistence.entity;
+package com.wpay.core.merchant.adapter.out.persistence;
 
-import com.wpay.core.merchant.adapter.out.persistence.entity.pk.MpiTrnsPrimaryKey;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Index;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 @Builder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,8 +32,8 @@ import javax.persistence.Table;
                 @Index(name = "IA02_WPAY_MPI_TRNS", columnList = "OTRANS_WTID")
         }
 )
-@IdClass(MpiTrnsPrimaryKey.class)
-public class MpiTrns {
+@IdClass(MpiTrnsJpaEntity.MpiTrnsId.class)
+public class MpiTrnsJpaEntity {
 
     @Id @Column(name="WTID", length=64, unique=true)
     private String wtid;
@@ -110,4 +112,14 @@ public class MpiTrns {
 
     @Column(name="OTRANS_WTID", length=64)
     private String otransWtid;
+
+
+    @Data
+    @Embeddable
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MpiTrnsId implements Serializable {
+        private String wtid;
+        private Long srlno;
+    }
 }

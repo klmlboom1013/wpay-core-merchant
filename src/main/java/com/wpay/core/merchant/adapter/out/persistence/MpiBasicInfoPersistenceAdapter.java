@@ -1,13 +1,10 @@
 package com.wpay.core.merchant.adapter.out.persistence;
 
 
-import com.wpay.core.merchant.adapter.out.persistence.entity.MpiTrns;
-import com.wpay.core.merchant.adapter.out.persistence.entity.pk.MpiTrnsPrimaryKey;
-import com.wpay.core.merchant.adapter.out.persistence.repository.MpiTrnsRepository;
 import com.wpay.core.merchant.application.port.out.LoadMpiBasicInfoPort;
-import com.wpay.core.merchant.application.port.out.SaveMpiBasicInfoPort;
+import com.wpay.core.merchant.application.port.out.RecodeMpiBasicInfoPort;
 import com.wpay.core.merchant.domain.ActivityMpiBasicInfo;
-import com.wpay.core.merchant.domain.MpiBasicInfoMapper;
+import com.wpay.core.merchant.domain.MpiBasicInfo;
 import com.wpay.core.merchant.global.annotation.PersistenceAdapter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -18,29 +15,29 @@ import javax.persistence.EntityNotFoundException;
 @Log4j2
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class MpiBasicInfoPersistenceAdapter  implements LoadMpiBasicInfoPort, SaveMpiBasicInfoPort {
+public class MpiBasicInfoPersistenceAdapter  implements LoadMpiBasicInfoPort, RecodeMpiBasicInfoPort {
 
     private final MpiTrnsRepository mpiTrnsRepository;
 
     @Override
-    public MpiBasicInfoMapper readActivities(@NonNull ActivityMpiBasicInfo activityMpiBasicInfo) {
+    public MpiBasicInfo loadActivitiesRun(@NonNull ActivityMpiBasicInfo activityMpiBasicInfo) {
         final String wtid = activityMpiBasicInfo.getMpiTrnsId().getWtid();
         final Long srlno = this.mpiTrnsRepository.getMpiTrnsByWtid(wtid);
         log.info("MPI_TRNS SRLNO 조회 완료 [wtid:{}][srlno:{}]", wtid, srlno);
 
-        final MpiTrns mpiTrns = this.mpiTrnsRepository
-                .findById(new MpiTrnsPrimaryKey(wtid, srlno))
+        final MpiTrnsJpaEntity mpiTrnsJpaEntity = this.mpiTrnsRepository
+                .findById(new MpiTrnsJpaEntity.MpiTrnsId(wtid, srlno))
                 .orElseThrow(EntityNotFoundException::new);
 
-        return MpiBasicInfoMapper.builder()
+        return MpiBasicInfo.builder()
                 .wtid(activityMpiBasicInfo.getMpiTrnsId().getWtid())
-                .message(mpiTrns.getRspsGrmConts())
+                .message(mpiTrnsJpaEntity.getRspsGrmConts())
                 .build();
     }
 
     @Override
-    public void saveActivities(MpiTrns mpiTrns) {
-        this.mpiTrnsRepository.save(mpiTrns);
+    public void recodeActivitiesRun(MpiTrnsJpaEntity mpiTrnsJpaEntity) {
+        this.mpiTrnsRepository.save(mpiTrnsJpaEntity);
     }
 
 

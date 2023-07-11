@@ -1,4 +1,4 @@
-package com.wpay.core.merchant.adapter.in.dto;
+package com.wpay.core.merchant.application.port.in;
 
 import com.wpay.core.merchant.global.dto.SelfValidating;
 import com.wpay.core.merchant.global.enums.JobCode;
@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @Value
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public class MerchantInfo extends SelfValidating<MerchantInfo> {
+public class MpiBasicInfoCommand extends SelfValidating<MpiBasicInfoCommand> {
 
     public static final JobCode jobCode = JobCode.SendMpiBasicInfo;
 
