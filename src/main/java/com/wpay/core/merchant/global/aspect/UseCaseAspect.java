@@ -14,16 +14,13 @@ public class UseCaseAspect {
     @Before("execution(* com.wpay.core.merchant.application.service.*.execute(..))")
     public void before(JoinPoint joinPoint) {
         log.debug("[Before] => {}", joinPoint.getSignature().getName());
-
-
         /* Request validation check */
         int i=0;
         for(Object o : joinPoint.getArgs()){
-            log.info(">> JoinPoint Args[{}] Object Name [{}] [{}]", i++, o.getClass().getName(), (o instanceof BaseValidation));
+            log.debug(">> JoinPoint Args[{}] Object Name [{}] [{}]", i++, o.getClass().getName(), (o instanceof BaseValidation));
             if(o instanceof BaseValidation){
-                final BaseValidation baseValidation = (BaseValidation)joinPoint.getArgs()[1];
-                baseValidation.validateSelf();
-                log.info("Validation check success");
+                ((BaseValidation)o).validateSelf();
+                log.info("{} Validation check success", o.getClass().getName());
                 break;
             }
         }
