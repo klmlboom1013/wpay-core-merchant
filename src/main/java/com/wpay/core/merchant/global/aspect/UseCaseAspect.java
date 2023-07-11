@@ -3,14 +3,18 @@ package com.wpay.core.merchant.global.aspect;
 import com.wpay.core.merchant.global.dto.BaseValidation;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 
 @Log4j2
 @Aspect
 @Component
 public class UseCaseAspect {
-//com.wpay.core.merchant.application.service.*.execute(..)
+
     @Before("execution(* com.wpay.core.merchant.application.service.*.execute(..))")
     public void before(JoinPoint joinPoint) {
         log.debug("[Before] => {}", joinPoint.getSignature().getName());
@@ -24,7 +28,6 @@ public class UseCaseAspect {
                 break;
             }
         }
-//
     }
 
     @After("execution(* com.wpay.core.merchant.application.service.*.execute(..))")
