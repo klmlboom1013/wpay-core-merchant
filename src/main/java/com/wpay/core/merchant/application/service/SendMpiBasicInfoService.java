@@ -2,8 +2,8 @@ package com.wpay.core.merchant.application.service;
 
 import com.wpay.core.merchant.application.port.in.MpiBasicInfoCommand;
 import com.wpay.core.merchant.application.port.in.SendMpiBasicInfoUseCase;
-import com.wpay.core.merchant.application.port.out.LoadMpiBasicInfoPort;
-import com.wpay.core.merchant.application.port.out.RecodeMpiBasicInfoPort;
+import com.wpay.core.merchant.application.port.out.persistence.LoadMpiBasicInfoPort;
+import com.wpay.core.merchant.application.port.out.persistence.RecodeMpiBasicInfoPort;
 import com.wpay.core.merchant.domain.ActivityMpiBasicInfo;
 import com.wpay.core.merchant.domain.MpiBasicInfo;
 import com.wpay.core.merchant.global.annotation.UseCase;
@@ -26,13 +26,9 @@ public class SendMpiBasicInfoService implements SendMpiBasicInfoUseCase {
     public final ApiVersion getVersion() { return ApiVersion.v1; }
 
     @Override
-    public BaseResponse execute(@NonNull MpiBasicInfoCommand mpiBasicInfoCommand) {
-
-        final ActivityMpiBasicInfo activityMpiBasicInfo = this.makeActivityMpiBasicInfo(mpiBasicInfoCommand);
+    public BaseResponse searchMpiBasicInfoUseCase (ActivityMpiBasicInfo activityMpiBasicInfo) {
         log.info("Set ActivityMpiBasicInfo - [{}]", activityMpiBasicInfo);
-
         final MpiBasicInfo mpiBasicInfo = this.loadMpiBasicInfoPort.loadActivitiesRun(activityMpiBasicInfo);
-
         return BaseResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .data(mpiBasicInfo)

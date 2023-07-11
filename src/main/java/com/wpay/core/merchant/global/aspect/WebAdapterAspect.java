@@ -1,5 +1,6 @@
 package com.wpay.core.merchant.global.aspect;
 
+import com.wpay.core.merchant.global.dto.BaseValidation;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -15,7 +16,19 @@ import org.springframework.stereotype.Component;
 public class WebAdapterAspect extends BaseAspect {
 
     @Before("execution(* com.wpay.core.merchant.adapter.in.web.*.*(..))")
-    public void before(JoinPoint joinPoint) { log.debug("[Before] => {}", joinPoint.getSignature().getName()); }
+    public void before(JoinPoint joinPoint) {
+        log.debug("[Before] => {}", joinPoint.getSignature().getName());
+        /* Request validation check */
+        int i=0;
+        for(Object o : joinPoint.getArgs()){
+            log.debug(">> JoinPoint Args[{}] Object Name [{}] [{}]", i++, o.getClass().getName(), (o instanceof BaseValidation));
+            if(o instanceof BaseValidation){
+                ((BaseValidation)o).validateSelf();
+                log.info("{} Validation check success", o.getClass().getName());
+                break;
+            }
+        }
+    }
 
     @After("execution(* com.wpay.core.merchant.adapter.in.web.*.*(..))")
     public void after(JoinPoint joinPoint) {

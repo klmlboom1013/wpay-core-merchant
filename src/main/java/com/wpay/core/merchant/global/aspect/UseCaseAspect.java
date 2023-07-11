@@ -15,32 +15,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class UseCaseAspect {
 
-    @Before("execution(* com.wpay.core.merchant.application.service.*.execute(..))")
+    @Before("execution(* com.wpay.core.merchant.application.service.*.*UseCase(..))")
     public void before(JoinPoint joinPoint) {
         log.debug("[Before] => {}", joinPoint.getSignature().getName());
-        /* Request validation check */
-        int i=0;
-        for(Object o : joinPoint.getArgs()){
-            log.debug(">> JoinPoint Args[{}] Object Name [{}] [{}]", i++, o.getClass().getName(), (o instanceof BaseValidation));
-            if(o instanceof BaseValidation){
-                ((BaseValidation)o).validateSelf();
-                log.info("{} Validation check success", o.getClass().getName());
-                break;
-            }
-        }
     }
 
-    @After("execution(* com.wpay.core.merchant.application.service.*.execute(..))")
+    @After("execution(* com.wpay.core.merchant.application.service.*.*UseCase(..))")
     public void after(JoinPoint joinPoint) {
         log.debug("[After] => {}", joinPoint.getSignature().getName());
     }
 
-    @AfterReturning(pointcut = "execution(* com.wpay.core.merchant.application.service.*.execute(..))", returning = "result")
+    @AfterReturning(pointcut = "execution(* com.wpay.core.merchant.application.service.*.*UseCase(..))", returning = "result")
     public void afterReturning(JoinPoint joinPoint, Object result) {
         log.debug("[AfterReturning] => {} [result] => {}", joinPoint.getSignature().getName(), result);
     }
 
-    @AfterThrowing(pointcut = "execution(* com.wpay.core.merchant.application.service.*.execute(..))", throwing = "e")
+    @AfterThrowing(pointcut = "execution(* com.wpay.core.merchant.application.service.*.*UseCase(..))", throwing = "e")
     public void afterThrowing(JoinPoint joinPoint, Throwable e) {
         log.error("[AfterThrowing] => {} [{}] => {}", joinPoint.getSignature().getName(), e.getClass().getName(), e.getMessage());
     }

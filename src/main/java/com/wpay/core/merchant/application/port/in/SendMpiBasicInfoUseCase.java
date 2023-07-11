@@ -10,14 +10,14 @@ public interface SendMpiBasicInfoUseCase {
     ApiVersion getVersion();
 
     /** Business 구현 */
-    BaseResponse execute (MpiBasicInfoCommand mpiBasicInfoCommand);
+    BaseResponse searchMpiBasicInfoUseCase (ActivityMpiBasicInfo activityMpiBasicInfo);
 
-    default ActivityMpiBasicInfo makeActivityMpiBasicInfo(MpiBasicInfoCommand mpiBasicInfoCommand) {
-        return ActivityMpiBasicInfo.builder()
+    default BaseResponse execute (MpiBasicInfoCommand mpiBasicInfoCommand){
+        return this.searchMpiBasicInfoUseCase(ActivityMpiBasicInfo.builder()
                 .option(SearchMpiBasicInfoOption.getInstance(mpiBasicInfoCommand.getOption().toString()))
                 .jobCode(MpiBasicInfoCommand.jobCode)
                 .mid(mpiBasicInfoCommand.getMid())
                 .wtid(mpiBasicInfoCommand.getWtid())
-                .build();
+                .build());
     }
 }
