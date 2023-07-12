@@ -1,11 +1,15 @@
 package com.wpay.core.merchant.global.factory.port.out;
 
+import com.wpay.core.merchant.global.factory.port.BaseOutPort;
+import com.wpay.core.merchant.global.factory.port.PortDvdCode;
+
 public interface BasePersistencePort extends BaseOutPort {
 
     Object loadActivitiesRun (Object... args);
     void recodeActivitiesRun(Object... args);
 
-    default PortOutDvdCode getPortOutDvdCode() {
-        return PortOutDvdCode.persistence;
+    @Override
+    default PortDvdCode getPortDvdCode() {
+        return PortDvdCode.persistence;
     }
 }

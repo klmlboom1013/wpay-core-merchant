@@ -1,10 +1,12 @@
 package com.wpay.core.merchant.global.factory.port.in;
 
 import com.wpay.core.merchant.global.dto.SelfValidating;
+import com.wpay.core.merchant.global.factory.port.BaseInPort;
+import com.wpay.core.merchant.global.factory.port.PortDvdCode;
 
 public interface BaseUseCasePort extends BaseInPort {
 
-    @Override default PortInDvdCode getPortInDvdCode() { return PortInDvdCode.useCase; }
+    @Override default PortDvdCode getPortDvdCode() { return PortDvdCode.usecase; }
 
     Object execute(SelfValidating<?> selfValidating);
 }

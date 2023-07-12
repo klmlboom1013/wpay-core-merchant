@@ -1,4 +1,4 @@
-package com.wpay.core.merchant.global.factory.port.out;
+package com.wpay.core.merchant.global.factory.port;
 
 import com.wpay.core.merchant.global.enums.JobCode;
 import com.wpay.core.merchant.global.enums.VersionCode;
@@ -8,5 +8,5 @@ public interface BaseOutPort {
 
     VersionCode getVersionCode();
 
-    PortOutDvdCode getPortOutDvdCode();
+    PortDvdCode getPortDvdCode();
 }
