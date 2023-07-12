@@ -2,6 +2,8 @@ package com.wpay.core.merchant.adapter.out.external;
 
 import com.wpay.core.merchant.application.port.out.external.SendHttpConnectionPort;
 import com.wpay.core.merchant.global.annotation.ExternalAdapter;
+import com.wpay.core.merchant.global.enums.JobCode;
+import com.wpay.core.merchant.global.enums.VersionCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -9,5 +11,13 @@ import lombok.extern.log4j.Log4j2;
 @ExternalAdapter
 @RequiredArgsConstructor
 public class MpiExternalAdepter implements SendHttpConnectionPort {
+    @Override
+    public JobCode getJobCode() {
+        return null;
+    }
 
+    @Override
+    public VersionCode getVersionCode() {
+        return null;
+    }
 }
