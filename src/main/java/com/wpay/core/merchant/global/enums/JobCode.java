@@ -8,7 +8,7 @@ import lombok.Getter;
 public enum JobCode {
 
     /** MPI 기준 정보 조회 */
-    SendMpiBasicInfo("20")
+    JOB_CODE_20("20")
     ;
 
     @Getter
