@@ -2,7 +2,7 @@ package com.wpay.core.merchant.application.port.in.usecase;
 
 import com.wpay.core.merchant.global.dto.SelfValidating;
 import com.wpay.core.merchant.global.enums.JobCode;
-import com.wpay.core.merchant.global.enums.SearchMpiBasicInfoOption;
+import com.wpay.core.merchant.application.service.SearchMpiBasicInfoOption;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 @EqualsAndHashCode(callSuper = false)
 public class MpiBasicInfoCommand extends SelfValidating<MpiBasicInfoCommand> {
 
-    public static final JobCode jobCode = JobCode.SendMpiBasicInfo;
+    public static final JobCode jobCode = JobCode.JOB_CODE_20;
 
     @NotNull(message = "option 값이 Null 이면 안됩니다.")
     @Size(min = 2, max = 2, message = "option 값 길이는 2 이어야 합니다.")

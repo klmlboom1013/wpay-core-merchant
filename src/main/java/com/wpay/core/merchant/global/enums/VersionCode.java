@@ -6,6 +6,10 @@ package com.wpay.core.merchant.global.enums;
 public enum VersionCode {
     v1,v2,v3,v4,v5;
 
+    public boolean equals(VersionCode code) {
+        return this.name().equals(code.name());
+    }
+
     public static VersionCode getInstance(String version) {
         for(VersionCode o : VersionCode.values())
             if(o.toString().equals(version)) return o;

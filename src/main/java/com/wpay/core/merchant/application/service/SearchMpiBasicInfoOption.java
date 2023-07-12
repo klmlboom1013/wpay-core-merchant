@@ -1,4 +1,4 @@
-package com.wpay.core.merchant.global.enums;
+package com.wpay.core.merchant.application.service;
 
 /**
  * 가맹점 기준 정보 조회 옵션
@@ -20,6 +20,11 @@ public enum SearchMpiBasicInfoOption {
     BI,
     /** 모든 옵션 ALL */
     AL;
+
+    public boolean equals(SearchMpiBasicInfoOption code) {
+        return this.name().equals(code.name());
+    }
+
     public static SearchMpiBasicInfoOption getInstance(String code) {
         for(SearchMpiBasicInfoOption o : SearchMpiBasicInfoOption.values())
             if(o.toString().equals(code)) return o;

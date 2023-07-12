@@ -1,7 +1,7 @@
 package com.wpay.core.merchant.domain;
 
 import com.wpay.core.merchant.global.enums.JobCode;
-import com.wpay.core.merchant.global.enums.SearchMpiBasicInfoOption;
+import com.wpay.core.merchant.application.service.SearchMpiBasicInfoOption;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

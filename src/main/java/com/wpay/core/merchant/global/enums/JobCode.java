@@ -22,6 +22,10 @@ public enum JobCode {
         return this.code.equals(code);
     }
 
+    public boolean equals(JobCode code) {
+        return this.name().equals(code.name());
+    }
+
     public static JobCode getInstance(String code) {
         for(JobCode o : JobCode.values())
             if(o.equals(code)) return o;

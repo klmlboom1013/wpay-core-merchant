@@ -1,7 +1,7 @@
 package com.wpay.core.merchant.adapter.in.web;
 
 import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoCommand;
-import com.wpay.core.merchant.global.factory.port.in.InPortFactory;
+import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoUseCaseFactory;
 import com.wpay.core.merchant.global.annotation.WebAdapter;
 import com.wpay.core.merchant.global.dto.BaseResponse;
 import com.wpay.core.merchant.global.enums.VersionCode;
@@ -17,16 +17,15 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 class MpiBasicInfoController {
 
-    private final InPortFactory inPortFactory;
+    private final MpiBasicInfoUseCaseFactory mpiBasicInfoUseCaseFactory;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(path = "/{version}/mpi-basic-info")
     ResponseEntity<BaseResponse> merchantInfo (@PathVariable String version,
                                                @RequestBody MpiBasicInfoCommand mpiBasicInfoCommand) {
-        final BaseResponse result =
-                (BaseResponse)this.inPortFactory.getUseCase(VersionCode.getInstance(version), MpiBasicInfoCommand.jobCode)
-                .execute(mpiBasicInfoCommand);
-        log.info("MpiBasicInfo Result - [{}]", result);
-        return ResponseEntity.ok().body(result);
+
+        return ResponseEntity.ok().body(mpiBasicInfoUseCaseFactory
+                .getMpiBasicInfoUseCase(VersionCode.getInstance(version), MpiBasicInfoCommand.jobCode)
+                .execute(mpiBasicInfoCommand));
     }
 }
