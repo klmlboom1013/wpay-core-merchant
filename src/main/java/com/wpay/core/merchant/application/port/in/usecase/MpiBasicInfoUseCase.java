@@ -28,9 +28,10 @@ public interface MpiBasicInfoUseCase extends UseCasePort {
                 .build();
 
         final BaseResponse searchDBResult = this.searchMpiBasicInfoUseCase(activityMpiTrns);
-        if(Objects.nonNull(searchDBResult.getData())) return searchDBResult;
+        if(Objects.nonNull(searchDBResult))
+            return searchDBResult;
 
-        return  sendMpiBasicInfoUseCase(activityMpiTrns);
+        return sendMpiBasicInfoUseCase(activityMpiTrns);
     }
 
     /** DB 에서 이전 MPI 기준 정보 조회 연동 이력이 있으면 Return 구현 */

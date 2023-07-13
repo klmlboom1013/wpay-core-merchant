@@ -18,7 +18,7 @@ public class BaseResponse {
     private final Object data;
 
     @Builder
-    private BaseResponse(@NonNull HttpStatus httpStatus, @NonNull Object data){
+    private BaseResponse(@NonNull HttpStatus httpStatus, Object data){
         this.timestamp = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new Date());
         this.status=httpStatus.value();
         this.message=httpStatus.getReasonPhrase();

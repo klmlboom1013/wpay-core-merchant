@@ -26,7 +26,7 @@ public class MpiBasicInfoAdapter implements MpiBasicInfoPersistence {
         final Long srlno = this.mpiTrnsRepository.getMpiTrnsByWtid(wtid);
         log.info("MPI_TRNS SRLNO 조회 완료 [wtid:{}][srlno:{}]", wtid, srlno);
 
-        final MpiTrnsJpaEntity mpiTrnsJpaEntity = this.mpiTrnsRepository
+        MpiTrnsJpaEntity mpiTrnsJpaEntity = this.mpiTrnsRepository
                 .findById(new MpiTrnsJpaEntity.MpiTrnsId(wtid, srlno))
                 .orElseThrow(() -> new EntityNotFoundException("MpiTrns 조회 결과가 없습니다."));
 

@@ -4,41 +4,59 @@ import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.http.codec.LoggingCodecSupport;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
-
-import javax.ws.rs.core.MediaType;
 
 @Log4j2
 @Configuration
 public class WebClientConfiguration {
 
-    @Value("${external.mpi.basic-info-url}")
-    private String mpiBasicInfoUrl;
-
-
-
-    /**
-     * MPI 기준 정보 조회 연동
-     */
     @Bean
-    public WebClient webClientForSendMpiBasicInfo() {
-        log.info("mpiBasicInfoUrl: {}", mpiBasicInfoUrl);
-        return WebClient.builder()
-                .baseUrl(mpiBasicInfoUrl)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED)
-                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(2 * 1024 *1024))
-                .clientConnector(new ReactorClientHttpConnector(
-                        HttpClient.create().tcpConfiguration(
-                                client -> client.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000)
-                                        .doOnConnected(conn -> conn.addHandlerLast(new ReadTimeoutHandler(10))
-                                                .addHandlerLast(new WriteTimeoutHandler(10))))
+    public WebClient webClient() {
 
-                )).build();
+        ExchangeStrategies exchangeStrategies = ExchangeStrategies.builder()
+                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(1024*1024*50))
+                .build();
+        exchangeStrategies
+                .messageWriters().stream()
+                .filter(LoggingCodecSupport.class::isInstance)
+                .forEach(writer -> ((LoggingCodecSupport)writer).setEnableLoggingRequestDetails(true));
+
+        return WebClient.builder()
+                .clientConnector(
+                        new ReactorClientHttpConnector(
+                                HttpClient
+                                        .create()
+                                        .secure()
+                                        .tcpConfiguration(
+                                                client -> client.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 120_000)
+                                                        .doOnConnected(conn -> conn.addHandlerLast(new ReadTimeoutHandler(180))
+                                                                .addHandlerLast(new WriteTimeoutHandler(180))
+                                                        )
+                                        )
+                        )
+                )
+                .exchangeStrategies(exchangeStrategies)
+                .filter(ExchangeFilterFunction.ofRequestProcessor(
+                        clientRequest -> {
+                            log.debug("Request: {} {}", clientRequest.method(), clientRequest.url());
+                            clientRequest.headers().forEach((name, values) -> values.forEach(value -> log.debug("{} : {}", name, value)));
+                            return Mono.just(clientRequest);
+                        }
+                ))
+                .filter(ExchangeFilterFunction.ofResponseProcessor(
+                        clientResponse -> {
+                            clientResponse.headers().asHttpHeaders().forEach((name, values) -> values.forEach(value -> log.debug("{} : {}", name, value)));
+                            return Mono.just(clientResponse);
+                        }
+                ))
+                .build();
     }
 }

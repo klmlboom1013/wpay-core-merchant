@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 
+import javax.persistence.EntityNotFoundException;
+
 @Log4j2
 @UseCase
 @RequiredArgsConstructor
@@ -25,9 +27,15 @@ public class MpiBasicInfoService implements MpiBasicInfoUseCase {
     @Override
     public BaseResponse searchMpiBasicInfoUseCase (ActivityMpiTrns activityMpiTrns) {
         log.info("Set ActivityMpiBasicInfo - [{}]", activityMpiTrns);
-        final MpiBasicInfo mpiBasicInfo = mpiBasicInfoPersistenceFactory
-                .getMpiBasicInfoPersistence(this.getVersionCode(), this.getJobCode())
-                .loadActivitiesRun(activityMpiTrns);
+        MpiBasicInfo mpiBasicInfo;
+        try {
+            mpiBasicInfo = mpiBasicInfoPersistenceFactory
+                    .getMpiBasicInfoPersistence(this.getVersionCode(), this.getJobCode())
+                    .loadActivitiesRun(activityMpiTrns);
+        } catch (EntityNotFoundException e) {
+            log.debug("MpiTrns 에서 해당 WTID[{}] 로 MPI 통신 이력이 조회 되지 않습니다.", activityMpiTrns.getMpiTrnsId().getWtid());
+            return null;
+        }
         return BaseResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .data(mpiBasicInfo)
@@ -44,6 +52,7 @@ public class MpiBasicInfoService implements MpiBasicInfoUseCase {
         final MpiBasicInfo mpiBasicInfo = mpiBasicInfoExternalFactory
                 .getMpiBasicInfoExternal(this.getVersionCode(), this.getJobCode())
                 .sendMpiBasicInfo(activityMpiTrns);
+
         return BaseResponse.builder()
                 .httpStatus(HttpStatus.OK)
                 .data(mpiBasicInfo)
