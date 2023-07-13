@@ -1,7 +1,7 @@
 package com.wpay.core.merchant.adapter.out.persistence;
 
 import com.wpay.core.merchant.application.port.out.persistence.MpiBasicInfoPersistence;
-import com.wpay.core.merchant.domain.ActivityMpiBasicInfo;
+import com.wpay.core.merchant.domain.ActivityMpiTrns;
 import com.wpay.core.merchant.domain.MpiBasicInfo;
 import com.wpay.core.merchant.global.annotation.PersistenceAdapter;
 import com.wpay.core.merchant.global.enums.VersionCode;
@@ -18,13 +18,11 @@ public class MpiBasicInfoAdapter implements MpiBasicInfoPersistence {
 
     private final MpiTrnsRepository mpiTrnsRepository;
 
-
-
     @Override public VersionCode getVersionCode() { return VersionCode.v1; }
 
     @Override
-    public MpiBasicInfo loadActivitiesRun(@NonNull ActivityMpiBasicInfo activityMpiBasicInfo) {
-        final String wtid = activityMpiBasicInfo.getMpiTrnsId().getWtid();
+    public MpiBasicInfo loadActivitiesRun(@NonNull ActivityMpiTrns activityMpiTrns) {
+        final String wtid = activityMpiTrns.getMpiTrnsId().getWtid();
         final Long srlno = this.mpiTrnsRepository.getMpiTrnsByWtid(wtid);
         log.info("MPI_TRNS SRLNO 조회 완료 [wtid:{}][srlno:{}]", wtid, srlno);
 
@@ -33,14 +31,18 @@ public class MpiBasicInfoAdapter implements MpiBasicInfoPersistence {
                 .orElseThrow(() -> new EntityNotFoundException("MpiTrns 조회 결과가 없습니다."));
 
         return MpiBasicInfo.builder()
-                .wtid(activityMpiBasicInfo.getMpiTrnsId().getWtid())
+                .wtid(activityMpiTrns.getMpiTrnsId().getWtid())
                 .message(mpiTrnsJpaEntity.getRspsGrmConts())
                 .build();
     }
 
     @Override
-    public void recodeActivitiesRun(MpiTrnsJpaEntity mpiTrnsJpaEntity) {
-        this.mpiTrnsRepository.save(mpiTrnsJpaEntity);
+    public void recodeActivitiesRun(@NonNull ActivityMpiTrns activityMpiTrns) {
+
+
+
+//        this.mpiTrnsRepository.save(mpiTrnsJpaEntity);
+
     }
 
 

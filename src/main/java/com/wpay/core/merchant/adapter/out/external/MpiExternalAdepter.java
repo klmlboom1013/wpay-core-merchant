@@ -1,7 +1,7 @@
 package com.wpay.core.merchant.adapter.out.external;
 
 import com.wpay.core.merchant.application.port.out.external.MpiBasicInfoExternal;
-import com.wpay.core.merchant.domain.ActivityMpiBasicInfo;
+import com.wpay.core.merchant.domain.ActivityMpiTrns;
 import com.wpay.core.merchant.domain.MpiBasicInfo;
 import com.wpay.core.merchant.global.annotation.ExternalAdapter;
 import com.wpay.core.merchant.global.enums.JobCode;
@@ -24,7 +24,7 @@ public class MpiExternalAdepter implements MpiBasicInfoExternal {
     }
 
     @Override
-    public MpiBasicInfo sendMpiBasicInfo(ActivityMpiBasicInfo activityMpiBasicInfo) {
+    public MpiBasicInfo sendMpiBasicInfo(ActivityMpiTrns activityMpiTrns) {
         return null;
     }
 }
