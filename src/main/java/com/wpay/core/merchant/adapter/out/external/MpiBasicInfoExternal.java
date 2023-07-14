@@ -21,7 +21,7 @@ public class MpiBasicInfoExternal implements MpiBasicInfoExternalPort {
 
     private final WebClientConfiguration webClientConfiguration;
 
-    @Value("${external.mpi.basic-info-url}")
+    @Value("${external.target.mpi.basic-info-url}")
     private String mpiBasicInfoUrl;
 
     @Override public VersionCode getVersionCode() { return VersionCode.v1; }

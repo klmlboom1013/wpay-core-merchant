@@ -29,7 +29,7 @@ public final class MpiBasicInfoExternalFactory extends BasePortFactory {
             log.debug(">> make MpiBasicInfoExternalMapper PUT key : {}", key);
             this.mpiBasicInfoExternalMapper.put(key, external);
         }
-        log.info(">> mpiBasicInfoExternalMapper size - [{}]", this.mpiBasicInfoExternalMapper.size());
+        log.debug(">> mpiBasicInfoExternalMapper size - [{}]", this.mpiBasicInfoExternalMapper.size());
         if(this.mpiBasicInfoExternalMapper.size() == 0)
             throw new RuntimeException("mpiBasicInfoExternalMapper 에 등록할 MpiBasicInfoExternal 구현 객체가 없습니다.");
     }

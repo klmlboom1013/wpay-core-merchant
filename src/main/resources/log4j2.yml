@@ -44,7 +44,7 @@ Configutation:
       #name: example.demospringboot
       name: com.wpay.core.merchant
       additivity: false
-      level: info
+      level: debug
       AppenderRef:
         - ref: Console_Appender
         - ref: RollingFile_Appender

@@ -8,7 +8,7 @@ logging:
 spring:
   config:
     import:
-      - classpath:props/dev/external-dev-mpi.yml
+      - classpath:props/dev/external-mpi-dev.yml
   datasource:
     # H2 접속 정보
     #url: jdbc:h2:~/wpay

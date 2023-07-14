@@ -27,7 +27,7 @@ public final class MpiBasicInfoUseCaseFactory extends BasePortFactory {
             final String key = this.makeMapperKey(useCase.getVersionCode(), useCase.getJobCode(), useCase.getPortDvdCode());
             this.mpiBasicInfoUseCaseMapper.put(key, useCase);
         }
-        log.debug(">> mpiBasicInfoUseCaseMapper size zero - [{}]", this.mpiBasicInfoUseCaseMapper.size());
+        log.debug(">> mpiBasicInfoUseCaseMapper size - [{}]", this.mpiBasicInfoUseCaseMapper.size());
         if(this.mpiBasicInfoUseCaseMapper.size() == 0)
             throw new RuntimeException("mpiBasicInfoUseCaseMapper 에 등록할 MpiBasicInfoUseCase 구현 객체가 없습니다.");
     }
