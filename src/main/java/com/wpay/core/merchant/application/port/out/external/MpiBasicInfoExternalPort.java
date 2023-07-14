@@ -5,8 +5,8 @@ import com.wpay.core.merchant.domain.MpiBasicInfo;
 import com.wpay.core.merchant.global.enums.JobCode;
 import com.wpay.core.merchant.global.factory.port.out.ExternalPort;
 
-public interface MpiBasicInfoExternal extends ExternalPort {
+public interface MpiBasicInfoExternalPort extends ExternalPort {
     @Override default JobCode getJobCode() { return JobCode.JOB_CODE_20; }
 
-    MpiBasicInfo sendMpiBasicInfo(ActivityMpiTrns activityMpiTrns);
+    MpiBasicInfo sendMpiBasicInfoRun(ActivityMpiTrns activityMpiTrns);
 }

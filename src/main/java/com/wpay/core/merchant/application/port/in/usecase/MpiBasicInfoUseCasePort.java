@@ -9,7 +9,7 @@ import com.wpay.core.merchant.global.factory.port.in.UseCasePort;
 
 import java.util.Objects;
 
-public interface MpiBasicInfoUseCase extends UseCasePort {
+public interface MpiBasicInfoUseCasePort extends UseCasePort {
 
     @Override default JobCode getJobCode() { return JobCode.JOB_CODE_20; }
 

@@ -18,13 +18,13 @@ import java.util.Objects;
 @Factory
 public final class MpiBasicInfoPersistenceFactory extends BasePortFactory {
 
-    private final Map<String, MpiBasicInfoPersistence> mpiBasicInfoPersistenceMapper = new HashMap<>();
+    private final Map<String, MpiBasicInfoPersistencePort> mpiBasicInfoPersistenceMapper = new HashMap<>();
 
-    public MpiBasicInfoPersistenceFactory(List<MpiBasicInfoPersistence> mpiBasicInfoPersistenceList) {
+    public MpiBasicInfoPersistenceFactory(List<MpiBasicInfoPersistencePort> mpiBasicInfoPersistenceList) {
         if(CollectionUtils.isEmpty(mpiBasicInfoPersistenceList))
             throw new NullPointerException("MpiBasicInfoPersistence Interface 가 구현된 Persistence Adapter Bean 을 찾지 못 했습니다.");
 
-        for(MpiBasicInfoPersistence persistence : mpiBasicInfoPersistenceList){
+        for(MpiBasicInfoPersistencePort persistence : mpiBasicInfoPersistenceList){
             final String key = this.makeMapperKey(persistence.getVersionCode(), persistence.getJobCode(), persistence.getPortDvdCode());
             this.mpiBasicInfoPersistenceMapper.put(key, persistence);
         }
@@ -33,7 +33,7 @@ public final class MpiBasicInfoPersistenceFactory extends BasePortFactory {
             throw new RuntimeException("mpiBasicInfoPersistenceMapper 에 등록할 MpiBasicInfoPersistence 구현 객체가 없습니다.");
     }
 
-    public MpiBasicInfoPersistence getMpiBasicInfoPersistence(VersionCode versionCode, JobCode jobCode) {
+    public MpiBasicInfoPersistencePort getMpiBasicInfoPersistence(VersionCode versionCode, JobCode jobCode) {
         final String key = this.makeMapperKey(versionCode, jobCode, PortDvdCode.persistence);
         log.debug(">> make mpiBasicInfoPersistenceMapper key : {}", key);
         if(StringUtils.isBlank(key))

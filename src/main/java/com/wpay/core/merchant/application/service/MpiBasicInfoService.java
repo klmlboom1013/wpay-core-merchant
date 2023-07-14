@@ -1,6 +1,6 @@
 package com.wpay.core.merchant.application.service;
 
-import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoUseCase;
+import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoUseCasePort;
 import com.wpay.core.merchant.application.port.out.external.MpiBasicInfoExternalFactory;
 import com.wpay.core.merchant.application.port.out.persistence.MpiBasicInfoPersistenceFactory;
 import com.wpay.core.merchant.domain.MpiBasicInfo;
@@ -17,7 +17,7 @@ import javax.persistence.EntityNotFoundException;
 @Log4j2
 @UseCase
 @RequiredArgsConstructor
-public class MpiBasicInfoService implements MpiBasicInfoUseCase {
+public class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
 
     private final MpiBasicInfoPersistenceFactory mpiBasicInfoPersistenceFactory;
     private final MpiBasicInfoExternalFactory mpiBasicInfoExternalFactory;
@@ -51,7 +51,7 @@ public class MpiBasicInfoService implements MpiBasicInfoUseCase {
 
         final MpiBasicInfo mpiBasicInfo = mpiBasicInfoExternalFactory
                 .getMpiBasicInfoExternal(this.getVersionCode(), this.getJobCode())
-                .sendMpiBasicInfo(activityMpiTrns);
+                .sendMpiBasicInfoRun(activityMpiTrns);
 
         return BaseResponse.builder()
                 .httpStatus(HttpStatus.OK)

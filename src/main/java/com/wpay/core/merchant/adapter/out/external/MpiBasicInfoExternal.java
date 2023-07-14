@@ -1,6 +1,6 @@
 package com.wpay.core.merchant.adapter.out.external;
 
-import com.wpay.core.merchant.application.port.out.external.MpiBasicInfoExternal;
+import com.wpay.core.merchant.application.port.out.external.MpiBasicInfoExternalPort;
 import com.wpay.core.merchant.domain.ActivityMpiTrns;
 import com.wpay.core.merchant.domain.MpiBasicInfo;
 import com.wpay.core.merchant.global.annotation.ExternalAdapter;
@@ -17,7 +17,7 @@ import javax.ws.rs.core.MediaType;
 @Log4j2
 @ExternalAdapter
 @RequiredArgsConstructor
-public class MpiExternalAdepter implements MpiBasicInfoExternal {
+public class MpiBasicInfoExternal implements MpiBasicInfoExternalPort {
 
     private final WebClientConfiguration webClientConfiguration;
 
@@ -27,7 +27,7 @@ public class MpiExternalAdepter implements MpiBasicInfoExternal {
     @Override public VersionCode getVersionCode() { return VersionCode.v1; }
 
     @Override
-    public MpiBasicInfo sendMpiBasicInfo(ActivityMpiTrns activityMpiTrns) {
+    public MpiBasicInfo sendMpiBasicInfoRun(ActivityMpiTrns activityMpiTrns) {
 
         final WebClient webClient = webClientConfiguration.webClient()
                 .mutate()

@@ -18,13 +18,13 @@ import java.util.Objects;
 @Factory
 public final class MpiBasicInfoExternalFactory extends BasePortFactory {
 
-    private final Map<String, MpiBasicInfoExternal> mpiBasicInfoExternalMapper = new HashMap<>();
+    private final Map<String, MpiBasicInfoExternalPort> mpiBasicInfoExternalMapper = new HashMap<>();
 
-    public MpiBasicInfoExternalFactory(List<MpiBasicInfoExternal> mpiBasicInfoExternals) {
-        if(CollectionUtils.isEmpty(mpiBasicInfoExternals))
+    public MpiBasicInfoExternalFactory(List<MpiBasicInfoExternalPort> mpiBasicInfoExternalPorts) {
+        if(CollectionUtils.isEmpty(mpiBasicInfoExternalPorts))
             throw new NullPointerException("MpiBasicInfoExternal Interface 가 구현된 Persistence Adapter Bean 을 찾지 못 했습니다.");
 
-        for(MpiBasicInfoExternal external : mpiBasicInfoExternals){
+        for(MpiBasicInfoExternalPort external : mpiBasicInfoExternalPorts){
             final String key = this.makeMapperKey(external.getVersionCode(), external.getJobCode(), external.getPortDvdCode());
             log.debug(">> make MpiBasicInfoExternalMapper PUT key : {}", key);
             this.mpiBasicInfoExternalMapper.put(key, external);
@@ -34,7 +34,7 @@ public final class MpiBasicInfoExternalFactory extends BasePortFactory {
             throw new RuntimeException("mpiBasicInfoExternalMapper 에 등록할 MpiBasicInfoExternal 구현 객체가 없습니다.");
     }
 
-    public MpiBasicInfoExternal getMpiBasicInfoExternal(VersionCode versionCode, JobCode jobCode) {
+    public MpiBasicInfoExternalPort getMpiBasicInfoExternal(VersionCode versionCode, JobCode jobCode) {
         final String key = this.makeMapperKey(versionCode, jobCode, PortDvdCode.external);
         log.debug(">> make MpiBasicInfoExternalMapper GET key : {}", key);
         if(StringUtils.isBlank(key))

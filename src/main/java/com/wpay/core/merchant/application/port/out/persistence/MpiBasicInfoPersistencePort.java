@@ -5,7 +5,7 @@ import com.wpay.core.merchant.global.factory.port.out.PersistencePort;
 import com.wpay.core.merchant.domain.ActivityMpiTrns;
 import com.wpay.core.merchant.domain.MpiBasicInfo;
 
-public interface MpiBasicInfoPersistence extends PersistencePort {
+public interface MpiBasicInfoPersistencePort extends PersistencePort {
 
     @Override default JobCode getJobCode() { return JobCode.JOB_CODE_20; }
 

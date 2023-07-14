@@ -1,6 +1,6 @@
 package com.wpay.core.merchant.adapter.out.persistence;
 
-import com.wpay.core.merchant.application.port.out.persistence.MpiBasicInfoPersistence;
+import com.wpay.core.merchant.application.port.out.persistence.MpiBasicInfoPersistencePort;
 import com.wpay.core.merchant.domain.ActivityMpiTrns;
 import com.wpay.core.merchant.domain.MpiBasicInfo;
 import com.wpay.core.merchant.global.annotation.PersistenceAdapter;
@@ -14,7 +14,7 @@ import javax.persistence.EntityNotFoundException;
 @Log4j2
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class MpiBasicInfoAdapter implements MpiBasicInfoPersistence {
+public class MpiBasicInfoPersistence implements MpiBasicInfoPersistencePort {
 
     private final MpiTrnsRepository mpiTrnsRepository;
 

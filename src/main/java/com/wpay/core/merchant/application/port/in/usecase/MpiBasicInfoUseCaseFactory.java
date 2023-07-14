@@ -17,13 +17,13 @@ import java.util.Objects;
 @Factory
 public final class MpiBasicInfoUseCaseFactory extends BasePortFactory {
 
-    private final Map<String, MpiBasicInfoUseCase> mpiBasicInfoUseCaseMapper = new HashMap<>();
+    private final Map<String, MpiBasicInfoUseCasePort> mpiBasicInfoUseCaseMapper = new HashMap<>();
 
-    public MpiBasicInfoUseCaseFactory(List<MpiBasicInfoUseCase> mpiBasicInfoUseCases) {
+    public MpiBasicInfoUseCaseFactory(List<MpiBasicInfoUseCasePort> mpiBasicInfoUseCases) {
         if(CollectionUtils.isEmpty(mpiBasicInfoUseCases))
             throw new NullPointerException("MpiBasicInfoUseCase Interface 가 구현된 UseCase Bean 을 찾지 못 했습니다.");
 
-        for(MpiBasicInfoUseCase useCase : mpiBasicInfoUseCases) {
+        for(MpiBasicInfoUseCasePort useCase : mpiBasicInfoUseCases) {
             final String key = this.makeMapperKey(useCase.getVersionCode(), useCase.getJobCode(), useCase.getPortDvdCode());
             this.mpiBasicInfoUseCaseMapper.put(key, useCase);
         }
@@ -38,7 +38,7 @@ public final class MpiBasicInfoUseCaseFactory extends BasePortFactory {
      * @param jobCode API 업무 구분 코드
      * @return MpiBasicInfoUseCase
      */
-    public MpiBasicInfoUseCase getMpiBasicInfoUseCase (VersionCode versionCode, JobCode jobCode) {
+    public MpiBasicInfoUseCasePort getMpiBasicInfoUseCase (VersionCode versionCode, JobCode jobCode) {
         final String key = this.makeMapperKey(versionCode, jobCode, PortDvdCode.usecase);
 
         return Objects.requireNonNull(this.mpiBasicInfoUseCaseMapper.get(key), "mpiBasicInfoUseCaseMapper 에 저장된 UseCase Bean 이 없습니다.");
