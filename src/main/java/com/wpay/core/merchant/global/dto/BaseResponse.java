@@ -6,8 +6,9 @@ import lombok.NonNull;
 import lombok.ToString;
 import org.springframework.http.HttpStatus;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static com.wpay.core.merchant.global.common.DateFunction.TimestampMilliSecond;
 
 @Getter
 @ToString
@@ -19,7 +20,7 @@ public class BaseResponse {
 
     @Builder
     private BaseResponse(@NonNull HttpStatus httpStatus, Object data){
-        this.timestamp = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")).format(new Date());
+        this.timestamp = TimestampMilliSecond.apply(new Date());
         this.status=httpStatus.value();
         this.message=httpStatus.getReasonPhrase();
         this.data=data;
