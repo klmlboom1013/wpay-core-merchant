@@ -57,8 +57,8 @@ public class WebClientConfiguration {
                         ExchangeFilterFunction.ofRequestProcessor(
                                 clientRequest ->
                                 {
-                                    log.debug("Request: {} {}", clientRequest.method(), clientRequest.url());
-                                    clientRequest.headers().forEach((name, values) -> values.forEach(value -> log.debug("{} : {}", name, value)));
+                                    log.info("Request: {} {}", clientRequest.method(), clientRequest.url());
+                                    clientRequest.headers().forEach((name, values) -> values.forEach(value -> log.info("{} : {}", name, value)));
                                     return Mono.just(clientRequest);
                                 }))
                 .filter(ExchangeFilterFunction.ofResponseProcessor(
@@ -66,7 +66,7 @@ public class WebClientConfiguration {
                         {
                             clientResponse.headers().asHttpHeaders().forEach(
                                     (name, values) -> values.forEach(
-                                            value -> log.debug("{} : {}", name, value)));
+                                            value -> log.info("{} : {}", name, value)));
                             return Mono.just(clientResponse);
                         }))
                 .build();
