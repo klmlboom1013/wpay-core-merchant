@@ -1,5 +1,6 @@
 package com.wpay.core.merchant.global.dto;
 
+import com.wpay.core.merchant.global.common.Functions;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
@@ -7,8 +8,6 @@ import lombok.ToString;
 import org.springframework.http.HttpStatus;
 
 import java.util.Date;
-
-import static com.wpay.core.merchant.global.common.DateFunction.TimestampMilliSecond;
 
 @Getter
 @ToString
@@ -20,7 +19,7 @@ public class BaseResponse {
 
     @Builder
     private BaseResponse(@NonNull HttpStatus httpStatus, Object data){
-        this.timestamp = TimestampMilliSecond.apply(new Date());
+        this.timestamp = Functions.getTimestampMilliSecond.apply(new Date());
         this.status=httpStatus.value();
         this.message=httpStatus.getReasonPhrase();
         this.data=data;
