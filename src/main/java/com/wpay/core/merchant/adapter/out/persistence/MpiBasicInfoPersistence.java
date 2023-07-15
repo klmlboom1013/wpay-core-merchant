@@ -14,7 +14,7 @@ import javax.persistence.EntityNotFoundException;
 @Log4j2
 @PersistenceAdapter
 @RequiredArgsConstructor
-public class MpiBasicInfoPersistence implements MpiBasicInfoPersistencePort {
+class MpiBasicInfoPersistence implements MpiBasicInfoPersistencePort {
 
     private final MpiTrnsRepository mpiTrnsRepository;
 

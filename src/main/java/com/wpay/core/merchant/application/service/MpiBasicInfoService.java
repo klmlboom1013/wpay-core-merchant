@@ -18,7 +18,7 @@ import javax.persistence.EntityNotFoundException;
 @Log4j2
 @UseCase
 @RequiredArgsConstructor
-public class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
+class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
 
     private final MpiBasicInfoPersistenceFactory mpiBasicInfoPersistenceFactory;
     private final MpiBasicInfoExternalFactory mpiBasicInfoExternalFactory;
@@ -49,37 +49,39 @@ public class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
 
     @Override
     public BaseResponse sendMpiBasicInfoUseCase (ActivityMpiTrns activityMpiTrns) {
-        log.info("Set ActivityMpiBasicInfo - [{}]", activityMpiTrns);
+        final String wtid = activityMpiTrns.getMpiTrnsId().getWtid();
+        final String mid = activityMpiTrns.getMid();
+        log.info("[{}][{}] Set ActivityMpiBasicInfo - [{}]", mid, wtid, activityMpiTrns);
 
-        this.mpiBasicInfoPersistenceFactory.getMpiBasicInfoPersistence(this.getVersionCode(), this.getJobCode())
-                .recodeActivitiesRun(activityMpiTrns);
-
+        /* MPI 통신 기준 정보 조회 요청 */
         MpiBasicInfoMapper mpiBasicInfoMapper;
         try {
             mpiBasicInfoMapper = mpiBasicInfoExternalFactory
                     .getMpiBasicInfoExternal(this.getVersionCode(), this.getJobCode())
                     .sendMpiBasicInfoRun(activityMpiTrns);
         } catch (Exception e) {
-            log.error("MpiBasicInfoExternal Error: {} - {}", e.getClass().getName(), e.getMessage());
+            log.error("[{}][{}] MpiBasicInfoExternal Error: {} - {}", mid, wtid, e.getClass().getName(), e.getMessage());
             throw e;
+        } finally {
+            /* MPI 통신 이력 저장 */
+            this.mpiBasicInfoPersistenceFactory.getMpiBasicInfoPersistence(this.getVersionCode(), this.getJobCode())
+                    .recodeActivitiesRun(activityMpiTrns);
         }
 
+        /* MPI 통신 기준 정보 조회 결과 코드 및 상태 검증 */
+        final String resultCode = mpiBasicInfoMapper.getSendMpiBasicInfoResult().getMpiReceiveResult().getCode();
+        final String midStatus = mpiBasicInfoMapper.getSendMpiBasicInfoResult().getMpiReceiveMpiStatus().getCode();
+        log.info("[{}][{}] MPI 통신 기준 정보 조회 결과 [resultCode:{}][midStatus:{}]", mid, wtid, resultCode, midStatus);
+
+        if(MpiBasicInfoMapper.MpiReceiveResult.RETCODE_FAIL.equals(resultCode)) throw new RuntimeException("MPI 통신 기준 정보 조회 결과 응답 코드 실패.");
+        if(MpiBasicInfoMapper.MpiReceiveMpiStatus.STATUS_FAIL.equals(midStatus)) throw new RuntimeException("MPI 통신 기준 정보 조히 결과 MID 상태 오류.");
+
+        /* Client 로 전달 DTO 세팅 */
         final MpiBasicInfo mpiBasicInfo = MpiBasicInfo.builder()
                 .wtid(mpiBasicInfoMapper.getWtid())
                 .mid(mpiBasicInfoMapper.getMid())
                 .message(mpiBasicInfoMapper.getMessage())
                 .build();
-
-        // MPI 기준 정보 조회 결과 코드
-        final String resultCode = mpiBasicInfo.getSendMpiBasicInfoResult().getResultCode();
-        // MPI 기준 정보 조회 결과 MID 상태 코드
-        final String midStatus = mpiBasicInfo.getSendMpiBasicInfoResult().getMidStatusCd();
-
-        /* MPI 기준 정보 조회 결과 코드가 0000 이 아니거나 MID 상태 코드가 00 이 아니면 오류 처리 */
-        if(Boolean.FALSE.equals("0000".equals(resultCode) && "00".equals(midStatus))) {
-            log.error("MPI 통신 기준 정보 조히 결과 검증 오류: [{}]", mpiBasicInfo.getSendMpiBasicInfoResult().toString());
-            throw new RuntimeException("MPI 통신 기준 정보 조히 결과 검증 오류.[resultCode:"+resultCode+"][midStatus:"+midStatus+"]");
-        }
 
         return BaseResponse.builder()
                 .httpStatus(HttpStatus.OK)
