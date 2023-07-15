@@ -12,6 +12,8 @@ import javax.validation.constraints.Size;
 @Getter
 @EqualsAndHashCode(callSuper = false)
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class MpiBasicInfoCommand extends SelfValidating<MpiBasicInfoCommand> {
 
     public static final JobCode jobCode = JobCode.JOB_CODE_20;

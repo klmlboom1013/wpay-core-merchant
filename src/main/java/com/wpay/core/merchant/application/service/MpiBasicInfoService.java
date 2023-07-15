@@ -7,6 +7,7 @@ import com.wpay.core.merchant.application.port.out.persistence.MpiBasicInfoPersi
 import com.wpay.core.merchant.domain.MpiBasicInfo;
 import com.wpay.core.merchant.domain.ActivityMpiTrns;
 import com.wpay.core.merchant.global.annotation.UseCase;
+import com.wpay.core.merchant.global.common.Functions;
 import com.wpay.core.merchant.global.dto.BaseResponse;
 import com.wpay.core.merchant.global.enums.VersionCode;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Date;
+import java.util.Objects;
 
 @Log4j2
 @UseCase
@@ -27,14 +30,17 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
 
     @Override
     public BaseResponse searchMpiBasicInfoUseCase (ActivityMpiTrns activityMpiTrns) {
-        log.info("Set ActivityMpiBasicInfo - [{}]", activityMpiTrns);
+        final String wtid = activityMpiTrns.getMpiTrnsId().getWtid();
+        final String mid = activityMpiTrns.getMid();
+        log.info("[{}][{}] Set ActivityMpiBasicInfo - [{}]", mid, wtid, activityMpiTrns);
+
         MpiBasicInfoMapper mpiBasicInfoMapper;
         try {
             mpiBasicInfoMapper = mpiBasicInfoPersistenceFactory
                     .getMpiBasicInfoPersistence(this.getVersionCode(), this.getJobCode())
                     .loadActivitiesRun(activityMpiTrns);
         } catch (EntityNotFoundException e) {
-            log.debug("MpiTrns 에서 해당 WTID[{}] 로 MPI 통신 이력이 조회 되지 않습니다.", activityMpiTrns.getMpiTrnsId().getWtid());
+            log.info("[{}][{}] MPI 통신 이력이 조회 되지 않아 MPI 기준 정보 조회 연동을 진행 합니다.", mid, wtid);
             return null;
         }
         return BaseResponse.builder()
@@ -54,7 +60,7 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
         log.info("[{}][{}] Set ActivityMpiBasicInfo - [{}]", mid, wtid, activityMpiTrns);
 
         /* MPI 통신 기준 정보 조회 요청 */
-        MpiBasicInfoMapper mpiBasicInfoMapper;
+        MpiBasicInfoMapper mpiBasicInfoMapper = null;
         try {
             mpiBasicInfoMapper = mpiBasicInfoExternalFactory
                     .getMpiBasicInfoExternal(this.getVersionCode(), this.getJobCode())
@@ -64,8 +70,20 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
             throw e;
         } finally {
             /* MPI 통신 이력 저장 */
-            this.mpiBasicInfoPersistenceFactory.getMpiBasicInfoPersistence(this.getVersionCode(), this.getJobCode())
-                    .recodeActivitiesRun(activityMpiTrns);
+            if(Objects.nonNull(mpiBasicInfoMapper)){
+                activityMpiTrns.setMpiTrnsId(ActivityMpiTrns.MpiTrnsId.builder()
+                        .wtid(wtid)
+                        .srlno(Functions.makeSrlno.apply(new Date()))
+                        .build());
+                activityMpiTrns.setActivitySendMpi(ActivityMpiTrns.ActivitySendMpi.builder()
+                        .connUrl(mpiBasicInfoMapper.getUrl())
+                        .rspsGrmConts(mpiBasicInfoMapper.getMessage())
+                        .payRsltCd(mpiBasicInfoMapper.getSendMpiBasicInfoResult().getResultCode())
+                        .build());
+
+                this.mpiBasicInfoPersistenceFactory.getMpiBasicInfoPersistence(this.getVersionCode(), this.getJobCode())
+                        .recodeActivitiesRun(activityMpiTrns);
+            }
         }
 
         /* MPI 통신 기준 정보 조회 결과 코드 및 상태 검증 */

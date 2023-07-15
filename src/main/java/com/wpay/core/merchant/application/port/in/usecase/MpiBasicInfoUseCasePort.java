@@ -25,6 +25,7 @@ public interface MpiBasicInfoUseCasePort extends UseCasePort {
                 .jobCode(MpiBasicInfoCommand.jobCode)
                 .mid(mpiBasicInfoCommand.getMid())
                 .wtid(mpiBasicInfoCommand.getWtid())
+                .serverName(mpiBasicInfoCommand.getServerName())
                 .build();
 
         final BaseResponse searchDBResult = this.searchMpiBasicInfoUseCase(activityMpiTrns);

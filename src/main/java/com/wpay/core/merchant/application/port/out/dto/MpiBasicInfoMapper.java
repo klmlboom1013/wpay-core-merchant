@@ -39,6 +39,9 @@ public class MpiBasicInfoMapper {
             if(Strings.isNotBlank(e.trim())){
                 if((e.lastIndexOf(":") == e.length()-1) || (e.lastIndexOf("^") == e.length()-1)|| (e.lastIndexOf("&") == e.length()-1))
                     e = e.substring(0, e.length()-1);
+                if(e.contains("card_max_quota")){
+                    log.debug(">>> card_max_quota: {}", e.trim());
+                }
                 list.add(e.trim());
             }
         });
@@ -75,7 +78,7 @@ public class MpiBasicInfoMapper {
 
         // result 맨 뒤 "|" 제거
         if(result.lastIndexOf("|") == result.length()-1)
-            result = result.substring(0, result.length()-2);
+            result = result.substring(0, result.length()-1);
 
         log.info("MPI 응답 메시지 미사용 필드 삭제 결과: \n{} ", result);
 

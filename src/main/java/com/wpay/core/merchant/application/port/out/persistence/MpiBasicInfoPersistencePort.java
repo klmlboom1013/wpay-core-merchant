@@ -11,5 +11,5 @@ public interface MpiBasicInfoPersistencePort extends PersistencePort {
 
     MpiBasicInfoMapper loadActivitiesRun (ActivityMpiTrns activityMpiTrns);
 
-    void recodeActivitiesRun(ActivityMpiTrns activityMpiTrns);
+    boolean recodeActivitiesRun(ActivityMpiTrns activityMpiTrns);
 }

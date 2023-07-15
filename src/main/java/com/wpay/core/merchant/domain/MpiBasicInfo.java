@@ -55,7 +55,8 @@ public class MpiBasicInfo {
                     final String[] values = kv[1].split(":");
                     finalData.put("bankCardCode", kv[0]);
                     finalData.put("geIntMaxQuota", values[0]);
-                    finalData.put("noIntMaxQuota", values[1]);
+                    if(values.length > 1)
+                        finalData.put("noIntMaxQuota", values[1]);
                     maxQuotaList.add(finalData);
                 });
                 mpiBasicInfos.put("cardMaxQuotas", maxQuotaList);

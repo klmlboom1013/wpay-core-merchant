@@ -24,7 +24,6 @@ public class WebAdapterAspect implements BaseAspect {
     @Override
     public void before(JoinPoint joinPoint) {
         log.debug("[Before] => {}", joinPoint.getSignature().getName());
-
         /* Request validation check */
         for(Object o : joinPoint.getArgs()) {
             /* BaseValidation 을 상속 받지 않았으면 continue */
