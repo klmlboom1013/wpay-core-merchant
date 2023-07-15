@@ -1,8 +1,8 @@
 package com.wpay.core.merchant.adapter.out.external;
 
+import com.wpay.core.merchant.adapter.out.dto.MpiBasicInfoMapper;
 import com.wpay.core.merchant.application.port.out.external.MpiBasicInfoExternalPort;
 import com.wpay.core.merchant.domain.ActivityMpiTrns;
-import com.wpay.core.merchant.domain.MpiBasicInfo;
 import com.wpay.core.merchant.global.annotation.ExternalAdapter;
 import com.wpay.core.merchant.global.enums.VersionCode;
 import com.wpay.core.merchant.global.infra.WebClientConfiguration;
@@ -28,7 +28,7 @@ public class MpiBasicInfoExternal implements MpiBasicInfoExternalPort {
     @Override public VersionCode getVersionCode() { return VersionCode.v1; }
 
     @Override
-    public MpiBasicInfo sendMpiBasicInfoRun(@NonNull ActivityMpiTrns activityMpiTrns) {
+    public MpiBasicInfoMapper sendMpiBasicInfoRun(@NonNull ActivityMpiTrns activityMpiTrns) {
 
         final WebClient webClient = webClientConfiguration.webClient()
                 .mutate()
@@ -43,7 +43,7 @@ public class MpiBasicInfoExternal implements MpiBasicInfoExternalPort {
                 .block();
         log.info(">> Send MPI Response : [{}]", result);
 
-        return MpiBasicInfo.builder()
+        return MpiBasicInfoMapper.builder()
                 .wtid(activityMpiTrns.getMpiTrnsId().getWtid())
                 .mid(activityMpiTrns.getMid())
                 .message(result)
