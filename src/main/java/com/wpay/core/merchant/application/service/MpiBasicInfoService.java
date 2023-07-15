@@ -1,6 +1,6 @@
 package com.wpay.core.merchant.application.service;
 
-import com.wpay.core.merchant.adapter.out.dto.MpiBasicInfoMapper;
+import com.wpay.core.merchant.application.port.out.dto.MpiBasicInfoMapper;
 import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoUseCasePort;
 import com.wpay.core.merchant.application.port.out.external.MpiBasicInfoExternalFactory;
 import com.wpay.core.merchant.application.port.out.persistence.MpiBasicInfoPersistenceFactory;

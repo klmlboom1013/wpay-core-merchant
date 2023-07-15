@@ -1,4 +1,4 @@
-package com.wpay.core.merchant.adapter.out.dto;
+package com.wpay.core.merchant.application.port.out.dto;
 
 import lombok.*;
 

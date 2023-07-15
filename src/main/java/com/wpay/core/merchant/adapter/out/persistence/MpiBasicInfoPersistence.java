@@ -1,6 +1,6 @@
 package com.wpay.core.merchant.adapter.out.persistence;
 
-import com.wpay.core.merchant.adapter.out.dto.MpiBasicInfoMapper;
+import com.wpay.core.merchant.application.port.out.dto.MpiBasicInfoMapper;
 import com.wpay.core.merchant.application.port.out.persistence.MpiBasicInfoPersistencePort;
 import com.wpay.core.merchant.domain.ActivityMpiTrns;
 import com.wpay.core.merchant.global.annotation.PersistenceAdapter;
