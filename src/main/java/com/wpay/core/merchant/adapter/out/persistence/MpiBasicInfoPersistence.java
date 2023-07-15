@@ -32,6 +32,7 @@ public class MpiBasicInfoPersistence implements MpiBasicInfoPersistencePort {
 
         return MpiBasicInfo.builder()
                 .wtid(activityMpiTrns.getMpiTrnsId().getWtid())
+                .mid(activityMpiTrns.getMid())
                 .message(mpiTrnsJpaEntity.getRspsGrmConts())
                 .build();
     }

@@ -6,6 +6,7 @@ import com.wpay.core.merchant.domain.MpiBasicInfo;
 import com.wpay.core.merchant.global.annotation.ExternalAdapter;
 import com.wpay.core.merchant.global.enums.VersionCode;
 import com.wpay.core.merchant.global.infra.WebClientConfiguration;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,7 +28,7 @@ public class MpiBasicInfoExternal implements MpiBasicInfoExternalPort {
     @Override public VersionCode getVersionCode() { return VersionCode.v1; }
 
     @Override
-    public MpiBasicInfo sendMpiBasicInfoRun(ActivityMpiTrns activityMpiTrns) {
+    public MpiBasicInfo sendMpiBasicInfoRun(@NonNull ActivityMpiTrns activityMpiTrns) {
 
         final WebClient webClient = webClientConfiguration.webClient()
                 .mutate()
@@ -40,9 +41,12 @@ public class MpiBasicInfoExternal implements MpiBasicInfoExternalPort {
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
-
         log.info(">> Send MPI Response : [{}]", result);
 
-        return null;
+        return MpiBasicInfo.builder()
+                .wtid(activityMpiTrns.getMpiTrnsId().getWtid())
+                .mid(activityMpiTrns.getMid())
+                .message(result)
+                .build();
     }
 }
