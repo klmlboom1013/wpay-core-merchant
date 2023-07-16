@@ -16,7 +16,7 @@ import javax.validation.ConstraintViolationException;
 
 @Log4j2
 @RestControllerAdvice
-public class RestControllerExceptionHandler {
+public class MpiBasicInfoExceptionHandler {
 
     @ExceptionHandler({ CustomException.class })
     protected ResponseEntity<?> handleCustomException(CustomException ex) {
@@ -67,11 +67,11 @@ public class RestControllerExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleNoHandlerFoundExceptionException(NoHandlerFoundException ex) {
         this.logWriteExceptionStackTrace(ex);
         ErrorResponse errorResponse = ErrorResponse.builder()
-                .httpStatus(ErrorCode.NOT_FOUND.getStatus())
-                .message(ErrorCode.NOT_FOUND.getMessage())
-                .error(ErrorCode.NOT_FOUND.getStatus().series().name().toLowerCase())
+                .httpStatus(ErrorCode.DISPLAY_NOT_FOUND.getStatus())
+                .message(ErrorCode.DISPLAY_NOT_FOUND.getMessage())
+                .error(ErrorCode.DISPLAY_NOT_FOUND.getStatus().series().name().toLowerCase())
                 .build();
-        return ResponseEntity.status(ErrorCode.NOT_FOUND.getStatus()).body(errorResponse);
+        return ResponseEntity.status(ErrorCode.DISPLAY_NOT_FOUND.getStatus()).body(errorResponse);
     }
 
     @ExceptionHandler({ Exception.class })

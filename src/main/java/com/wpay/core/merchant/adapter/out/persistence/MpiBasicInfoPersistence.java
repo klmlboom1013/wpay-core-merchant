@@ -5,7 +5,7 @@ import com.wpay.core.merchant.application.port.out.persistence.MpiBasicInfoPersi
 import com.wpay.core.merchant.domain.ActivityMpiTrns;
 import com.wpay.core.merchant.global.annotation.PersistenceAdapter;
 import com.wpay.core.merchant.global.common.Functions;
-import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoVersion;
+import com.wpay.core.merchant.enums.MpiBasicInfoVersion;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -56,7 +56,7 @@ class MpiBasicInfoPersistence implements MpiBasicInfoPersistencePort {
                 .connUrl(activityMpiTrns.getActivitySendMpi().getConnUrl())
                 .jnoffcId(activityMpiTrns.getMid())
                 .idcDvdCd(activityMpiTrns.getServerName())
-                .jobDvdCd(activityMpiTrns.getJobCode().getCode())
+                .jobDvdCd(activityMpiTrns.getMpiBasicInfoJobCode().getCode())
                 .payRsltCd(activityMpiTrns.getActivitySendMpi().getPayRsltCd())
                 .rspsGrmConts(activityMpiTrns.getActivitySendMpi().getRspsGrmConts())
                 .otransWtid(activityMpiTrns.getMpiTrnsId().getWtid())

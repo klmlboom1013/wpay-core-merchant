@@ -1,6 +1,6 @@
 package com.wpay.core.merchant.domain;
 
-import com.wpay.core.merchant.global.enums.JobCode;
+import com.wpay.core.merchant.enums.MpiBasicInfoJobCode;
 import lombok.*;
 
 
@@ -8,7 +8,7 @@ import lombok.*;
 @ToString
 @EqualsAndHashCode(callSuper = false)
 public class ActivityMpiTrns {
-    private final JobCode jobCode;
+    private final MpiBasicInfoJobCode mpiBasicInfoJobCode;
     private final String mid;
     private final String serverName;
 
@@ -16,8 +16,8 @@ public class ActivityMpiTrns {
     @Setter private ActivitySendMpi activitySendMpi;
 
     @Builder
-    public ActivityMpiTrns(JobCode jobCode, String mid, String wtid, String serverName) {
-        this.jobCode = jobCode;
+    public ActivityMpiTrns(MpiBasicInfoJobCode mpiBasicInfoJobCode, String mid, String wtid, String serverName) {
+        this.mpiBasicInfoJobCode = mpiBasicInfoJobCode;
         this.mid = mid;
         this.mpiTrnsId = MpiTrnsId.builder().wtid(wtid).build();
         this.serverName = serverName;

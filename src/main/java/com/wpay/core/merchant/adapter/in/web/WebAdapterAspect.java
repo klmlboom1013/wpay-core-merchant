@@ -3,7 +3,7 @@ package com.wpay.core.merchant.adapter.in.web;
 import com.wpay.core.merchant.global.aspect.BaseAspect;
 import com.wpay.core.merchant.global.common.Functions;
 import com.wpay.core.merchant.global.dto.BaseValidation;
-import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoVersion;
+import com.wpay.core.merchant.enums.MpiBasicInfoVersion;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;

@@ -1,8 +1,8 @@
 package com.wpay.core.merchant.application.port.out.persistence;
 
+import com.wpay.core.merchant.enums.MpiBasicInfoJobCode;
 import com.wpay.core.merchant.global.annotation.Factory;
-import com.wpay.core.merchant.global.enums.JobCode;
-import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoVersion;
+import com.wpay.core.merchant.enums.MpiBasicInfoVersion;
 import com.wpay.core.merchant.global.exception.CustomException;
 import com.wpay.core.merchant.global.exception.ErrorCode;
 import com.wpay.core.merchant.global.factory.port.BasePortFactory;
@@ -32,8 +32,8 @@ public final class MpiBasicInfoPersistenceFactory extends BasePortFactory {
         }
     }
 
-    public MpiBasicInfoPersistencePort getMpiBasicInfoPersistence(MpiBasicInfoVersion versionCode, JobCode jobCode) {
-        final String key = this.makeMapperKey(versionCode, jobCode, PortDvdCode.persistence);
+    public MpiBasicInfoPersistencePort getMpiBasicInfoPersistence(MpiBasicInfoVersion versionCode, MpiBasicInfoJobCode mpiBasicInfoJobCode) {
+        final String key = this.makeMapperKey(versionCode, mpiBasicInfoJobCode, PortDvdCode.persistence);
         return Objects.requireNonNull(this.mpiBasicInfoPersistenceMapper.get(key), "mpiBasicInfoPersistenceMapper 에 저장된 PersistenceAdapter Bean 이 없습니다.");
     }
 }

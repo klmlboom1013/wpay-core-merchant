@@ -4,7 +4,7 @@ import com.wpay.core.merchant.application.port.out.dto.MpiBasicInfoMapper;
 import com.wpay.core.merchant.application.port.out.external.MpiBasicInfoExternalPort;
 import com.wpay.core.merchant.domain.ActivityMpiTrns;
 import com.wpay.core.merchant.global.annotation.ExternalAdapter;
-import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoVersion;
+import com.wpay.core.merchant.enums.MpiBasicInfoVersion;
 import com.wpay.core.merchant.global.infra.WebClientConfiguration;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

@@ -17,12 +17,11 @@ public enum ErrorCode {
     //500 INTERNAL SERVER ERROR
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "처리 중 오류가 발생 했습니다. 잠시 후 다시 시도 해 주세요."),
 
-    METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "지원 하지 않는 Http Method 입니다."),
-
-    NOT_FOUND(HttpStatus.NOT_FOUND, "잘못된 URI 정보 입니다.")
+    // 405 METHOD NOT ALLOWED
+    METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "지원 하지 않는 Http Method 입니다.")
     ;
 
     private final HttpStatus status;
-//    private final int status;
+
     private final String message;
 }

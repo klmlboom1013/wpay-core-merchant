@@ -1,11 +1,11 @@
-package com.wpay.core.merchant.global.enums;
+package com.wpay.core.merchant.enums;
 
 import lombok.Getter;
 
 /**
  * WPAY 업무 구분 코드
  */
-public enum JobCode {
+public enum MpiBasicInfoJobCode {
 
     /** MPI 기준 정보 조회 */
     JOB_CODE_20("20")
@@ -14,7 +14,7 @@ public enum JobCode {
     @Getter
     private final String code;
 
-    JobCode(final String code){
+    MpiBasicInfoJobCode(final String code){
         this.code=code;
     }
 
@@ -22,12 +22,12 @@ public enum JobCode {
         return this.code.equals(code);
     }
 
-    public boolean equals(JobCode code) {
+    public boolean equals(MpiBasicInfoJobCode code) {
         return this.name().equals(code.name());
     }
 
-    public static JobCode getInstance(String code) {
-        for(JobCode o : JobCode.values())
+    public static MpiBasicInfoJobCode getInstance(String code) {
+        for(MpiBasicInfoJobCode o : MpiBasicInfoJobCode.values())
             if(o.equals(code)) return o;
         return null;
     }

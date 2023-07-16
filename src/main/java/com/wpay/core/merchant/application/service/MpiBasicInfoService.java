@@ -9,13 +9,11 @@ import com.wpay.core.merchant.domain.ActivityMpiTrns;
 import com.wpay.core.merchant.global.annotation.UseCase;
 import com.wpay.core.merchant.global.common.Functions;
 import com.wpay.core.merchant.global.dto.BaseResponse;
-import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoVersion;
+import com.wpay.core.merchant.enums.MpiBasicInfoVersion;
 import com.wpay.core.merchant.global.exception.CustomException;
 import com.wpay.core.merchant.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import net.minidev.json.JSONObject;
-import net.minidev.json.parser.JSONParser;
 import org.springframework.http.HttpStatus;
 
 import javax.persistence.EntityNotFoundException;

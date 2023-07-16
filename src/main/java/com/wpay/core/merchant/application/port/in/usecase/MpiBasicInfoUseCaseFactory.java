@@ -1,7 +1,8 @@
 package com.wpay.core.merchant.application.port.in.usecase;
 
+import com.wpay.core.merchant.enums.MpiBasicInfoVersion;
 import com.wpay.core.merchant.global.annotation.Factory;
-import com.wpay.core.merchant.global.enums.JobCode;
+import com.wpay.core.merchant.enums.MpiBasicInfoJobCode;
 import com.wpay.core.merchant.global.exception.CustomException;
 import com.wpay.core.merchant.global.exception.ErrorCode;
 import com.wpay.core.merchant.global.factory.port.BasePortFactory;
@@ -34,11 +35,11 @@ public final class MpiBasicInfoUseCaseFactory extends BasePortFactory {
     /**
      * MpiBasicInfoUseCase 를 구한현 UseCase Bean 을 리턴 한다.
      * @param versionCode API 버전 코드
-     * @param jobCode API 업무 구분 코드
+     * @param mpiBasicInfoJobCode API 업무 구분 코드
      * @return MpiBasicInfoUseCase
      */
-    public MpiBasicInfoUseCasePort getMpiBasicInfoUseCase (MpiBasicInfoVersion versionCode, JobCode jobCode) {
-        final String key = this.makeMapperKey(versionCode, jobCode, PortDvdCode.usecase);
+    public MpiBasicInfoUseCasePort getMpiBasicInfoUseCase (MpiBasicInfoVersion versionCode, MpiBasicInfoJobCode mpiBasicInfoJobCode) {
+        final String key = this.makeMapperKey(versionCode, mpiBasicInfoJobCode, PortDvdCode.usecase);
         return Objects.requireNonNull(this.mpiBasicInfoUseCaseMapper.get(key), "mpiBasicInfoUseCaseMapper 에 저장된 UseCase Bean 이 없습니다.");
     }
 }
