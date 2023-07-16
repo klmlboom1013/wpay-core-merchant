@@ -5,8 +5,8 @@ import com.wpay.common.global.exception.CustomException;
 import com.wpay.common.global.exception.ErrorCode;
 import com.wpay.common.global.factory.port.BasePortFactory;
 import com.wpay.common.global.factory.port.PortDvdCode;
-import com.wpay.core.merchant.enums.MpiBasicInfoJobCode;
-import com.wpay.core.merchant.enums.MpiBasicInfoVersion;
+import com.wpay.core.merchant.global.enums.MpiBasicInfoJobCode;
+import com.wpay.core.merchant.global.enums.MpiBasicInfoVersion;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.util.CollectionUtils;
 

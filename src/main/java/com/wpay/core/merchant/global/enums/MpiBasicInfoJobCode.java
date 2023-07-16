@@ -1,4 +1,4 @@
-package com.wpay.core.merchant.enums;
+package com.wpay.core.merchant.global.enums;
 
 import lombok.Getter;
 

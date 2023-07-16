@@ -5,7 +5,7 @@ import com.wpay.common.global.common.Functions;
 import com.wpay.core.merchant.application.port.out.dto.MpiBasicInfoMapper;
 import com.wpay.core.merchant.application.port.out.persistence.MpiBasicInfoPersistencePort;
 import com.wpay.core.merchant.domain.ActivityMpiTrns;
-import com.wpay.core.merchant.enums.MpiBasicInfoVersion;
+import com.wpay.core.merchant.global.enums.MpiBasicInfoVersion;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

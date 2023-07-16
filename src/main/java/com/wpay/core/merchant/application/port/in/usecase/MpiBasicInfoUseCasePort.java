@@ -4,7 +4,7 @@ import com.wpay.common.global.dto.BaseResponse;
 import com.wpay.common.global.dto.SelfValidating;
 import com.wpay.common.global.factory.port.in.UseCasePort;
 import com.wpay.core.merchant.domain.ActivityMpiTrns;
-import com.wpay.core.merchant.enums.MpiBasicInfoJobCode;
+import com.wpay.core.merchant.global.enums.MpiBasicInfoJobCode;
 
 import java.util.Objects;
 

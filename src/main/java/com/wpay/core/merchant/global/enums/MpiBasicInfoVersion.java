@@ -1,4 +1,4 @@
-package com.wpay.core.merchant.enums;
+package com.wpay.core.merchant.global.enums;
 
 import com.wpay.common.global.exception.CustomException;
 import com.wpay.common.global.exception.ErrorCode;

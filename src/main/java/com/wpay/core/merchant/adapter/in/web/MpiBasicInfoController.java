@@ -4,7 +4,7 @@ import com.wpay.common.global.annotation.WebAdapter;
 import com.wpay.common.global.dto.BaseResponse;
 import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoCommand;
 import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoUseCaseFactory;
-import com.wpay.core.merchant.enums.MpiBasicInfoVersion;
+import com.wpay.core.merchant.global.enums.MpiBasicInfoVersion;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;

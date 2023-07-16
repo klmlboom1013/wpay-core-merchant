@@ -1,4 +1,4 @@
-package com.wpay.core.merchant.exception;
+package com.wpay.core.merchant.global.exception;
 
 import com.wpay.common.global.dto.ErrorResponse;
 import com.wpay.common.global.dto.ErrorResponseV2;

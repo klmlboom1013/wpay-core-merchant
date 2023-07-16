@@ -1,6 +1,6 @@
 package com.wpay.core.merchant.domain;
 
-import com.wpay.core.merchant.enums.MpiBasicInfoJobCode;
+import com.wpay.core.merchant.global.enums.MpiBasicInfoJobCode;
 import lombok.*;
 
 
