@@ -5,7 +5,7 @@ import com.wpay.core.merchant.application.port.out.persistence.MpiBasicInfoPersi
 import com.wpay.core.merchant.domain.ActivityMpiTrns;
 import com.wpay.core.merchant.global.annotation.PersistenceAdapter;
 import com.wpay.core.merchant.global.common.Functions;
-import com.wpay.core.merchant.global.enums.VersionCode;
+import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoVersion;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -20,7 +20,7 @@ class MpiBasicInfoPersistence implements MpiBasicInfoPersistencePort {
 
     private final MpiTrnsRepository mpiTrnsRepository;
 
-    @Override public VersionCode getVersionCode() { return VersionCode.v1; }
+    @Override public MpiBasicInfoVersion getVersionCode() { return MpiBasicInfoVersion.v1; }
 
     @Override
     public MpiBasicInfoMapper loadActivitiesRun(@NonNull ActivityMpiTrns activityMpiTrns) {

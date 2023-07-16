@@ -26,7 +26,6 @@ class LoggingFilter implements Filter {
         log.info("==================== {} START ====================", httpServletRequest.getRequestURI());
         this.loggingRequestHeaders();
         this.loggingRequestParams();
-//        this.loggingRequestBody();
         chain.doFilter(request, response);
         log.info("==================== {} END ====================", httpServletRequest.getRequestURI());
     }
@@ -46,40 +45,4 @@ class LoggingFilter implements Filter {
         if(Strings.isNotBlank(sb.toString()))
             log.info("[ Request Parameters ]\n{}",sb.toString());
     }
-
-    /*
-     * HttpServletRequest InputStream 에서 데이터를 꺼내면 buffer 가 비워 지기 때문에
-     * Controller DTO 에서는 데이터를 받을 수 없다.
-     * 인입 데이터 확인 디버그 용도로만 사용 하고 주석 차리 함.
-     */
-//    private void loggingRequestBody() {
-//        InputStream inputStream;
-//        try {
-//            inputStream = this.httpServletRequest.getInputStream();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//        if(Objects.isNull(inputStream)) return;
-//
-//        StringBuilder stringBuilder = new StringBuilder();
-//        try {
-//            BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-//            String line;
-//            while ((line = br.readLine()) != null) {
-//                stringBuilder.append(line);
-//            }
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        JSONParser jsonParser = new JSONParser();
-//        JSONObject jsonObject = null;
-//        try {
-//            jsonObject = (JSONObject) jsonParser.parse(stringBuilder.toString());
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        if(Objects.nonNull(jsonObject))
-//            log.info("[ Request Body ]\n{}", jsonObject.toJSONString());
-//    }
 }

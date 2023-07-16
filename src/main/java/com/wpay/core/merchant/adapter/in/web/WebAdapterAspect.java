@@ -1,7 +1,9 @@
-package com.wpay.core.merchant.global.aspect;
+package com.wpay.core.merchant.adapter.in.web;
 
+import com.wpay.core.merchant.global.aspect.BaseAspect;
 import com.wpay.core.merchant.global.common.Functions;
 import com.wpay.core.merchant.global.dto.BaseValidation;
+import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoVersion;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
@@ -24,6 +26,10 @@ public class WebAdapterAspect implements BaseAspect {
     @Override
     public void before(JoinPoint joinPoint) {
         log.debug("[Before] => {}", joinPoint.getSignature().getName());
+        /* version check */
+        final String uriVersion = this.request.getRequestURI().split("/")[1];
+        MpiBasicInfoVersion.getInstance(uriVersion);
+
         /* Request validation check */
         for(Object o : joinPoint.getArgs()) {
             /* BaseValidation 을 상속 받지 않았으면 continue */
@@ -40,7 +46,8 @@ public class WebAdapterAspect implements BaseAspect {
                 log.info(o.toString());
             }
             /* validation check */
-            ((BaseValidation)o).validateSelf();
+            ((BaseValidation) o).validateSelf();
+
             log.info("{} Validation check 정상.", o.getClass().getSimpleName());
         }
     }
@@ -61,6 +68,5 @@ public class WebAdapterAspect implements BaseAspect {
     @Override
     public void afterThrowing(JoinPoint joinPoint, Throwable e) {
         log.debug("[AfterThrowing] => {} [{}] => {}", joinPoint.getSignature().getName(), e.getClass().getName(), e.getMessage());
-        log.error(this.logWriteExceptionStackTrace(e));
     }
 }

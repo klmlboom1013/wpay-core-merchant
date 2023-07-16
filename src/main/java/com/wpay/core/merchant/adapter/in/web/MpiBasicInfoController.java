@@ -2,9 +2,10 @@ package com.wpay.core.merchant.adapter.in.web;
 
 import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoCommand;
 import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoUseCaseFactory;
+import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoUseCasePort;
 import com.wpay.core.merchant.global.annotation.WebAdapter;
 import com.wpay.core.merchant.global.dto.BaseResponse;
-import com.wpay.core.merchant.global.enums.VersionCode;
+import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoVersion;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ class MpiBasicInfoController {
                                                @RequestBody MpiBasicInfoCommand mpiBasicInfoCommand) {
 
         return ResponseEntity.ok().body(mpiBasicInfoUseCaseFactory
-                .getMpiBasicInfoUseCase(VersionCode.getInstance(version), MpiBasicInfoCommand.jobCode)
+                .getMpiBasicInfoUseCase(MpiBasicInfoVersion.getInstance(version), MpiBasicInfoCommand.jobCode)
                 .execute(mpiBasicInfoCommand));
     }
 }

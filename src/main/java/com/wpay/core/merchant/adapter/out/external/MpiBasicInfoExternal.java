@@ -4,7 +4,7 @@ import com.wpay.core.merchant.application.port.out.dto.MpiBasicInfoMapper;
 import com.wpay.core.merchant.application.port.out.external.MpiBasicInfoExternalPort;
 import com.wpay.core.merchant.domain.ActivityMpiTrns;
 import com.wpay.core.merchant.global.annotation.ExternalAdapter;
-import com.wpay.core.merchant.global.enums.VersionCode;
+import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoVersion;
 import com.wpay.core.merchant.global.infra.WebClientConfiguration;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ class MpiBasicInfoExternal implements MpiBasicInfoExternalPort {
     @Value("${external.target.mpi.basic-info-url}")
     private String mpiBasicInfoUrl;
 
-    @Override public VersionCode getVersionCode() { return VersionCode.v1; }
+    @Override public MpiBasicInfoVersion getVersionCode() { return MpiBasicInfoVersion.v1; }
 
     @Override
     public MpiBasicInfoMapper sendMpiBasicInfoRun(@NonNull ActivityMpiTrns activityMpiTrns) {

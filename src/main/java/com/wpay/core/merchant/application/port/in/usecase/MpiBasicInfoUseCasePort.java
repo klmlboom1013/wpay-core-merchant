@@ -4,7 +4,6 @@ import com.wpay.core.merchant.domain.ActivityMpiTrns;
 import com.wpay.core.merchant.global.dto.BaseResponse;
 import com.wpay.core.merchant.global.dto.SelfValidating;
 import com.wpay.core.merchant.global.enums.JobCode;
-import com.wpay.core.merchant.application.service.SearchMpiBasicInfoOption;
 import com.wpay.core.merchant.global.factory.port.in.UseCasePort;
 
 import java.util.Objects;
@@ -21,7 +20,6 @@ public interface MpiBasicInfoUseCasePort extends UseCasePort {
         final MpiBasicInfoCommand mpiBasicInfoCommand = (MpiBasicInfoCommand) selfValidating;
 
         final ActivityMpiTrns activityMpiTrns = ActivityMpiTrns.builder()
-                .option(SearchMpiBasicInfoOption.getInstance(mpiBasicInfoCommand.getOption().toString()))
                 .jobCode(MpiBasicInfoCommand.jobCode)
                 .mid(mpiBasicInfoCommand.getMid())
                 .wtid(mpiBasicInfoCommand.getWtid())
@@ -41,4 +39,6 @@ public interface MpiBasicInfoUseCasePort extends UseCasePort {
 
     /** DB 에  MPI 기준 정보 조회 연동 이력이 없으면 MPI 연동 시작. */
     BaseResponse sendMpiBasicInfoUseCase (ActivityMpiTrns activityMpiTrns);
+
+
 }
