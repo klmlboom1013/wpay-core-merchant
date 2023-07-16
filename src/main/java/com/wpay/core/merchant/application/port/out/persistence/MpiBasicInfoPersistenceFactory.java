@@ -1,12 +1,12 @@
 package com.wpay.core.merchant.application.port.out.persistence;
 
+import com.wpay.common.global.annotation.Factory;
+import com.wpay.common.global.exception.CustomException;
+import com.wpay.common.global.exception.ErrorCode;
+import com.wpay.common.global.factory.port.BasePortFactory;
+import com.wpay.common.global.factory.port.PortDvdCode;
 import com.wpay.core.merchant.enums.MpiBasicInfoJobCode;
-import com.wpay.core.merchant.global.annotation.Factory;
 import com.wpay.core.merchant.enums.MpiBasicInfoVersion;
-import com.wpay.core.merchant.global.exception.CustomException;
-import com.wpay.core.merchant.global.exception.ErrorCode;
-import com.wpay.core.merchant.global.factory.port.BasePortFactory;
-import com.wpay.core.merchant.global.factory.port.PortDvdCode;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.util.CollectionUtils;
 
@@ -27,13 +27,14 @@ public final class MpiBasicInfoPersistenceFactory extends BasePortFactory {
             throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
         for(MpiBasicInfoPersistencePort persistence : mpiBasicInfoPersistenceList){
-            final String key = this.makeMapperKey(persistence.getVersionCode(), persistence.getJobCode(), persistence.getPortDvdCode());
+            final String key = this.makeMapperKey(
+                    persistence.getVersionCode().toString(), persistence.getJobCode().toString(), persistence.getPortDvdCode().toString());
             this.mpiBasicInfoPersistenceMapper.put(key, persistence);
         }
     }
 
     public MpiBasicInfoPersistencePort getMpiBasicInfoPersistence(MpiBasicInfoVersion versionCode, MpiBasicInfoJobCode mpiBasicInfoJobCode) {
-        final String key = this.makeMapperKey(versionCode, mpiBasicInfoJobCode, PortDvdCode.persistence);
+        final String key = this.makeMapperKey(versionCode.toString(), mpiBasicInfoJobCode.toString(), PortDvdCode.persistence.toString());
         return Objects.requireNonNull(this.mpiBasicInfoPersistenceMapper.get(key), "mpiBasicInfoPersistenceMapper 에 저장된 PersistenceAdapter Bean 이 없습니다.");
     }
 }

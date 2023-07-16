@@ -1,12 +1,12 @@
 package com.wpay.core.merchant.application.port.in.usecase;
 
+import com.wpay.common.global.annotation.Factory;
+import com.wpay.common.global.exception.CustomException;
+import com.wpay.common.global.exception.ErrorCode;
+import com.wpay.common.global.factory.port.BasePortFactory;
+import com.wpay.common.global.factory.port.PortDvdCode;
 import com.wpay.core.merchant.enums.MpiBasicInfoVersion;
-import com.wpay.core.merchant.global.annotation.Factory;
 import com.wpay.core.merchant.enums.MpiBasicInfoJobCode;
-import com.wpay.core.merchant.global.exception.CustomException;
-import com.wpay.core.merchant.global.exception.ErrorCode;
-import com.wpay.core.merchant.global.factory.port.BasePortFactory;
-import com.wpay.core.merchant.global.factory.port.PortDvdCode;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.util.CollectionUtils;
 
@@ -27,7 +27,8 @@ public final class MpiBasicInfoUseCaseFactory extends BasePortFactory {
             throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
         for(MpiBasicInfoUseCasePort useCase : mpiBasicInfoUseCases) {
-            final String key = this.makeMapperKey(useCase.getVersionCode(), useCase.getJobCode(), useCase.getPortDvdCode());
+            final String key = this.makeMapperKey(
+                    useCase.getVersionCode().toString(), useCase.getJobCode().toString(), useCase.getPortDvdCode().toString());
             this.mpiBasicInfoUseCaseMapper.put(key, useCase);
         }
     }
@@ -39,7 +40,7 @@ public final class MpiBasicInfoUseCaseFactory extends BasePortFactory {
      * @return MpiBasicInfoUseCase
      */
     public MpiBasicInfoUseCasePort getMpiBasicInfoUseCase (MpiBasicInfoVersion versionCode, MpiBasicInfoJobCode mpiBasicInfoJobCode) {
-        final String key = this.makeMapperKey(versionCode, mpiBasicInfoJobCode, PortDvdCode.usecase);
+        final String key = this.makeMapperKey(versionCode.toString(), mpiBasicInfoJobCode.toString(), PortDvdCode.usecase.toString());
         return Objects.requireNonNull(this.mpiBasicInfoUseCaseMapper.get(key), "mpiBasicInfoUseCaseMapper 에 저장된 UseCase Bean 이 없습니다.");
     }
 }

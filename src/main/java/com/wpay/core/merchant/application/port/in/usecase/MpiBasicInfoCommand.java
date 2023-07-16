@@ -1,6 +1,6 @@
 package com.wpay.core.merchant.application.port.in.usecase;
 
-import com.wpay.core.merchant.global.dto.SelfValidating;
+import com.wpay.common.global.dto.SelfValidating;
 import com.wpay.core.merchant.enums.MpiBasicInfoJobCode;
 import lombok.*;
 

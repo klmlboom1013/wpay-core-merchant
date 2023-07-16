@@ -1,9 +1,9 @@
 package com.wpay.core.merchant.adapter.in.web;
 
+import com.wpay.common.global.annotation.WebAdapter;
+import com.wpay.common.global.dto.BaseResponse;
 import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoCommand;
 import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoUseCaseFactory;
-import com.wpay.core.merchant.global.annotation.WebAdapter;
-import com.wpay.core.merchant.global.dto.BaseResponse;
 import com.wpay.core.merchant.enums.MpiBasicInfoVersion;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

@@ -1,12 +1,14 @@
 package com.wpay.core.merchant.application.port.out.external;
 
-import com.wpay.core.merchant.global.annotation.Factory;
+
+import com.wpay.common.global.annotation.Factory;
+import com.wpay.common.global.exception.CustomException;
+import com.wpay.common.global.exception.ErrorCode;
+import com.wpay.common.global.factory.port.BasePortFactory;
+import com.wpay.common.global.factory.port.PortDvdCode;
 import com.wpay.core.merchant.enums.MpiBasicInfoJobCode;
 import com.wpay.core.merchant.enums.MpiBasicInfoVersion;
-import com.wpay.core.merchant.global.exception.CustomException;
-import com.wpay.core.merchant.global.exception.ErrorCode;
-import com.wpay.core.merchant.global.factory.port.BasePortFactory;
-import com.wpay.core.merchant.global.factory.port.PortDvdCode;
+
 import lombok.extern.log4j.Log4j2;
 import org.springframework.util.CollectionUtils;
 
@@ -28,14 +30,15 @@ public final class MpiBasicInfoExternalFactory extends BasePortFactory {
         }
 
         for(MpiBasicInfoExternalPort external : mpiBasicInfoExternalPorts){
-            final String key = this.makeMapperKey(external.getVersionCode(), external.getJobCode(), external.getPortDvdCode());
+            final String key = this.makeMapperKey(
+                    external.getVersionCode().toString(), external.getJobCode().toString(), external.getPortDvdCode().toString());
             log.debug(">> make MpiBasicInfoExternalMapper PUT key : {}", key);
             this.mpiBasicInfoExternalMapper.put(key, external);
         }
     }
 
     public MpiBasicInfoExternalPort getMpiBasicInfoExternal(MpiBasicInfoVersion versionCode, MpiBasicInfoJobCode mpiBasicInfoJobCode) {
-        final String key = this.makeMapperKey(versionCode, mpiBasicInfoJobCode, PortDvdCode.external);
+        final String key = this.makeMapperKey(versionCode.toString(), mpiBasicInfoJobCode.toString(), PortDvdCode.external.toString());
         return Objects.requireNonNull(this.mpiBasicInfoExternalMapper.get(key), "mpiBasicInfoExternalMapper 에 저장된 ExternalAdapter Bean 이 없습니다.");
     }
 }

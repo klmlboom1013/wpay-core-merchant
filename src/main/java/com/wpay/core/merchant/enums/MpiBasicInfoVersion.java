@@ -1,7 +1,7 @@
 package com.wpay.core.merchant.enums;
 
-import com.wpay.core.merchant.global.exception.CustomException;
-import com.wpay.core.merchant.global.exception.ErrorCode;
+import com.wpay.common.global.exception.CustomException;
+import com.wpay.common.global.exception.ErrorCode;
 
 /**
  * RestFul API URI @PathVariable {version} values

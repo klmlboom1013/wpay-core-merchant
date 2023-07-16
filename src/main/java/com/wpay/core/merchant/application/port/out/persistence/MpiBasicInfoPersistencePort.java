@@ -1,9 +1,9 @@
 package com.wpay.core.merchant.application.port.out.persistence;
 
+import com.wpay.common.global.factory.port.out.PersistencePort;
 import com.wpay.core.merchant.application.port.out.dto.MpiBasicInfoMapper;
 import com.wpay.core.merchant.domain.ActivityMpiTrns;
 import com.wpay.core.merchant.enums.MpiBasicInfoJobCode;
-import com.wpay.core.merchant.global.factory.port.out.PersistencePort;
 
 public interface MpiBasicInfoPersistencePort extends PersistencePort {
 

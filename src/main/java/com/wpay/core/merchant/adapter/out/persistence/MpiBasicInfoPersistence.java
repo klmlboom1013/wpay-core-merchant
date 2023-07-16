@@ -1,10 +1,10 @@
 package com.wpay.core.merchant.adapter.out.persistence;
 
+import com.wpay.common.global.annotation.PersistenceAdapter;
+import com.wpay.common.global.common.Functions;
 import com.wpay.core.merchant.application.port.out.dto.MpiBasicInfoMapper;
 import com.wpay.core.merchant.application.port.out.persistence.MpiBasicInfoPersistencePort;
 import com.wpay.core.merchant.domain.ActivityMpiTrns;
-import com.wpay.core.merchant.global.annotation.PersistenceAdapter;
-import com.wpay.core.merchant.global.common.Functions;
 import com.wpay.core.merchant.enums.MpiBasicInfoVersion;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

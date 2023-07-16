@@ -1,17 +1,17 @@
 package com.wpay.core.merchant.application.service;
 
+import com.wpay.common.global.annotation.UseCase;
+import com.wpay.common.global.common.Functions;
+import com.wpay.common.global.dto.BaseResponse;
+import com.wpay.common.global.exception.CustomException;
+import com.wpay.common.global.exception.ErrorCode;
 import com.wpay.core.merchant.application.port.out.dto.MpiBasicInfoMapper;
 import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoUseCasePort;
 import com.wpay.core.merchant.application.port.out.external.MpiBasicInfoExternalFactory;
 import com.wpay.core.merchant.application.port.out.persistence.MpiBasicInfoPersistenceFactory;
 import com.wpay.core.merchant.domain.MpiBasicInfo;
 import com.wpay.core.merchant.domain.ActivityMpiTrns;
-import com.wpay.core.merchant.global.annotation.UseCase;
-import com.wpay.core.merchant.global.common.Functions;
-import com.wpay.core.merchant.global.dto.BaseResponse;
 import com.wpay.core.merchant.enums.MpiBasicInfoVersion;
-import com.wpay.core.merchant.global.exception.CustomException;
-import com.wpay.core.merchant.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;

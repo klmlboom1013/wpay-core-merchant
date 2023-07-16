@@ -1,9 +1,9 @@
 package com.wpay.core.merchant.exception;
 
-import com.wpay.core.merchant.global.dto.ErrorResponse;
-import com.wpay.core.merchant.global.dto.ErrorResponseV2;
-import com.wpay.core.merchant.global.exception.CustomException;
-import com.wpay.core.merchant.global.exception.ErrorCode;
+import com.wpay.common.global.dto.ErrorResponse;
+import com.wpay.common.global.dto.ErrorResponseV2;
+import com.wpay.common.global.exception.CustomException;
+import com.wpay.common.global.exception.ErrorCode;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.http.ResponseEntity;

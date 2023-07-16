@@ -1,6 +1,6 @@
 package com.wpay.core.merchant.adapter.out.persistence;
 
-import com.wpay.core.merchant.global.aspect.BaseAspect;
+import com.wpay.common.global.aspect.BaseAspect;
 import lombok.extern.log4j.Log4j2;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
