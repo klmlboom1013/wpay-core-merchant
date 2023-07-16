@@ -6,20 +6,32 @@ logging:
   config: classpath:log4j2.yml
 
 spring:
+  #######################
+  # 404 HttpStatus Handling
+  #######################
+  mvc:
+    throw-exception-if-no-handler-found: true
+    dispatch-options-request: false
+  web:
+    resources:
+      add-mappings: false
+  #######################
+  # property 설정 파일 등록
+  #######################
   config:
     import:
       - classpath:props/dev/external-mpi-dev.yml
+  #######################
+  # DB 접속 정보 설정
+  #######################
   datasource:
-    # H2 접속 정보
-    #url: jdbc:h2:~/wpay
-    url: jdbc:h2:mem:wpay
-    # Database H2로 사용 하겠다.
-    driver-class-name: org.h2.Driver
-    # H2 접속 시 입력할 username 정보 (원하는 것으로 입력)
-    username: wpay
-    # H2 접속 시 입력할 password 정보 (원하는 것으로 입력)
-    password: wpay123!
-
+    url: jdbc:h2:mem:wpay # H2 접속 정보
+    driver-class-name: org.h2.Driver # Database H2로 사용 하겠다.
+    username: wpay # H2 접속 시 입력할 username 정보 (원하는 것으로 입력)
+    password: wpay123! # H2 접속 시 입력할 password 정보 (원하는 것으로 입력)
+  #######################
+  # JPA 설정
+  #######################
   jpa:
     hibernate:
       ddl-auto: create
@@ -30,7 +42,7 @@ spring:
     defer-datasource-initialization: true
   sql:
     init:
-      data-locations: classpath:import.sql
+      data-locations: classpath:import.sql # 서버 실행 시 DML 수행
   h2:
     console:
       # H2 Console 사용 여부 (H2 Database UI로 제공 기능)
