@@ -15,7 +15,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import javax.validation.ConstraintViolationException;
 
 @Log4j2
-@RestControllerAdvice
+@RestControllerAdvice(basePackages = "com.wpay.core.merchant")
 public class MpiBasicInfoExceptionHandler {
 
     @ExceptionHandler({ CustomException.class })
