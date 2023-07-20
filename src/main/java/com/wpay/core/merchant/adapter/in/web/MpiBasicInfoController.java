@@ -20,7 +20,7 @@ class MpiBasicInfoController {
     private final MpiBasicInfoUseCaseFactory mpiBasicInfoUseCaseFactory;
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(path = "/{version}/mpi-basic-info")
+    @GetMapping(path = "/merchant/{version}/mpi-basic-info")
     ResponseEntity<BaseResponse> merchantInfo (@PathVariable String version,
                                                @RequestBody MpiBasicInfoCommand mpiBasicInfoCommand) {
 

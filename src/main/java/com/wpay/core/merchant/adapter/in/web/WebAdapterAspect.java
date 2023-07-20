@@ -27,7 +27,7 @@ public class WebAdapterAspect implements BaseAspect {
     public void before(JoinPoint joinPoint) {
         log.debug("[Before] => {}", joinPoint.getSignature().getName());
         /* version check */
-        final String uriVersion = this.request.getRequestURI().split("/")[1];
+        final String uriVersion = this.request.getRequestURI().split("/")[2];
         MpiBasicInfoVersion.getInstance(uriVersion);
 
         /* Request validation check */
