@@ -25,7 +25,7 @@ repositories {
 }
 
 dependencies {
-	implementation files('libs/wpay-common-0.0.2-SNAPSHOT-plain.jar')
+	implementation files('libs/wpay-common-0.0.4-SNAPSHOT-plain.jar')
 
 	implementation 'org.springframework.boot:spring-boot-starter-batch'
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
@@ -37,6 +37,7 @@ dependencies {
 	implementation 'org.springframework.data:spring-data-rest-hal-explorer'
 	implementation 'org.springframework.session:spring-session-core'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 	implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.17.2'
 	implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.17.2'
