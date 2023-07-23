@@ -25,7 +25,7 @@ repositories {
 }
 
 dependencies {
-	implementation files('libs/wpay-common-0.0.4-SNAPSHOT-plain.jar')
+	implementation files('libs/wpay-common-0.0.10-SNAPSHOT-plain.jar')
 
 	implementation 'org.springframework.boot:spring-boot-starter-batch'
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
