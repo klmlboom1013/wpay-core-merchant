@@ -69,7 +69,7 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
             mpiBasicInfoMapper = this.getExternalPort().sendMpiBasicInfoRun(activityMpiTrns);
         } catch (Exception e) {
             log.error("[{}][{}] MpiBasicInfoExternal Error: {} - {}", mid, wtid, e.getClass().getName(), e.getMessage());
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR, "가맹점 기준정보 조회 MPI 연동 오류.", e, wtid, mid);
+            throw new CustomException(ErrorCode.HTTP_STATUS_500, "가맹점 기준정보 조회 MPI 연동 오류.", e, wtid, mid);
         } finally {
             /* MPI 통신 이력 저장 */
             if(Objects.nonNull(mpiBasicInfoMapper)){
@@ -93,9 +93,9 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
         log.info("[{}][{}] MPI 통신 기준 정보 조회 결과 [resultCode:{}][midStatus:{}]", mid, wtid, resultCode, midStatus);
 
         if(MpiBasicInfoMapper.MpiReceiveResult.RETCODE_FAIL.equals(resultCode))
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR, "MPI 통신 기준 정보 조회 결과 응답 코드 실패.", wtid, mid);
+            throw new CustomException(ErrorCode.HTTP_STATUS_500, "MPI 통신 기준 정보 조회 결과 응답 코드 실패.", wtid, mid);
         if(MpiBasicInfoMapper.MpiReceiveMpiStatus.STATUS_FAIL.equals(midStatus))
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR, "MPI 통신 기준 정보 조히 결과 MID 상태 오류.", wtid, mid);
+            throw new CustomException(ErrorCode.HTTP_STATUS_500, "MPI 통신 기준 정보 조히 결과 MID 상태 오류.", wtid, mid);
 
         /* Client 로 전달 DTO 세팅 */
         final MpiBasicInfo mpiBasicInfo = MpiBasicInfo.builder()

@@ -16,6 +16,6 @@ public enum MpiBasicInfoVersion {
     public static MpiBasicInfoVersion getInstance(String version) {
         for(MpiBasicInfoVersion o : MpiBasicInfoVersion.values())
             if(o.toString().equals(version)) return o;
-        throw new CustomException(ErrorCode.INVALID_PARAMETER, "URI Path parameter version: 지원 하지 않은 버전 입니다.");
+        throw new CustomException(ErrorCode.HTTP_STATUS_400, "URI Path parameter version: 지원 하지 않은 버전 입니다.");
     }
 }
