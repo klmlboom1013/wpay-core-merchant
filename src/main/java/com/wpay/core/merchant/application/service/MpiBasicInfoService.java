@@ -5,12 +5,13 @@ import com.wpay.common.global.common.Functions;
 import com.wpay.common.global.dto.BaseResponse;
 import com.wpay.common.global.exception.CustomException;
 import com.wpay.common.global.exception.ErrorCode;
-import com.wpay.core.merchant.application.port.out.dto.MpiBasicInfoMapper;
+import com.wpay.common.global.factory.port.PortOutFactory;
 import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoUseCasePort;
-import com.wpay.core.merchant.application.port.out.external.MpiBasicInfoExternalFactory;
-import com.wpay.core.merchant.application.port.out.persistence.MpiBasicInfoPersistenceFactory;
-import com.wpay.core.merchant.domain.MpiBasicInfo;
+import com.wpay.core.merchant.application.port.out.dto.MpiBasicInfoMapper;
+import com.wpay.core.merchant.application.port.out.external.MpiBasicInfoExternalPort;
+import com.wpay.core.merchant.application.port.out.persistence.MpiBasicInfoPersistencePort;
 import com.wpay.core.merchant.domain.ActivityMpiTrns;
+import com.wpay.core.merchant.domain.MpiBasicInfo;
 import com.wpay.core.merchant.global.enums.MpiBasicInfoVersion;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -25,8 +26,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
 
-    private final MpiBasicInfoPersistenceFactory mpiBasicInfoPersistenceFactory;
-    private final MpiBasicInfoExternalFactory mpiBasicInfoExternalFactory;
+    private final PortOutFactory portOutFactory;
 
     @Override public final MpiBasicInfoVersion getVersionCode() { return MpiBasicInfoVersion.v1; }
 
@@ -38,9 +38,7 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
 
         MpiBasicInfoMapper mpiBasicInfoMapper;
         try {
-            mpiBasicInfoMapper = mpiBasicInfoPersistenceFactory
-                    .getMpiBasicInfoPersistence(this.getVersionCode(), this.getJobCode())
-                    .loadActivitiesRun(activityMpiTrns);
+            mpiBasicInfoMapper = this.getPersistencePort().loadActivitiesRun(activityMpiTrns);
         } catch (EntityNotFoundException e) {
             log.info("[{}][{}] MPI 통신 이력이 조회 되지 않아 MPI 기준 정보 조회 연동을 진행 합니다.", mid, wtid);
             return null;
@@ -68,12 +66,10 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
         /* MPI 통신 기준 정보 조회 요청 */
         MpiBasicInfoMapper mpiBasicInfoMapper = null;
         try {
-            mpiBasicInfoMapper = mpiBasicInfoExternalFactory
-                    .getMpiBasicInfoExternal(this.getVersionCode(), this.getJobCode())
-                    .sendMpiBasicInfoRun(activityMpiTrns);
+            mpiBasicInfoMapper = this.getExternalPort().sendMpiBasicInfoRun(activityMpiTrns);
         } catch (Exception e) {
             log.error("[{}][{}] MpiBasicInfoExternal Error: {} - {}", mid, wtid, e.getClass().getName(), e.getMessage());
-            throw e;
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR, "가맹점 기준정보 조회 MPI 연동 오류.", e, wtid, mid);
         } finally {
             /* MPI 통신 이력 저장 */
             if(Objects.nonNull(mpiBasicInfoMapper)){
@@ -87,8 +83,7 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
                         .payRsltCd(mpiBasicInfoMapper.getSendMpiBasicInfoResult().getResultCode())
                         .build());
 
-                this.mpiBasicInfoPersistenceFactory.getMpiBasicInfoPersistence(this.getVersionCode(), this.getJobCode())
-                        .recodeActivitiesRun(activityMpiTrns);
+                this.getPersistencePort().recodeActivitiesRun(activityMpiTrns);
             }
         }
 
@@ -113,5 +108,18 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
                 .httpStatus(HttpStatus.OK)
                 .data(mpiBasicInfo)
                 .build();
+    }
+
+
+    private MpiBasicInfoPersistencePort getPersistencePort() {
+        return (MpiBasicInfoPersistencePort) this.portOutFactory.getPersistencePort(
+                MpiBasicInfoVersion.v1.toString(),
+                this.getJobCode().toString());
+    }
+
+    private MpiBasicInfoExternalPort getExternalPort() {
+        return (MpiBasicInfoExternalPort) this.portOutFactory.getExternalPort(
+                MpiBasicInfoVersion.v1.toString(),
+                this.getJobCode().toString());
     }
 }

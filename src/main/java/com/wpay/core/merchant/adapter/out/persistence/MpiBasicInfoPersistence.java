@@ -42,7 +42,7 @@ class MpiBasicInfoPersistence implements MpiBasicInfoPersistencePort {
     }
 
     @Override
-    public boolean recodeActivitiesRun(@NonNull ActivityMpiTrns activityMpiTrns) {
+    public void recodeActivitiesRun(@NonNull ActivityMpiTrns activityMpiTrns) {
         final String wtid = activityMpiTrns.getMpiTrnsId().getWtid();
         final String mid = activityMpiTrns.getMid();
 
@@ -56,7 +56,7 @@ class MpiBasicInfoPersistence implements MpiBasicInfoPersistencePort {
                 .connUrl(activityMpiTrns.getActivitySendMpi().getConnUrl())
                 .jnoffcId(activityMpiTrns.getMid())
                 .idcDvdCd(activityMpiTrns.getServerName())
-                .jobDvdCd(activityMpiTrns.getMpiBasicInfoJobCode().getCode())
+                .jobDvdCd(activityMpiTrns.getJobCodes().getCode())
                 .payRsltCd(activityMpiTrns.getActivitySendMpi().getPayRsltCd())
                 .rspsGrmConts(activityMpiTrns.getActivitySendMpi().getRspsGrmConts())
                 .otransWtid(activityMpiTrns.getMpiTrnsId().getWtid())
@@ -66,15 +66,7 @@ class MpiBasicInfoPersistence implements MpiBasicInfoPersistencePort {
                 .chngTm(hhmmss)
                 .build();
         log.info("[{}][{}] Entity Save Set {}", mid, wtid, mpiTrnsJpaEntity);
-        final MpiTrnsJpaEntity saveResult = this.mpiTrnsRepository.save(mpiTrnsJpaEntity);
 
-        final boolean result = (saveResult.getWtid().equals(mpiTrnsJpaEntity.getWtid()) && saveResult.getSrlno().equals(mpiTrnsJpaEntity.getSrlno()));
-
-        if(result) log.info("[{}][{}] Entity Save Success.", mid, wtid);
-        else log.warn("[{}][{}] Entity Save Fail.", mid, wtid);
-
-        return result;
+        this.mpiTrnsRepository.save(mpiTrnsJpaEntity);
     }
-
-
 }

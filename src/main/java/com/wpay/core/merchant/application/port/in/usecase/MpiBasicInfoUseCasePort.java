@@ -2,15 +2,19 @@ package com.wpay.core.merchant.application.port.in.usecase;
 
 import com.wpay.common.global.dto.BaseResponse;
 import com.wpay.common.global.dto.SelfValidating;
+import com.wpay.common.global.enums.JobCodes;
 import com.wpay.common.global.factory.port.in.UseCasePort;
 import com.wpay.core.merchant.domain.ActivityMpiTrns;
-import com.wpay.core.merchant.global.enums.MpiBasicInfoJobCode;
 
 import java.util.Objects;
 
 public interface MpiBasicInfoUseCasePort extends UseCasePort {
 
-    @Override default MpiBasicInfoJobCode getJobCode() { return MpiBasicInfoJobCode.JOB_CODE_20; }
+
+    @Override
+    default JobCodes getJobCode(){
+        return JobCodes.JOB_CODE_20;
+    }
 
     /**
      *  MPI 기준 정보 조회 실행.
@@ -20,7 +24,7 @@ public interface MpiBasicInfoUseCasePort extends UseCasePort {
         final MpiBasicInfoCommand mpiBasicInfoCommand = (MpiBasicInfoCommand) selfValidating;
 
         final ActivityMpiTrns activityMpiTrns = ActivityMpiTrns.builder()
-                .mpiBasicInfoJobCode(MpiBasicInfoCommand.MPI_BASIC_INFO_JOB_CODE)
+                .jobCodes(mpiBasicInfoCommand.getJobCodes())
                 .mid(mpiBasicInfoCommand.getMid())
                 .wtid(mpiBasicInfoCommand.getWtid())
                 .serverName(mpiBasicInfoCommand.getServerName())

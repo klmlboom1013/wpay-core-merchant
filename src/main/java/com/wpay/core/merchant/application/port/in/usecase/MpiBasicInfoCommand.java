@@ -1,35 +1,30 @@
 package com.wpay.core.merchant.application.port.in.usecase;
 
-import com.wpay.common.global.dto.SelfValidating;
-import com.wpay.core.merchant.global.enums.MpiBasicInfoJobCode;
-import lombok.*;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import com.wpay.common.global.dto.BaseCommand;
+import com.wpay.common.global.enums.JobCodes;
+import com.wpay.core.merchant.global.enums.MpiBasicInfoVersion;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 
 @Getter
 @EqualsAndHashCode(callSuper = false)
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-public class MpiBasicInfoCommand extends SelfValidating<MpiBasicInfoCommand> {
-
-    public static final MpiBasicInfoJobCode MPI_BASIC_INFO_JOB_CODE = MpiBasicInfoJobCode.JOB_CODE_20;
-
-    @NotNull(message = "값이 Null이 될 수 없습니다.")
-    @Size(min=10, max=20, message = "길이는 10 부터 20 까지 입니다.")
-    private String mid;
-
-    @NotNull(message = "값이 Null이 될 수 없습니다.")
-    @Size(max = 64, message = "길이가 64를 초과 할 수 없습니다.")
-    private String wtid;
-
-    @Setter
-    private String serverName;
+@ToString(callSuper = true)
+public class MpiBasicInfoCommand extends BaseCommand<MpiBasicInfoCommand> {
 
     @Override
     public void validateSelf() {
         super.validateSelf();
+    }
+
+    @Override
+    public void checkVersion(String version) {
+        MpiBasicInfoVersion.getInstance(version);
+    }
+
+    @Override
+    public JobCodes getJobCodes() {
+        return JobCodes.JOB_CODE_20;
     }
 }

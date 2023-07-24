@@ -42,7 +42,7 @@ Configutation:
         - ref: RollingFile_Appender
     Logger:
       #name: example.demospringboot
-      name: com.wpay.core.merchant
+      name: com.wpay
       additivity: false
       level: debug
       AppenderRef:

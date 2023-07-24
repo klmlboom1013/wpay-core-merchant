@@ -1,9 +1,8 @@
 package com.wpay.core.merchant.adapter.in.web;
 
 import com.wpay.common.global.annotation.WebAdapter;
-import com.wpay.common.global.dto.BaseResponse;
+import com.wpay.common.global.factory.port.PortInFactory;
 import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoCommand;
-import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoUseCaseFactory;
 import com.wpay.core.merchant.global.enums.MpiBasicInfoVersion;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -17,15 +16,17 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 class MpiBasicInfoController {
 
-    private final MpiBasicInfoUseCaseFactory mpiBasicInfoUseCaseFactory;
+    private final PortInFactory portInFactory;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(path = "/merchant/{version}/mpi-basic-info")
-    ResponseEntity<BaseResponse> merchantInfo (@PathVariable String version,
-                                               @RequestBody MpiBasicInfoCommand mpiBasicInfoCommand) {
+    ResponseEntity<?> merchantInfoRun (@PathVariable String version,
+                                       @RequestBody MpiBasicInfoCommand mpiBasicInfoCommand) {
+        return ResponseEntity.ok().body(
+                portInFactory.getUseCasePort(
+                        MpiBasicInfoVersion.getInstance(version).name(),
+                        mpiBasicInfoCommand.getJobCodes().toString())
+                        .execute(mpiBasicInfoCommand));
 
-        return ResponseEntity.ok().body(mpiBasicInfoUseCaseFactory
-                .getMpiBasicInfoUseCase(MpiBasicInfoVersion.getInstance(version), MpiBasicInfoCommand.MPI_BASIC_INFO_JOB_CODE)
-                .execute(mpiBasicInfoCommand));
     }
 }
