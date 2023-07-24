@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Log4j2
 @Aspect
-@Component(value = "mobiliansExternalAspect")
-public class ExternalAdapterAspect extends BaseAspect {
+@Component
+public class MerchantExternalAdapterAspect extends BaseAspect {
     @Before("execution(* com.wpay.core.merchant.adapter.out.external.*External.*Run(..))")
     @Override
     public void before(JoinPoint joinPoint) {

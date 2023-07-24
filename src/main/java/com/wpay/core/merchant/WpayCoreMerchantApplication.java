@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.servlet.DispatcherServlet;
 
-@ComponentScan(basePackages = {"com.wpay.core.merchant","com.wpay.common"})
+@ComponentScan(basePackages = {"com.wpay"})
 @SpringBootApplication
 @ServletComponentScan
 public class WpayCoreMerchantApplication extends SpringBootServletInitializer {

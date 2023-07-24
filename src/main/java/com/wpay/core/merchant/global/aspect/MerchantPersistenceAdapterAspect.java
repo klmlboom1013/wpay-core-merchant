@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 @Log4j2
 @Aspect
-@Component(value = "mobiliansPersistenceAspect")
-public class PersistenceAdapterAspect extends BaseAspect {
+@Component
+public class MerchantPersistenceAdapterAspect extends BaseAspect {
 
     @Before("execution(* com.wpay.core.merchant.adapter.out.persistence.*Persistence.*Run(..))")
     @Override

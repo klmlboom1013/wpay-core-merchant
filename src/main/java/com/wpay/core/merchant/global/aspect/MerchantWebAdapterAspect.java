@@ -15,9 +15,9 @@ import java.util.Objects;
 
 @Log4j2
 @Aspect
-@Component(value = "mobiliansWebAdapterAspect")
+@Component
 @RequiredArgsConstructor
-public class WebAdapterAspect extends BaseAspect {
+public class MerchantWebAdapterAspect extends BaseAspect {
 
     private final HttpServletRequest request;
 
