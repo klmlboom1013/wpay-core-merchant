@@ -5,7 +5,7 @@ import com.wpay.common.global.common.Functions;
 import com.wpay.common.global.dto.BaseResponse;
 import com.wpay.common.global.exception.CustomException;
 import com.wpay.common.global.exception.ErrorCode;
-import com.wpay.common.global.factory.port.PortOutFactory;
+import com.wpay.common.global.port.PortOutFactory;
 import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoUseCasePort;
 import com.wpay.core.merchant.application.port.out.dto.MpiBasicInfoMapper;
 import com.wpay.core.merchant.application.port.out.external.MpiBasicInfoExternalPort;

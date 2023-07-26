@@ -1,7 +1,7 @@
 package com.wpay.core.merchant.adapter.in.web;
 
 import com.wpay.common.global.annotation.WebAdapter;
-import com.wpay.common.global.factory.port.PortInFactory;
+import com.wpay.common.global.port.PortInFactory;
 import com.wpay.core.merchant.application.port.in.usecase.MpiBasicInfoCommand;
 import com.wpay.core.merchant.global.enums.MpiBasicInfoVersion;
 import lombok.RequiredArgsConstructor;
