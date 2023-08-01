@@ -11,27 +11,27 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class MerchantExternalAdapterAspect extends BaseAspect {
-    @Before("execution(* com.wpay.core.merchant.adapter.out.external.*External.*Run(..))")
+    @Before("execution(* com.wpay.core.merchant.*.adapter.out.external.*External.*Run(..))")
     @Override
     public void before(JoinPoint joinPoint) {
         log.debug("[Before] => {}", joinPoint.getSignature().getName());
         this.validateCryptoSelf(joinPoint, true);
     }
 
-    @After("execution(* com.wpay.core.merchant.adapter.out.external.*External.*Run(..))")
+    @After("execution(* com.wpay.core.merchant.*.adapter.out.external.*External.*Run(..))")
     @Override
     public void after(JoinPoint joinPoint) {
         log.debug("[After] => {}", joinPoint.getSignature().getName());
     }
 
-    @AfterReturning(pointcut = "execution(* com.wpay.core.merchant.adapter.out.external.*External.*Run(..))", returning = "result")
+    @AfterReturning(pointcut = "execution(* com.wpay.core.merchant.*.adapter.out.external.*External.*Run(..))", returning = "result")
     @Override
     public void afterReturning(JoinPoint joinPoint, Object result) {
         log.debug("[AfterReturning] => {} [result] => {}", joinPoint.getSignature().getName(), result);
         if(result instanceof SelfValidating) ((SelfValidating<?>) result).validateCryptoSelf();
     }
 
-    @AfterThrowing(pointcut = "execution(* com.wpay.core.merchant.adapter.out.external.*External.*Run(..))", throwing = "e")
+    @AfterThrowing(pointcut = "execution(* com.wpay.core.merchant.*.adapter.out.external.*External.*Run(..))", throwing = "e")
     @Override
     public void afterThrowing(JoinPoint joinPoint, Throwable e) {
         log.error("[AfterThrowing] => {} [{}] => {}", joinPoint.getSignature().getName(), e.getClass().getName(), e.getMessage());

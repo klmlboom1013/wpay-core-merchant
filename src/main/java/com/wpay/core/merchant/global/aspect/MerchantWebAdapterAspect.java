@@ -21,20 +21,20 @@ public class MerchantWebAdapterAspect extends BaseAspect {
 
     private final HttpServletRequest request;
 
-    @Before("execution(* com.wpay.core.merchant.adapter.in.web.*Controller.*Run(..))")
+    @Before("execution(* com.wpay.core.merchant.*.adapter.in.web.*Controller.*Run(..))")
     @Override
     public void before(JoinPoint joinPoint) {
         log.info("[Before] => {}", joinPoint.getSignature().getName());
         this.baseCommandValidateCryptoSelf(joinPoint, request);
     }
 
-    @After("execution(* com.wpay.core.merchant.adapter.in.web.*Controller.*Run(..))")
+    @After("execution(* com.wpay.core.merchant.*.adapter.in.web.*Controller.*Run(..))")
     @Override
     public void after(JoinPoint joinPoint) {
         log.info("[After] => {}", joinPoint.getSignature().getName());
     }
 
-    @AfterReturning(pointcut = "execution(* com.wpay.core.merchant.adapter.in.web.*Controller.*Run(..))", returning = "result")
+    @AfterReturning(pointcut = "execution(* com.wpay.core.merchant.*.adapter.in.web.*Controller.*Run(..))", returning = "result")
     @Override
     public void afterReturning(JoinPoint joinPoint, Object result) {
         log.info("[AfterReturning] => {} [result] => {}", joinPoint.getSignature().getName(),
@@ -55,7 +55,7 @@ public class MerchantWebAdapterAspect extends BaseAspect {
         }
     }
 
-    @AfterThrowing(pointcut = "execution(* com.wpay.core.merchant.adapter.in.web.*Controller.*Run(..))", throwing = "e")
+    @AfterThrowing(pointcut = "execution(* com.wpay.core.merchant.*.adapter.in.web.*Controller.*Run(..))", throwing = "e")
     @Override
     public void afterThrowing(JoinPoint joinPoint, Throwable e) {
         log.error("[AfterThrowing] => {} [{}] => {}", joinPoint.getSignature().getName(), e.getClass().getName(), e.getMessage());
