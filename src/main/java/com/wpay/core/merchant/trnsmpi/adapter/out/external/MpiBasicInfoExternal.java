@@ -5,7 +5,7 @@ import com.wpay.common.global.config.WebClientConfiguration;
 import com.wpay.core.merchant.trnsmpi.application.port.out.dto.MpiBasicInfoMapper;
 import com.wpay.core.merchant.trnsmpi.application.port.out.external.MpiBasicInfoExternalPort;
 import com.wpay.core.merchant.trnsmpi.application.port.out.external.MpiBasicInfoExternalVersion;
-import com.wpay.core.merchant.trnsmpi.domain.ActivityMpiTrns;
+import com.wpay.core.merchant.trnsmpi.domain.ActivityMpiBasicInfo;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -28,7 +28,7 @@ class MpiBasicInfoExternal implements MpiBasicInfoExternalPort {
     @Override public MpiBasicInfoExternalVersion getVersionCode() { return MpiBasicInfoExternalVersion.v1; }
 
     @Override
-    public MpiBasicInfoMapper sendMpiBasicInfoRun(@NonNull ActivityMpiTrns activityMpiTrns) {
+    public MpiBasicInfoMapper sendMpiBasicInfoRun(@NonNull ActivityMpiBasicInfo activityMpiBasicInfo) {
 
         // HTTP 통신 MPI 연동 정보 WebClient 세팅
         final WebClient webClient = webClientConfiguration.webClient()
@@ -38,7 +38,7 @@ class MpiBasicInfoExternal implements MpiBasicInfoExternalPort {
                 .build();
 
         final String uriParam = new StringBuilder()
-                .append("?mid=").append(activityMpiTrns.getMid())
+                .append("?mid=").append(activityMpiBasicInfo.getMid())
                 .append("&ch=WPAY")
                 .toString();
 
@@ -53,8 +53,8 @@ class MpiBasicInfoExternal implements MpiBasicInfoExternalPort {
 
         // 응답 데이터 Mapper 세팅.
         return MpiBasicInfoMapper.builder()
-                .wtid(activityMpiTrns.getMpiTrnsId().getWtid())
-                .mid(activityMpiTrns.getMid())
+                .wtid(activityMpiBasicInfo.getMpiTrnsId().getWtid())
+                .mid(activityMpiBasicInfo.getMid())
                 .message(result)
                 .url(new StringBuilder(mpiBasicInfoUrl).append(uriParam).toString())
                 .build();

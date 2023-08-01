@@ -5,7 +5,7 @@ import com.wpay.common.global.common.Functions;
 import com.wpay.core.merchant.trnsmpi.application.port.out.dto.MpiBasicInfoMapper;
 import com.wpay.core.merchant.trnsmpi.application.port.out.persistence.MpiBasicInfoPersistencePort;
 import com.wpay.core.merchant.trnsmpi.application.port.out.persistence.MpiBasicInfoPersistenceVersion;
-import com.wpay.core.merchant.trnsmpi.domain.ActivityMpiTrns;
+import com.wpay.core.merchant.trnsmpi.domain.ActivityMpiBasicInfo;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -23,9 +23,9 @@ class MpiBasicInfoPersistence implements MpiBasicInfoPersistencePort {
     @Override public MpiBasicInfoPersistenceVersion getVersionCode() { return MpiBasicInfoPersistenceVersion.v1; }
 
     @Override
-    public MpiBasicInfoMapper loadActivitiesRun(@NonNull ActivityMpiTrns activityMpiTrns) {
-        final String wtid = activityMpiTrns.getMpiTrnsId().getWtid();
-        final String mid = activityMpiTrns.getMid();
+    public MpiBasicInfoMapper loadActivitiesRun(@NonNull ActivityMpiBasicInfo activityMpiBasicInfo) {
+        final String wtid = activityMpiBasicInfo.getMpiTrnsId().getWtid();
+        final String mid = activityMpiBasicInfo.getMid();
         final Long srlno = this.mpiTrnsRepository.getMpiTrnsByWtid(wtid);
         log.info("[{}][{}] MPI_TRNS SRLNO 조회 완료 [wtid:{}][srlno:{}]", mid, wtid, wtid, srlno);
 
@@ -35,31 +35,31 @@ class MpiBasicInfoPersistence implements MpiBasicInfoPersistencePort {
         log.info("[{}][{}] MPI_TRNS 조회 결과 : {}", mid, wtid, mpiTrnsJpaEntity);
 
         return MpiBasicInfoMapper.builder()
-                .wtid(activityMpiTrns.getMpiTrnsId().getWtid())
-                .mid(activityMpiTrns.getMid())
+                .wtid(activityMpiBasicInfo.getMpiTrnsId().getWtid())
+                .mid(activityMpiBasicInfo.getMid())
                 .message(mpiTrnsJpaEntity.getRspsGrmConts())
                 .build();
     }
 
     @Override
-    public void recodeActivitiesRun(@NonNull ActivityMpiTrns activityMpiTrns) {
-        final String wtid = activityMpiTrns.getMpiTrnsId().getWtid();
-        final String mid = activityMpiTrns.getMid();
+    public void recodeActivitiesRun(@NonNull ActivityMpiBasicInfo activityMpiBasicInfo) {
+        final String wtid = activityMpiBasicInfo.getMpiTrnsId().getWtid();
+        final String mid = activityMpiBasicInfo.getMid();
 
         final String[] timestamp = Functions.getTimestampMilliSecond.apply(new Date()).split(" ");
         final String yyyymmdd = timestamp[0].trim().replaceAll("-", "");
         final String hhmmss = timestamp[1].split("\\.")[0].trim().replaceAll(":","");
 
         final MpiTrnsJpaEntity mpiTrnsJpaEntity = MpiTrnsJpaEntity.builder()
-                .wtid(activityMpiTrns.getMpiTrnsId().getWtid())
-                .srlno(activityMpiTrns.getMpiTrnsId().getSrlno())
-                .connUrl(activityMpiTrns.getActivitySendMpi().getConnUrl())
-                .jnoffcId(activityMpiTrns.getMid())
-                .idcDvdCd(activityMpiTrns.getServerName())
-                .jobDvdCd(activityMpiTrns.getJobCodes().getCode())
-                .payRsltCd(activityMpiTrns.getActivitySendMpi().getPayRsltCd())
-                .rspsGrmConts(activityMpiTrns.getActivitySendMpi().getRspsGrmConts())
-                .otransWtid(activityMpiTrns.getMpiTrnsId().getWtid())
+                .wtid(activityMpiBasicInfo.getMpiTrnsId().getWtid())
+                .srlno(activityMpiBasicInfo.getMpiTrnsId().getSrlno())
+                .connUrl(activityMpiBasicInfo.getActivitySendMpi().getConnUrl())
+                .jnoffcId(activityMpiBasicInfo.getMid())
+                .idcDvdCd(activityMpiBasicInfo.getServerName())
+                .jobDvdCd(activityMpiBasicInfo.getJobCodes().getCode())
+                .payRsltCd(activityMpiBasicInfo.getActivitySendMpi().getPayRsltCd())
+                .rspsGrmConts(activityMpiBasicInfo.getActivitySendMpi().getRspsGrmConts())
+                .otransWtid(activityMpiBasicInfo.getMpiTrnsId().getWtid())
                 .regiDt(yyyymmdd)
                 .regiTm(hhmmss)
                 .chngDt(yyyymmdd)

@@ -2,7 +2,7 @@ package com.wpay.core.merchant.trnsmpi.adapter.in.web;
 
 import com.wpay.common.global.annotation.WebAdapter;
 import com.wpay.common.global.port.PortInFactory;
-import com.wpay.core.merchant.trnsmpi.application.port.in.usecase.MpiBasicInfoCommand;
+import com.wpay.core.merchant.trnsmpi.application.port.in.dto.MpiBasicInfoCommand;
 import com.wpay.core.merchant.trnsmpi.application.port.in.usecase.MpiBasicInfoUseCaseVersion;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

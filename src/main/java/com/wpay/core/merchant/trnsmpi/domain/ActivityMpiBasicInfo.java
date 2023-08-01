@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = false)
-public class ActivityMpiTrns {
+public class ActivityMpiBasicInfo {
     private final JobCodes jobCodes;
     private final String mid;
     private final String serverName;
@@ -16,7 +16,7 @@ public class ActivityMpiTrns {
     @Setter private ActivitySendMpi activitySendMpi;
 
     @Builder
-    public ActivityMpiTrns(JobCodes jobCodes, String mid, String wtid, String serverName) {
+    public ActivityMpiBasicInfo(JobCodes jobCodes, String mid, String wtid, String serverName) {
         this.jobCodes = jobCodes;
         this.mid = mid;
         this.mpiTrnsId = MpiTrnsId.builder().wtid(wtid).build();

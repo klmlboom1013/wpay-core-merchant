@@ -3,7 +3,7 @@ package com.wpay.core.merchant.trnsmpi.application.port.out.external;
 import com.wpay.common.global.enums.JobCodes;
 import com.wpay.common.global.port.out.ExternalPort;
 import com.wpay.core.merchant.trnsmpi.application.port.out.dto.MpiBasicInfoMapper;
-import com.wpay.core.merchant.trnsmpi.domain.ActivityMpiTrns;
+import com.wpay.core.merchant.trnsmpi.domain.ActivityMpiBasicInfo;
 
 public interface MpiBasicInfoExternalPort extends ExternalPort {
 
@@ -12,5 +12,5 @@ public interface MpiBasicInfoExternalPort extends ExternalPort {
         return JobCodes.JOB_CODE_20;
     }
 
-    MpiBasicInfoMapper sendMpiBasicInfoRun(ActivityMpiTrns activityMpiTrns);
+    MpiBasicInfoMapper sendMpiBasicInfoRun(ActivityMpiBasicInfo activityMpiBasicInfo);
 }

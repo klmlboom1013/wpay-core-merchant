@@ -1,7 +1,8 @@
-package com.wpay.core.merchant.trnsmpi.application.port.in.usecase;
+package com.wpay.core.merchant.trnsmpi.application.port.in.dto;
 
 import com.wpay.common.global.dto.BaseCommand;
 import com.wpay.common.global.enums.JobCodes;
+import com.wpay.core.merchant.trnsmpi.application.port.in.usecase.MpiBasicInfoUseCaseVersion;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;

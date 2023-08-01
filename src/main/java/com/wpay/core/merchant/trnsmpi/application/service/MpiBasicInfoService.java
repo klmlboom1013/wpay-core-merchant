@@ -11,7 +11,7 @@ import com.wpay.core.merchant.trnsmpi.application.port.in.usecase.MpiBasicInfoUs
 import com.wpay.core.merchant.trnsmpi.application.port.out.dto.MpiBasicInfoMapper;
 import com.wpay.core.merchant.trnsmpi.application.port.out.external.MpiBasicInfoExternalPort;
 import com.wpay.core.merchant.trnsmpi.application.port.out.persistence.MpiBasicInfoPersistencePort;
-import com.wpay.core.merchant.trnsmpi.domain.ActivityMpiTrns;
+import com.wpay.core.merchant.trnsmpi.domain.ActivityMpiBasicInfo;
 import com.wpay.core.merchant.trnsmpi.domain.MpiBasicInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -31,14 +31,14 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
     @Override public final MpiBasicInfoUseCaseVersion getVersionCode() { return MpiBasicInfoUseCaseVersion.v1; }
 
     @Override
-    public BaseResponse searchMpiBasicInfoUseCase (ActivityMpiTrns activityMpiTrns) {
-        final String wtid = activityMpiTrns.getMpiTrnsId().getWtid();
-        final String mid = activityMpiTrns.getMid();
-        log.info("[{}][{}] Set ActivityMpiBasicInfo - [{}]", mid, wtid, activityMpiTrns);
+    public BaseResponse searchMpiBasicInfoUseCase (ActivityMpiBasicInfo activityMpiBasicInfo) {
+        final String wtid = activityMpiBasicInfo.getMpiTrnsId().getWtid();
+        final String mid = activityMpiBasicInfo.getMid();
+        log.info("[{}][{}] Set ActivityMpiBasicInfo - [{}]", mid, wtid, activityMpiBasicInfo);
 
         MpiBasicInfoMapper mpiBasicInfoMapper;
         try {
-            mpiBasicInfoMapper = this.getPersistencePort().loadActivitiesRun(activityMpiTrns);
+            mpiBasicInfoMapper = this.getPersistencePort().loadActivitiesRun(activityMpiBasicInfo);
         } catch (EntityNotFoundException e) {
             log.info("[{}][{}] MPI 통신 이력이 조회 되지 않아 MPI 기준 정보 조회 연동을 진행 합니다.", mid, wtid);
             return null;
@@ -58,32 +58,32 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
     }
 
     @Override
-    public BaseResponse sendMpiBasicInfoUseCase (ActivityMpiTrns activityMpiTrns) {
-        final String wtid = activityMpiTrns.getMpiTrnsId().getWtid();
-        final String mid = activityMpiTrns.getMid();
-        log.info("[{}][{}] Set ActivityMpiBasicInfo - [{}]", mid, wtid, activityMpiTrns);
+    public BaseResponse sendMpiBasicInfoUseCase (ActivityMpiBasicInfo activityMpiBasicInfo) {
+        final String wtid = activityMpiBasicInfo.getMpiTrnsId().getWtid();
+        final String mid = activityMpiBasicInfo.getMid();
+        log.info("[{}][{}] Set ActivityMpiBasicInfo - [{}]", mid, wtid, activityMpiBasicInfo);
 
         /* MPI 통신 기준 정보 조회 요청 */
         MpiBasicInfoMapper mpiBasicInfoMapper = null;
         try {
-            mpiBasicInfoMapper = this.getExternalPort().sendMpiBasicInfoRun(activityMpiTrns);
+            mpiBasicInfoMapper = this.getExternalPort().sendMpiBasicInfoRun(activityMpiBasicInfo);
         } catch (Exception e) {
             log.error("[{}][{}] MpiBasicInfoExternal Error: {} - {}", mid, wtid, e.getClass().getName(), e.getMessage());
             throw new CustomException(ErrorCode.HTTP_STATUS_500, "가맹점 기준정보 조회 MPI 연동 오류.", e, wtid, mid);
         } finally {
             /* MPI 통신 이력 저장 */
             if(Objects.nonNull(mpiBasicInfoMapper)){
-                activityMpiTrns.setMpiTrnsId(ActivityMpiTrns.MpiTrnsId.builder()
+                activityMpiBasicInfo.setMpiTrnsId(ActivityMpiBasicInfo.MpiTrnsId.builder()
                         .wtid(wtid)
                         .srlno(Functions.makeSrlno.apply(new Date()))
                         .build());
-                activityMpiTrns.setActivitySendMpi(ActivityMpiTrns.ActivitySendMpi.builder()
+                activityMpiBasicInfo.setActivitySendMpi(ActivityMpiBasicInfo.ActivitySendMpi.builder()
                         .connUrl(mpiBasicInfoMapper.getUrl())
                         .rspsGrmConts(mpiBasicInfoMapper.getMessage())
                         .payRsltCd(mpiBasicInfoMapper.getSendMpiBasicInfoResult().getResultCode())
                         .build());
 
-                this.getPersistencePort().recodeActivitiesRun(activityMpiTrns);
+                this.getPersistencePort().recodeActivitiesRun(activityMpiBasicInfo);
             }
         }
 

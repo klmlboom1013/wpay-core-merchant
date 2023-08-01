@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wpay.common.global.config.SecurityConfig;
 import com.wpay.common.global.dto.BaseCommand;
 
-import com.wpay.core.merchant.trnsmpi.application.port.in.usecase.MpiBasicInfoCommand;
+import com.wpay.core.merchant.trnsmpi.application.port.in.dto.MpiBasicInfoCommand;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
