@@ -25,7 +25,8 @@ repositories {
 }
 
 dependencies {
-	implementation files('libs/wpay-common-0.0.28-SNAPSHOT-plain.jar')
+	implementation files('libs/wpay-common-0.0.29-SNAPSHOT-plain.jar')
+	implementation files('libs/ExecureCrypto_jdk14-1.0.jar')
 
 	implementation 'org.springframework.boot:spring-boot-starter-batch'
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
