@@ -20,12 +20,12 @@ public class CellPhoneAuthSmsPersistence implements CellPhoneAuthSmsPersistenceP
     }
 
     @Override
-    public Long countBySmsAuthNumb (ActivityCellPhoneAuth activityCellPhoneAuth) {
+    public Integer countBySmsAuthNumb (ActivityCellPhoneAuth activityCellPhoneAuth) {
         final String wtid = activityCellPhoneAuth.getMpiTrnsId().getWtid();
         final String mid = activityCellPhoneAuth.getMid();
         log.info("[{}][{}] 휴대폰 본인인증 SMS 인증번호 발송 요청 횟수 제한 검증 시작.", mid, wtid);
 
-        final Long count = this.mpiTrnsRepository.getCountByWtidAndJobDvdCd(wtid, this.getJobCode().getCode());
+        final Integer count = this.mpiTrnsRepository.getCountByWtidAndJobDvdCd(wtid, this.getJobCode().getCode());
         log.info("[{}][{}] SMS 발송 요청 횟수 = {}", mid, wtid, count);
 
         return count;

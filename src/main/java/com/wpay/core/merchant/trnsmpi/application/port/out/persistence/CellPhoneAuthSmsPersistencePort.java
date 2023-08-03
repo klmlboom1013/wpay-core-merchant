@@ -10,7 +10,7 @@ public interface CellPhoneAuthSmsPersistencePort extends PersistencePort {
     /**
      * SMS 인증번호 요청 횟수 제한 카운트 검증.
      */
-    Long countBySmsAuthNumb(ActivityCellPhoneAuth activityCellPhoneAuth);
+    Integer countBySmsAuthNumb(ActivityCellPhoneAuth activityCellPhoneAuth);
 
     void saveTrnsSmsAuthNumbRun (ActivityCellPhoneAuth activityCellPhoneAuth);
 }

@@ -3,6 +3,7 @@ package com.wpay.core.merchant.trnsmpi.application.port.out.dto;
 
 import lombok.Getter;
 
+
 @Getter
 public abstract class BaseCellPhoneAuthMapper {
     private final String wtid;
