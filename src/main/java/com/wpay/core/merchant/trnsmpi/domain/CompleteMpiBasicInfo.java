@@ -11,13 +11,13 @@ import java.util.*;
 @Log4j2
 @Getter
 @EqualsAndHashCode(callSuper = false)
-public class MpiBasicInfo {
+public class CompleteMpiBasicInfo {
     private final String wtid;
     private final String mid;
     private final Map<String, Object> mpiBasicInfos = new HashMap<>();
 
     @Builder
-    public MpiBasicInfo(String wtid, String mid, String message) {
+    public CompleteMpiBasicInfo(String wtid, String mid, String message) {
         this.wtid = wtid;
         this.mid = mid;
         this.setMapperData(message);

@@ -7,5 +7,10 @@ import com.wpay.core.merchant.trnsmpi.domain.ActivityCellPhoneAuth;
 public interface CellPhoneAuthSmsPersistencePort extends PersistencePort {
     @Override default JobCodes getJobCode() { return JobCodes.JOB_CODE_18; }
 
+    /**
+     * SMS 인증번호 요청 횟수 제한 카운트 검증.
+     */
+    Long countBySmsAuthNumb(ActivityCellPhoneAuth activityCellPhoneAuth);
+
     void saveTrnsSmsAuthNumbRun (ActivityCellPhoneAuth activityCellPhoneAuth);
 }

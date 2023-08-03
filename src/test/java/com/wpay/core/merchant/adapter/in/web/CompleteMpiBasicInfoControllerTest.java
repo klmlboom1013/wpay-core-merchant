@@ -26,7 +26,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @Import(SecurityConfig.class)
-class MpiBasicInfoControllerTest {
+class CompleteMpiBasicInfoControllerTest {
 
     @Autowired
     private MockMvc mvc;

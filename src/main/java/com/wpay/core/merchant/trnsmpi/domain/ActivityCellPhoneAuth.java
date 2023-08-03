@@ -55,13 +55,16 @@ public class ActivityCellPhoneAuth {
         @NotBlank
         String socialNo2;
 
+        String mobileId;
+
         @Builder
-        public SendSmsAuthNumb(String userNm, String hCorp, String hNum, String birthDay, String socialNo2) {
+        public SendSmsAuthNumb(String userNm, String hCorp, String hNum, String birthDay, String socialNo2, String mobileId) {
             this.userNm = userNm;
             this.hCorp = hCorp;
             this.hNum = hNum;
             this.birthDay = birthDay;
             this.socialNo2 = socialNo2;
+            this.mobileId = mobileId;
             this.validateSelf();
         }
     }

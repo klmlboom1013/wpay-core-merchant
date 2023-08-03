@@ -12,7 +12,7 @@ import com.wpay.core.merchant.trnsmpi.application.port.out.dto.MpiBasicInfoMappe
 import com.wpay.core.merchant.trnsmpi.application.port.out.external.MpiBasicInfoExternalPort;
 import com.wpay.core.merchant.trnsmpi.application.port.out.persistence.MpiBasicInfoPersistencePort;
 import com.wpay.core.merchant.trnsmpi.domain.ActivityMpiBasicInfo;
-import com.wpay.core.merchant.trnsmpi.domain.MpiBasicInfo;
+import com.wpay.core.merchant.trnsmpi.domain.CompleteMpiBasicInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -45,7 +45,7 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
         }
 
         /* Client 로 전달 DTO 세팅 */
-        final MpiBasicInfo mpiBasicInfo = MpiBasicInfo.builder()
+        final CompleteMpiBasicInfo completeMpiBasicInfo = CompleteMpiBasicInfo.builder()
                 .wtid(mpiBasicInfoMapper.getWtid())
                 .mid(mpiBasicInfoMapper.getMid())
                 .message(mpiBasicInfoMapper.getMessage())
@@ -53,7 +53,7 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
 
         return BaseResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .data(mpiBasicInfo)
+                .data(completeMpiBasicInfo)
                 .build();
     }
 
@@ -98,7 +98,7 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
             throw new CustomException(ErrorCode.HTTP_STATUS_500, "MPI 통신 기준 정보 조히 결과 MID 상태 오류.", wtid, mid);
 
         /* Client 로 전달 DTO 세팅 */
-        final MpiBasicInfo mpiBasicInfo = MpiBasicInfo.builder()
+        final CompleteMpiBasicInfo completeMpiBasicInfo = CompleteMpiBasicInfo.builder()
                 .wtid(mpiBasicInfoMapper.getWtid())
                 .mid(mpiBasicInfoMapper.getMid())
                 .message(mpiBasicInfoMapper.getMessage())
@@ -106,7 +106,7 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
 
         return BaseResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .data(mpiBasicInfo)
+                .data(completeMpiBasicInfo)
                 .build();
     }
 

@@ -29,6 +29,7 @@ public interface CellPhoneAuthUseCasePort extends UseCasePort {
                     .hNum(cellPhoneAuthSmsCommand.getHnum())
                     .socialNo2(cellPhoneAuthSmsCommand.getSocialNo2())
                     .userNm(cellPhoneAuthSmsCommand.getUserNm())
+                    .mobileId(cellPhoneAuthSmsCommand.getMobileId())
                     .build());
         } else if (JobCodes.JOB_CODE_19.equals(baseCommand.getJobCodes().getCode())) {
             final CellPhoneAuthVerifyCommand cellPhoneAuthVerifyCommand = (CellPhoneAuthVerifyCommand) baseCommand;
