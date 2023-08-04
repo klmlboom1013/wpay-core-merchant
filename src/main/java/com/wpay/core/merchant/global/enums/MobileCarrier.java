@@ -6,13 +6,20 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum MobileCarrier {
-    SKT("61","N"),
-    KTF("61","N"),
-    LGT("61","N"),
-    SKR("31","Y"),
-    KTR("31","Y"),
-    LGR("31","Y");
+    SKT(""),
+    KTF(""),
+    LGT(""),
+    SKR("N"), /* SKR 알뜰폰 이지만 MVNO 사업자 번호 조회가 필요 없으므로 N으로 세팅 */
+    KTR("Y"),
+    LGR("Y");
 
-    private final String msgtype;
+    /**
+     * N: 메이저 통신사
+     * Y: 알뜰폰 통신사
+     */
     private final String altteul;
+
+    public static MobileCarrier getInstance(String name) {
+        return MobileCarrier.valueOf(name.toUpperCase());
+    }
 }

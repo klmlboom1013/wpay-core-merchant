@@ -1,6 +1,8 @@
 package com.wpay.core.merchant.trnsmpi.domain;
 
+import com.wpay.common.global.dto.BaseCommand;
 import com.wpay.common.global.enums.JobCodes;
+import com.wpay.core.merchant.trnsmpi.application.port.in.dto.MpiBasicInfoCommand;
 import lombok.*;
 
 
@@ -16,11 +18,11 @@ public class ActivityMpiBasicInfo {
     @Setter private ActivitySendMpi activitySendMpi;
 
     @Builder
-    public ActivityMpiBasicInfo(JobCodes jobCodes, String mid, String wtid, String serverName) {
-        this.jobCodes = jobCodes;
-        this.mid = mid;
-        this.mpiTrnsId = MpiTrnsId.builder().wtid(wtid).build();
-        this.serverName = serverName;
+    public ActivityMpiBasicInfo(BaseCommand<?> baseCommand) {
+        this.jobCodes = baseCommand.getJobCodes();
+        this.mid = baseCommand.getMid();
+        this.mpiTrnsId = MpiTrnsId.builder().wtid(baseCommand.getWtid()).build();
+        this.serverName = baseCommand.getServerName();
     }
 
     /**

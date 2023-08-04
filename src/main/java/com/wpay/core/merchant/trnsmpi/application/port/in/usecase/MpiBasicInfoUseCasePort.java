@@ -1,5 +1,6 @@
 package com.wpay.core.merchant.trnsmpi.application.port.in.usecase;
 
+import com.wpay.common.global.dto.BaseCommand;
 import com.wpay.common.global.dto.BaseResponse;
 import com.wpay.common.global.dto.SelfValidating;
 import com.wpay.common.global.enums.JobCodes;
@@ -23,13 +24,9 @@ public interface MpiBasicInfoUseCasePort extends UseCasePort {
      */
     @Override
     default BaseResponse execute (SelfValidating<?> selfValidating){
-        final MpiBasicInfoCommand mpiBasicInfoCommand = (MpiBasicInfoCommand) selfValidating;
 
         final ActivityMpiBasicInfo activityMpiBasicInfo = ActivityMpiBasicInfo.builder()
-                .jobCodes(mpiBasicInfoCommand.getJobCodes())
-                .mid(mpiBasicInfoCommand.getMid())
-                .wtid(mpiBasicInfoCommand.getWtid())
-                .serverName(mpiBasicInfoCommand.getServerName())
+                .baseCommand((BaseCommand<?>) selfValidating)
                 .build();
 
         final BaseResponse searchDBResult = this.searchMpiBasicInfoUseCase(activityMpiBasicInfo);

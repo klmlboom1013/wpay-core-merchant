@@ -51,7 +51,7 @@ public class CellPhoneAuthSmsCommand extends BaseCommand<CellPhoneAuthSmsCommand
     private String socialNo2;
 
     /** 모빌리언스 측 SMS 발송 재요청 구분 값 */
-    private String mobileId;
+    private String mobilId;
     
     @Override
     public void validateSelf() {

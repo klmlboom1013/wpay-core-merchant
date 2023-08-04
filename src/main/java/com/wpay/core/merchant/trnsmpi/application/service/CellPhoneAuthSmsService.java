@@ -19,6 +19,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+
 @Log4j2
 @UseCase
 @RequiredArgsConstructor
@@ -43,21 +46,13 @@ public class CellPhoneAuthSmsService implements CellPhoneAuthUseCasePort {
             throw new CustomException(ErrorCode.HTTP_STATUS_403, sb.toString());
         }
 
-        /* KTR, LGR 알뜰폰 사업자 확인 (SKR은 알뜰폰 사업자 확인 제외) */
-        final MobiliansCellPhoneAuthMapper resultMvno = (MobiliansCellPhoneAuthMapper) this.getExternal().sendConfirmMvnoCompanyRun(activityCellPhoneAuth);
-        log.info("[{}][{}] 휴대폰 본인인증 통신사 MVNO 사업자 정보 확인. {}", mid, wtid, resultMvno.toString());
-
         /* 모빌리언스 본인인증 SMS 인증번호 발송 요청 연동 */
-        final MobiliansCellPhoneAuthMapper resultSendSms = (MobiliansCellPhoneAuthMapper) this.getExternal().sendSmsAuthNumbRun(activityCellPhoneAuth);
-        log.info("[{}][{}] 휴대폰 본인인증 SMS 발송 결과: {}", mid, wtid, resultSendSms.toString());
-
-        /* PersistencePort 가져 오기 */
-        final CellPhoneAuthSmsPersistencePort cellPhoneAuthSmsPersistencePort =
-                (CellPhoneAuthSmsPersistencePort) this.portOutFactory.getPersistencePort(
-                        CellPhoneAuthSmsPersistenceVersion.v1.toString(), this.getJobCode().toString());
+        final MobiliansCellPhoneAuthMapper mobiliansCellPhoneAuthMapper = this.getExternal().sendSmsAuthNumbRun(activityCellPhoneAuth);
+        log.info("[{}][{}] 휴대폰 본인인증 SMS 발송 결과: {}", mid, wtid, mobiliansCellPhoneAuthMapper.toString());
 
         /* 모빌리언스 연동 이력 DB 저장 */
-        cellPhoneAuthSmsPersistencePort.saveTrnsSmsAuthNumbRun(activityCellPhoneAuth);
+        this.getPersistence().saveTrnsSmsAuthNumbRun(activityCellPhoneAuth);
+
         return BaseNoDataResponse.builder().httpStatus(HttpStatus.OK).build();
     }
 

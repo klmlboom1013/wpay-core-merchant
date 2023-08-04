@@ -2,6 +2,7 @@ package com.wpay.core.merchant.trnsmpi.adapter.out.external;
 
 import com.wpay.common.global.annotation.ExternalAdapter;
 import com.wpay.common.global.config.WebClientConfiguration;
+import com.wpay.core.merchant.global.enums.MobiliansMsgType;
 import com.wpay.core.merchant.trnsmpi.application.port.out.dto.MobiliansCellPhoneAuthMapper;
 import com.wpay.core.merchant.trnsmpi.application.port.out.external.CellPhoneAuthVerifyExternalPort;
 import com.wpay.core.merchant.trnsmpi.application.port.out.external.CellPhoneAuthVerifyExternalVersion;
@@ -14,6 +15,8 @@ import lombok.extern.log4j.Log4j2;
 @ExternalAdapter
 @RequiredArgsConstructor
 public class CellPhoneVerifyExternal implements CellPhoneAuthVerifyExternalPort {
+
+    private static final String MOBILIANS_SMS_RESULT_SUCCESS_CODE = "0000";
 
     private final WebClientConfiguration webClientConfiguration;
 
@@ -29,10 +32,10 @@ public class CellPhoneVerifyExternal implements CellPhoneAuthVerifyExternalPort 
 
         // 응답 데이터 Mapper 세팅.
         return MobiliansCellPhoneAuthMapper.builder()
-                .wtid(wtid)
-                .mid(mid)
-                .resultCode("0000")
-                .resultMsg("SUCCESS")
+                .resultCode(MOBILIANS_SMS_RESULT_SUCCESS_CODE)
+                .resultMsg("")
+                .recvConts("sample-sms-recv-message-conts")
+                .msgType(MobiliansMsgType.CERTIFICATION.getCode())
                 .build();
     }
 

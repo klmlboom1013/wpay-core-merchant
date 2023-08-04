@@ -1,6 +1,10 @@
 package com.wpay.core.merchant.trnsmpi.adapter.out.external;
 
 import com.wpay.common.global.annotation.ExternalAdapter;
+import com.wpay.common.global.config.WebClientConfiguration;
+import com.wpay.common.global.exception.CustomException;
+import com.wpay.common.global.exception.ErrorCode;
+import com.wpay.core.merchant.global.enums.MobiliansMsgType;
 import com.wpay.core.merchant.trnsmpi.application.port.out.dto.MobiliansCellPhoneAuthMapper;
 import com.wpay.core.merchant.trnsmpi.application.port.out.external.CellPhoneAuthSmsExternalPort;
 import com.wpay.core.merchant.trnsmpi.application.port.out.external.CellPhoneAuthSmsExternalVersion;
@@ -14,34 +18,55 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class CellPhoneAuthSmsExternal implements CellPhoneAuthSmsExternalPort {
 
+    private static final String MOBILIANS_SMS_RESULT_SUCCESS_CODE = "0000";
+
+    private final WebClientConfiguration webClientConfiguration;
+
+
     @Override
     public CellPhoneAuthSmsExternalVersion getVersionCode() { return CellPhoneAuthSmsExternalVersion.v1; }
 
     @Override
-    public MobiliansCellPhoneAuthMapper sendConfirmMvnoCompanyRun(@NonNull ActivityCellPhoneAuth activityCellPhoneAuth) {
+    public boolean sendConfirmMvnoCompanyRun(@NonNull ActivityCellPhoneAuth activityCellPhoneAuth) {
         final String wtid = activityCellPhoneAuth.getMpiTrnsId().getWtid();
         final String mid = activityCellPhoneAuth.getMid();
         log.info("[{}][{}] 모빌리언스 휴대폰 본인인증 통신사 MVNO 사업자 확인 요청 External 시작.", mid, wtid);
 
-        return MobiliansCellPhoneAuthMapper.builder()
-                .wtid(wtid)
-                .mid(mid)
-                .resultCode("0000")
-                .resultMsg("SUCCESS")
-                .build();
+        // TODO 모빌리언스 MVNO 통신사 사업자 확인 요청 연동 구현 해 주세요.
+        /*
+         * 모빌리언스 응답 코드와 MOBILIANS_RESULT_SUCCESS_CODE 비교한 결과 리턴 하면 됩.
+         * 응답 데이터 중 mobilId 받아 activityCellPhoneAuth.sendSmsAuthNumb 에 저장 한다.
+         */
+        activityCellPhoneAuth.getSendSmsAuthNumb().setMobilId("sampleMobilId001");
+
+        return true;
     }
 
     @Override
     public MobiliansCellPhoneAuthMapper sendSmsAuthNumbRun(@NonNull ActivityCellPhoneAuth activityCellPhoneAuth) {
         final String wtid = activityCellPhoneAuth.getMpiTrnsId().getWtid();
         final String mid = activityCellPhoneAuth.getMid();
+
+        /* KTR, LGR 알뜰폰 사업자 확인 (SKR은 알뜰폰 사업자 확인 제외) */
+        if ("Y".equals(activityCellPhoneAuth.getSendSmsAuthNumb().getAltteul()) &&
+                Boolean.FALSE.equals(this.sendConfirmMvnoCompanyRun(activityCellPhoneAuth))) {
+            log.error("[{}][{}] ", mid, wtid);
+            throw new CustomException(ErrorCode.HTTP_STATUS_500, "모빌리언스 측 알뜰폰 사업자 번호 조회가 원활 하지않 습니다. 잠시 후 다시 시도 해 주세요.");
+        }
         log.info("[{}][{}] 모빌리언스 휴대폰 본인인증 SMS 인증번호 발송 요청 External 시작.", mid, wtid);
 
+        // TODO 모빌리언스 휴대폰 본인인증 인증번호 SMS 발송 요청 구현 해 주세요.
+        /*
+         * 모빌리언스 응답 코드와 MOBILIANS_RESULT_SUCCESS_CODE 비교한 결과 리턴 하면 됩.
+         *  [example] return MOBILIANS_RESULT_SUCCESS_CODE.equals(mobilians.resultCode);
+         */
         return MobiliansCellPhoneAuthMapper.builder()
-                .wtid(wtid)
-                .mid(mid)
-                .resultCode("0000")
-                .resultMsg("SUCCESS")
+                .mobileId(activityCellPhoneAuth.getSendSmsAuthNumb().getMobilId())
+                .resultCode(MOBILIANS_SMS_RESULT_SUCCESS_CODE)
+                .resultMsg("")
+                .authToken("123456")
+                .recvConts("sample-sms-recv-message-conts")
+                .msgType(MobiliansMsgType.SEND_SMS.getCode())
                 .build();
     }
 

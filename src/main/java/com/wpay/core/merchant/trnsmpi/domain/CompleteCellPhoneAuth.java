@@ -10,4 +10,6 @@ import lombok.*;
 public class CompleteCellPhoneAuth {
     String wtid;
     String mid;
+
+
 }

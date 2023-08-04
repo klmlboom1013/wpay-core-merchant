@@ -1,6 +1,7 @@
 package com.wpay.core.merchant.trnsmpi.adapter.out.persistence;
 
 import com.wpay.common.global.annotation.PersistenceAdapter;
+import com.wpay.common.global.common.DateFunctions;
 import com.wpay.common.global.common.Functions;
 import com.wpay.core.merchant.trnsmpi.application.port.out.dto.MpiBasicInfoMapper;
 import com.wpay.core.merchant.trnsmpi.application.port.out.persistence.MpiBasicInfoPersistencePort;
@@ -46,9 +47,7 @@ class MpiBasicInfoPersistence implements MpiBasicInfoPersistencePort {
         final String wtid = activityMpiBasicInfo.getMpiTrnsId().getWtid();
         final String mid = activityMpiBasicInfo.getMid();
 
-        final String[] timestamp = Functions.getTimestampMilliSecond.apply(new Date()).split(" ");
-        final String yyyymmdd = timestamp[0].trim().replaceAll("-", "");
-        final String hhmmss = timestamp[1].split("\\.")[0].trim().replaceAll(":","");
+        final String[] datetime = DateFunctions.getDateAndTime.apply(new Date());
 
         final MpiTrnsJpaEntity mpiTrnsJpaEntity = MpiTrnsJpaEntity.builder()
                 .wtid(activityMpiBasicInfo.getMpiTrnsId().getWtid())
@@ -60,10 +59,10 @@ class MpiBasicInfoPersistence implements MpiBasicInfoPersistencePort {
                 .payRsltCd(activityMpiBasicInfo.getActivitySendMpi().getPayRsltCd())
                 .rspsGrmConts(activityMpiBasicInfo.getActivitySendMpi().getRspsGrmConts())
                 .otransWtid(activityMpiBasicInfo.getMpiTrnsId().getWtid())
-                .regiDt(yyyymmdd)
-                .regiTm(hhmmss)
-                .chngDt(yyyymmdd)
-                .chngTm(hhmmss)
+                .regiDt(datetime[0])
+                .regiTm(datetime[1])
+                .chngDt(datetime[0])
+                .chngTm(datetime[1])
                 .build();
         log.info("[{}][{}] Entity Save Set {}", mid, wtid, mpiTrnsJpaEntity);
 
