@@ -1,8 +1,7 @@
 package com.wpay.core.merchant.trnsmpi.adapter.out.persistence;
 
 import com.wpay.common.global.annotation.PersistenceAdapter;
-import com.wpay.common.global.common.DateFunctions;
-import com.wpay.common.global.common.Functions;
+import com.wpay.common.global.functions.DateFunctions;
 import com.wpay.core.merchant.trnsmpi.application.port.out.dto.MpiBasicInfoMapper;
 import com.wpay.core.merchant.trnsmpi.application.port.out.persistence.MpiBasicInfoPersistencePort;
 import com.wpay.core.merchant.trnsmpi.application.port.out.persistence.MpiBasicInfoPersistenceVersion;

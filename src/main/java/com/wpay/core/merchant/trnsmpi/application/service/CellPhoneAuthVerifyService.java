@@ -35,8 +35,7 @@ public class CellPhoneAuthVerifyService implements CellPhoneAuthUseCasePort {
 
 
         /* 모빌리언스 본인인증 인증번호 확인 요청 연동 */
-        final MobiliansCellPhoneAuthMapper mobiliansCellPhoneAuthMapper = this.getExternal().sendVerifyAuthNumbRun(activityCellPhoneAuth);
-        log.info("[{}][{}] 휴대폰 본인인증 인증번호 확인 결과: {}", mid, wtid, mobiliansCellPhoneAuthMapper.toString());
+        this.getExternal().sendVerifyAuthNumbRun(activityCellPhoneAuth);
 
         /* 모빌리언스 연동 이력 DB 저장 */
         this.getPersistence().saveTrnsVerifyAuthNumbRun(activityCellPhoneAuth);

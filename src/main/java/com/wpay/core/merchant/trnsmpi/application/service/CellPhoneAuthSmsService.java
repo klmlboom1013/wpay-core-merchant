@@ -6,6 +6,7 @@ import com.wpay.common.global.enums.JobCodes;
 import com.wpay.common.global.exception.CustomException;
 import com.wpay.common.global.exception.ErrorCode;
 import com.wpay.common.global.port.PortOutFactory;
+import com.wpay.core.merchant.global.exception.LimitSendSmsException;
 import com.wpay.core.merchant.trnsmpi.application.port.in.usecase.CellPhoneAuthSmsUseCaseVersion;
 import com.wpay.core.merchant.trnsmpi.application.port.in.usecase.CellPhoneAuthUseCasePort;
 import com.wpay.core.merchant.trnsmpi.application.port.out.dto.MobiliansCellPhoneAuthMapper;
@@ -14,6 +15,11 @@ import com.wpay.core.merchant.trnsmpi.application.port.out.external.CellPhoneAut
 import com.wpay.core.merchant.trnsmpi.application.port.out.persistence.CellPhoneAuthSmsPersistencePort;
 import com.wpay.core.merchant.trnsmpi.application.port.out.persistence.CellPhoneAuthSmsPersistenceVersion;
 import com.wpay.core.merchant.trnsmpi.domain.ActivityCellPhoneAuth;
+import com.wpay.core.merchant.trnsmpi.domain.ActivityTrnsCellPhoneAuth;
+import io.netty.handler.ssl.SslHandshakeTimeoutException;
+import io.netty.handler.timeout.ReadTimeoutException;
+import io.netty.handler.timeout.TimeoutException;
+import io.netty.handler.timeout.WriteTimeoutException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,6 +27,8 @@ import org.springframework.http.HttpStatus;
 
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.net.http.HttpConnectTimeoutException;
+import java.util.Objects;
 
 @Log4j2
 @UseCase
@@ -39,19 +47,25 @@ public class CellPhoneAuthSmsService implements CellPhoneAuthUseCasePort {
         final String mid = activityCellPhoneAuth.getMid();
         log.info("[{}][{}] 휴대폰 본인인증 SMS 인증번호 발송 요청 Service 시작.", mid, wtid);
 
-        if(LIMIT_SEND_SMS_AUTH_NUMB <= this.getPersistence().countBySmsAuthNumb(activityCellPhoneAuth)){
-            final StringBuilder sb = new StringBuilder()
-                    .append("SMS 인증번호 발송 요청 제한 횟수는 ").append(LIMIT_SEND_SMS_AUTH_NUMB)
-                    .append(" 회 까지 이며 제한 횟수를 초과 하였습니다.").append("잠시 후 다시 시도 해 주세요.");
-            throw new CustomException(ErrorCode.HTTP_STATUS_403, sb.toString());
+        final int sendSmsCount = this.getPersistence().countBySmsAuthNumb(wtid);
+        if(LIMIT_SEND_SMS_AUTH_NUMB <= sendSmsCount) {throw new LimitSendSmsException(wtid, mid, LIMIT_SEND_SMS_AUTH_NUMB, sendSmsCount);}
+
+        /* 휴대폰 본인인증 연동 트랜잭션 Activity 생성. */
+        final ActivityTrnsCellPhoneAuth activityTrnsCellPhoneAuth =
+                ActivityTrnsCellPhoneAuth.builder().activityCellPhoneAuth(activityCellPhoneAuth).build();
+        try {
+            /* 모빌리언스 휴대폰 본인인증 SMS 발송 요청 */
+            this.getExternal().sendSmsAuthNumbRun(activityCellPhoneAuth);
+        } catch (CustomException e) {
+            throw e;
+        } catch (Exception ex) {
+            throw new CustomException(ErrorCode.HTTP_STATUS_500, ErrorCode.HTTP_STATUS_500.getMessage(), ex);
+        } finally {
+            /* 휴대폰 본인인증 연동 트랜잭션 Activity 모빌리언스 연도 결과 세팅. */
+            activityTrnsCellPhoneAuth.setResultMapper(activityCellPhoneAuth);
+            /* 모빌리언스 연동 이력 DB 저장 */
+            this.getPersistence().saveTrnsSmsAuthNumbRun(activityTrnsCellPhoneAuth);
         }
-
-        /* 모빌리언스 본인인증 SMS 인증번호 발송 요청 연동 */
-        final MobiliansCellPhoneAuthMapper mobiliansCellPhoneAuthMapper = this.getExternal().sendSmsAuthNumbRun(activityCellPhoneAuth);
-        log.info("[{}][{}] 휴대폰 본인인증 SMS 발송 결과: {}", mid, wtid, mobiliansCellPhoneAuthMapper.toString());
-
-        /* 모빌리언스 연동 이력 DB 저장 */
-        this.getPersistence().saveTrnsSmsAuthNumbRun(activityCellPhoneAuth);
 
         return BaseNoDataResponse.builder().httpStatus(HttpStatus.OK).build();
     }

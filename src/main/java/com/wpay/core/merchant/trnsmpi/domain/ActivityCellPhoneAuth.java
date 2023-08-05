@@ -1,15 +1,12 @@
 package com.wpay.core.merchant.trnsmpi.domain;
 
-
-import com.wpay.common.global.common.PrivacyFunctions;
 import com.wpay.common.global.dto.BaseCommand;
 import com.wpay.common.global.enums.JobCodes;
-import com.wpay.common.global.exception.CustomException;
-import com.wpay.common.global.exception.ErrorCode;
+import com.wpay.common.global.functions.PrivacyFunctions;
 import com.wpay.core.merchant.global.enums.MobileCarrier;
+import com.wpay.core.merchant.global.exception.JobCodeException;
 import com.wpay.core.merchant.trnsmpi.application.port.in.dto.CellPhoneAuthSmsCommand;
 import com.wpay.core.merchant.trnsmpi.application.port.in.dto.CellPhoneAuthVerifyCommand;
-import com.wpay.core.merchant.trnsmpi.application.port.out.dto.MobiliansCellPhoneAuthMapper;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -26,8 +23,11 @@ public class ActivityCellPhoneAuth {
     private final SendSmsAuthNumb sendSmsAuthNumb;
     private final SendVerifyAuthNumb sendVerifyAuthNumb;
 
+    /**
+     * 모빌리언스 연동 결과
+     */
     @Setter
-    private MobiliansCellPhoneAuthMapper mobiliansCellPhoneAuthMapper;
+    private ReceiveMobiliansCellPhoneAuth receiveMobiliansCellPhoneAuth;
 
     @Builder
     public ActivityCellPhoneAuth(BaseCommand<?> baseCommand) {
@@ -37,15 +37,13 @@ public class ActivityCellPhoneAuth {
         this.mpiTrnsId = MpiTrnsId.builder().wtid(baseCommand.getWtid()).build();
 
         if(JobCodes.JOB_CODE_18.equals(this.jobCodes)) {
-            this.sendSmsAuthNumb = SendSmsAuthNumb.builder()
-                    .cellPhoneAuthSmsCommand((CellPhoneAuthSmsCommand) baseCommand).build();
+            this.sendSmsAuthNumb = SendSmsAuthNumb.builder().cellPhoneAuthSmsCommand((CellPhoneAuthSmsCommand) baseCommand).build();
             this.sendVerifyAuthNumb = SendVerifyAuthNumb.builder().build();
         } else if(JobCodes.JOB_CODE_19.equals(this.jobCodes)) {
-            this.sendVerifyAuthNumb = SendVerifyAuthNumb.builder()
-                    .cellPhoneAuthVerifyCommand((CellPhoneAuthVerifyCommand) baseCommand).build();
+            this.sendVerifyAuthNumb = SendVerifyAuthNumb.builder().cellPhoneAuthVerifyCommand((CellPhoneAuthVerifyCommand) baseCommand).build();
             this.sendSmsAuthNumb = SendSmsAuthNumb.builder().build();
         } else {
-            throw new CustomException(ErrorCode.HTTP_STATUS_500, "유효 하지 않은 업무 코드로 인해 Activity 초기화 중 오류가 발생 했습니다.");
+            throw new JobCodeException(this.mpiTrnsId.getWtid(), this.mid);
         }
     }
 
@@ -59,7 +57,6 @@ public class ActivityCellPhoneAuth {
         String wtid;
         Long srlno;
     }
-
 
     @Getter
     @ToString
@@ -86,8 +83,7 @@ public class ActivityCellPhoneAuth {
             this.phoneNo = cellPhoneAuthSmsCommand.getHnum();
             this.gender = PrivacyFunctions.findGenderCode.apply(Integer.parseInt(socialNo2));
             this.foreiner = PrivacyFunctions.findForeignerYN.apply(socialNo2);
-            this.userSocNo = (birthDay.length() == 8) ? birthDay : 
-                    PrivacyFunctions.findBirthdayFirstYY.apply(socialNo2) + birthDay;
+            this.userSocNo = (birthDay.length() == 8) ? birthDay : PrivacyFunctions.findBirthdayFirstYY.apply(socialNo2) + birthDay;
         }
     }
 
@@ -103,5 +99,21 @@ public class ActivityCellPhoneAuth {
         public SendVerifyAuthNumb(@NonNull CellPhoneAuthVerifyCommand cellPhoneAuthVerifyCommand) {
             this.authNumb = cellPhoneAuthVerifyCommand.getAuthNumb();
         }
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @ToString
+    @EqualsAndHashCode(callSuper = false)
+    public static class ReceiveMobiliansCellPhoneAuth {
+        private String resultCode;
+        private String resultMsg;
+        private String ciCode;
+        private String authToken;
+        private String mobileId;
+        private String msgType;
+        private String recvConts;
+        private String connUrl;
     }
 }

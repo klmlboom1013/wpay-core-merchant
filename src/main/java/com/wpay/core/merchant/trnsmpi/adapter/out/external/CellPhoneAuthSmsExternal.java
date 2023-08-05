@@ -1,17 +1,17 @@
 package com.wpay.core.merchant.trnsmpi.adapter.out.external;
 
 import com.wpay.common.global.annotation.ExternalAdapter;
-import com.wpay.common.global.config.WebClientConfiguration;
 import com.wpay.common.global.exception.CustomException;
 import com.wpay.common.global.exception.ErrorCode;
 import com.wpay.core.merchant.global.enums.MobiliansMsgType;
-import com.wpay.core.merchant.trnsmpi.application.port.out.dto.MobiliansCellPhoneAuthMapper;
 import com.wpay.core.merchant.trnsmpi.application.port.out.external.CellPhoneAuthSmsExternalPort;
 import com.wpay.core.merchant.trnsmpi.application.port.out.external.CellPhoneAuthSmsExternalVersion;
 import com.wpay.core.merchant.trnsmpi.domain.ActivityCellPhoneAuth;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Log4j2
 @ExternalAdapter
@@ -20,7 +20,8 @@ public class CellPhoneAuthSmsExternal implements CellPhoneAuthSmsExternalPort {
 
     private static final String MOBILIANS_SMS_RESULT_SUCCESS_CODE = "0000";
 
-    private final WebClientConfiguration webClientConfiguration;
+    @Qualifier(value = "mobiliansWebClient")
+    private final WebClient mobiliansWebClient;
 
 
     @Override
@@ -43,7 +44,7 @@ public class CellPhoneAuthSmsExternal implements CellPhoneAuthSmsExternalPort {
     }
 
     @Override
-    public MobiliansCellPhoneAuthMapper sendSmsAuthNumbRun(@NonNull ActivityCellPhoneAuth activityCellPhoneAuth) {
+    public boolean sendSmsAuthNumbRun(@NonNull ActivityCellPhoneAuth activityCellPhoneAuth) {
         final String wtid = activityCellPhoneAuth.getMpiTrnsId().getWtid();
         final String mid = activityCellPhoneAuth.getMid();
 
@@ -60,14 +61,16 @@ public class CellPhoneAuthSmsExternal implements CellPhoneAuthSmsExternalPort {
          * 모빌리언스 응답 코드와 MOBILIANS_RESULT_SUCCESS_CODE 비교한 결과 리턴 하면 됩.
          *  [example] return MOBILIANS_RESULT_SUCCESS_CODE.equals(mobilians.resultCode);
          */
-        return MobiliansCellPhoneAuthMapper.builder()
-                .mobileId(activityCellPhoneAuth.getSendSmsAuthNumb().getMobilId())
-                .resultCode(MOBILIANS_SMS_RESULT_SUCCESS_CODE)
-                .resultMsg("")
-                .authToken("123456")
-                .recvConts("sample-sms-recv-message-conts")
-                .msgType(MobiliansMsgType.SEND_SMS.getCode())
-                .build();
+        activityCellPhoneAuth.setReceiveMobiliansCellPhoneAuth(
+                ActivityCellPhoneAuth.ReceiveMobiliansCellPhoneAuth.builder()
+                        .mobileId(activityCellPhoneAuth.getSendSmsAuthNumb().getMobilId())
+                        .resultCode(MOBILIANS_SMS_RESULT_SUCCESS_CODE)
+                        .resultMsg("")
+                        .authToken("123456")
+                        .recvConts("sample-sms-recv-message-conts")
+                        .msgType(MobiliansMsgType.SEND_SMS.getCode())
+                        .build());
+        return true;
     }
 
 

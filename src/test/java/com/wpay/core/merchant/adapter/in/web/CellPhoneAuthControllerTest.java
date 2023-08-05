@@ -1,8 +1,8 @@
 package com.wpay.core.merchant.adapter.in.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wpay.common.global.config.SecurityConfig;
 import com.wpay.common.global.dto.BaseCommand;
+import com.wpay.core.merchant.global.config.SecurityConfig;
 import com.wpay.core.merchant.trnsmpi.application.port.in.dto.CellPhoneAuthSmsCommand;
 import com.wpay.core.merchant.trnsmpi.application.port.in.dto.CellPhoneAuthVerifyCommand;
 import org.junit.jupiter.api.Test;

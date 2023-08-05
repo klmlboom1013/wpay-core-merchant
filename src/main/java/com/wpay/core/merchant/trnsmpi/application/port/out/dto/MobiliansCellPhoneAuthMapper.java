@@ -15,4 +15,5 @@ public class MobiliansCellPhoneAuthMapper {
     private String mobileId;
     private String msgType;
     private String recvConts;
+    private String connUrl;
 }

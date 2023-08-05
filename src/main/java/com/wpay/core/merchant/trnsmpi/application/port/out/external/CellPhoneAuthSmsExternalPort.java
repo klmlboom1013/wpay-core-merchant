@@ -16,5 +16,5 @@ public interface CellPhoneAuthSmsExternalPort extends ExternalPort {
     /**
      * 인증번호 SMS 발송 요청
      */
-    MobiliansCellPhoneAuthMapper sendSmsAuthNumbRun(ActivityCellPhoneAuth activityCellPhoneAuth);
+    boolean sendSmsAuthNumbRun(ActivityCellPhoneAuth activityCellPhoneAuth);
 }

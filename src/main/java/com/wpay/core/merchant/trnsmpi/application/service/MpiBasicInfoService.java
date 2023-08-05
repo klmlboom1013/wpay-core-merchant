@@ -1,10 +1,10 @@
 package com.wpay.core.merchant.trnsmpi.application.service;
 
 import com.wpay.common.global.annotation.UseCase;
-import com.wpay.common.global.common.Functions;
 import com.wpay.common.global.dto.BaseResponse;
 import com.wpay.common.global.exception.CustomException;
 import com.wpay.common.global.exception.ErrorCode;
+import com.wpay.common.global.functions.DataFunctions;
 import com.wpay.common.global.port.PortOutFactory;
 import com.wpay.core.merchant.trnsmpi.application.port.in.usecase.MpiBasicInfoUseCasePort;
 import com.wpay.core.merchant.trnsmpi.application.port.in.usecase.MpiBasicInfoUseCaseVersion;
@@ -75,7 +75,7 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
             if(Objects.nonNull(mpiBasicInfoMapper)){
                 activityMpiBasicInfo.setMpiTrnsId(ActivityMpiBasicInfo.MpiTrnsId.builder()
                         .wtid(wtid)
-                        .srlno(Functions.makeSrlno.apply(new Date()))
+                        .srlno(DataFunctions.makeSrlno.apply(new Date()))
                         .build());
                 activityMpiBasicInfo.setActivitySendMpi(ActivityMpiBasicInfo.ActivitySendMpi.builder()
                         .connUrl(mpiBasicInfoMapper.getUrl())

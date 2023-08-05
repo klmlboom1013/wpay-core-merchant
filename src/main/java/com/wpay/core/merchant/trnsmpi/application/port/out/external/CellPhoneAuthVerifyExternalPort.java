@@ -7,5 +7,5 @@ import com.wpay.core.merchant.trnsmpi.domain.ActivityCellPhoneAuth;
 
 public interface CellPhoneAuthVerifyExternalPort extends ExternalPort {
     @Override default JobCodes getJobCode() { return JobCodes.JOB_CODE_19; }
-    MobiliansCellPhoneAuthMapper sendVerifyAuthNumbRun(ActivityCellPhoneAuth activityCellPhoneAuth);
+    boolean sendVerifyAuthNumbRun(ActivityCellPhoneAuth activityCellPhoneAuth);
 }
