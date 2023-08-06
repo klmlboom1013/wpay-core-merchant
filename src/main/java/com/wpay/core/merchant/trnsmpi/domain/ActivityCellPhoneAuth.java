@@ -2,9 +2,10 @@ package com.wpay.core.merchant.trnsmpi.domain;
 
 import com.wpay.common.global.dto.BaseCommand;
 import com.wpay.common.global.enums.JobCodes;
+import com.wpay.common.global.exception.customs.JobCodeException;
 import com.wpay.common.global.functions.PrivacyFunctions;
 import com.wpay.core.merchant.global.enums.MobileCarrier;
-import com.wpay.core.merchant.global.exception.JobCodeException;
+
 import com.wpay.core.merchant.trnsmpi.application.port.in.dto.CellPhoneAuthSmsCommand;
 import com.wpay.core.merchant.trnsmpi.application.port.in.dto.CellPhoneAuthVerifyCommand;
 import lombok.*;

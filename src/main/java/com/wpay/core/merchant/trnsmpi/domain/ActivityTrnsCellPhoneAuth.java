@@ -1,11 +1,11 @@
 package com.wpay.core.merchant.trnsmpi.domain;
 
 import com.wpay.common.global.annotation.Crypto;
-import com.wpay.common.global.dto.SelfCrypto;
+import com.wpay.common.global.dto.SelfValidating;
 import com.wpay.common.global.enums.JobCodes;
+import com.wpay.common.global.exception.customs.JobCodeException;
 import com.wpay.common.global.functions.DateFunctions;
 import com.wpay.core.merchant.global.enums.MobiliansMsgType;
-import com.wpay.core.merchant.global.exception.JobCodeException;
 import lombok.*;
 
 import java.util.Date;
@@ -13,7 +13,7 @@ import java.util.Date;
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = false)
-public class ActivityTrnsCellPhoneAuth extends SelfCrypto {
+public class ActivityTrnsCellPhoneAuth extends SelfValidating<ActivityTrnsCellPhoneAuth> {
     private final String wtid;
     private final String idcDvdCd;
     private final String jobDvdCd;
