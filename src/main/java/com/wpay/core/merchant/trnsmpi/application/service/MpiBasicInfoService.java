@@ -3,6 +3,7 @@ package com.wpay.core.merchant.trnsmpi.application.service;
 import com.wpay.common.global.annotation.UseCase;
 import com.wpay.common.global.dto.BaseResponse;
 import com.wpay.common.global.exception.CustomException;
+import com.wpay.common.global.exception.CustomExceptionData;
 import com.wpay.common.global.exception.ErrorCode;
 import com.wpay.common.global.functions.DataFunctions;
 import com.wpay.common.global.port.PortOutFactory;
@@ -16,6 +17,7 @@ import com.wpay.core.merchant.trnsmpi.domain.CompleteMpiBasicInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Date;
@@ -67,9 +69,9 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
         MpiBasicInfoMapper mpiBasicInfoMapper = null;
         try {
             mpiBasicInfoMapper = this.getExternalPort().sendMpiBasicInfoRun(activityMpiBasicInfo);
-        } catch (Exception e) {
-            log.error("[{}][{}] MpiBasicInfoExternal Error: {} - {}", mid, wtid, e.getClass().getName(), e.getMessage());
-            throw new CustomException(ErrorCode.HTTP_STATUS_500, "가맹점 기준정보 조회 MPI 연동 오류.", e, wtid, mid);
+        } catch (WebClientRequestException e) {
+            log.error("[{}][{}] MPI 기준 정보 조회 오류: {}", mid, wtid, e.getMessage());
+            throw e;
         } finally {
             /* MPI 통신 이력 저장 */
             if(Objects.nonNull(mpiBasicInfoMapper)){
@@ -93,9 +95,13 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
         log.info("[{}][{}] MPI 통신 기준 정보 조회 결과 [resultCode:{}][midStatus:{}]", mid, wtid, resultCode, midStatus);
 
         if(MpiBasicInfoMapper.MpiReceiveResult.RETCODE_FAIL.equals(resultCode))
-            throw new CustomException(ErrorCode.HTTP_STATUS_500, "MPI 통신 기준 정보 조회 결과 응답 코드 실패.", wtid, mid);
+            throw new CustomException(CustomExceptionData.builder()
+                    .errorCode(ErrorCode.HTTP_STATUS_500).message("MPI 통신 기준 정보 조회 결과 응답 코드 실패.").mid(mid).wtid(wtid)
+                    .build());
         if(MpiBasicInfoMapper.MpiReceiveMpiStatus.STATUS_FAIL.equals(midStatus))
-            throw new CustomException(ErrorCode.HTTP_STATUS_500, "MPI 통신 기준 정보 조히 결과 MID 상태 오류.", wtid, mid);
+            throw new CustomException(CustomExceptionData.builder()
+                    .errorCode(ErrorCode.HTTP_STATUS_500).message("MPI 통신 기준 정보 조히 결과 MID 상태 오류.").mid(mid).wtid(wtid)
+                    .build());
 
         /* Client 로 전달 DTO 세팅 */
         final CompleteMpiBasicInfo completeMpiBasicInfo = CompleteMpiBasicInfo.builder()

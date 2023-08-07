@@ -4,31 +4,22 @@ import com.wpay.common.global.annotation.UseCase;
 import com.wpay.common.global.dto.BaseNoDataResponse;
 import com.wpay.common.global.enums.JobCodes;
 import com.wpay.common.global.exception.CustomException;
+import com.wpay.common.global.exception.CustomExceptionData;
 import com.wpay.common.global.exception.ErrorCode;
 import com.wpay.common.global.port.PortOutFactory;
 import com.wpay.core.merchant.global.exception.LimitSendSmsException;
 import com.wpay.core.merchant.trnsmpi.application.port.in.usecase.CellPhoneAuthSmsUseCaseVersion;
 import com.wpay.core.merchant.trnsmpi.application.port.in.usecase.CellPhoneAuthUseCasePort;
-import com.wpay.core.merchant.trnsmpi.application.port.out.dto.MobiliansCellPhoneAuthMapper;
 import com.wpay.core.merchant.trnsmpi.application.port.out.external.CellPhoneAuthSmsExternalPort;
 import com.wpay.core.merchant.trnsmpi.application.port.out.external.CellPhoneAuthSmsExternalVersion;
 import com.wpay.core.merchant.trnsmpi.application.port.out.persistence.CellPhoneAuthSmsPersistencePort;
 import com.wpay.core.merchant.trnsmpi.application.port.out.persistence.CellPhoneAuthSmsPersistenceVersion;
 import com.wpay.core.merchant.trnsmpi.domain.ActivityCellPhoneAuth;
 import com.wpay.core.merchant.trnsmpi.domain.ActivityTrnsCellPhoneAuth;
-import io.netty.handler.ssl.SslHandshakeTimeoutException;
-import io.netty.handler.timeout.ReadTimeoutException;
-import io.netty.handler.timeout.TimeoutException;
-import io.netty.handler.timeout.WriteTimeoutException;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
-
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-import java.net.http.HttpConnectTimeoutException;
-import java.util.Objects;
 
 @Log4j2
 @UseCase
@@ -59,7 +50,7 @@ public class CellPhoneAuthSmsService implements CellPhoneAuthUseCasePort {
         } catch (CustomException e) {
             throw e;
         } catch (Exception ex) {
-            throw new CustomException(ErrorCode.HTTP_STATUS_500, ErrorCode.HTTP_STATUS_500.getMessage(), ex);
+            throw new CustomException(CustomExceptionData.builder().errorCode(ErrorCode.HTTP_STATUS_500).e(ex).build());
         } finally {
             /* 휴대폰 본인인증 연동 트랜잭션 Activity 모빌리언스 연도 결과 세팅. */
             activityTrnsCellPhoneAuth.setResultMapper(activityCellPhoneAuth);
