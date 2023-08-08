@@ -17,7 +17,6 @@ import com.wpay.core.merchant.trnsmpi.domain.CompleteMpiBasicInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.reactive.function.client.WebClientRequestException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Date;
@@ -69,9 +68,12 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
         MpiBasicInfoMapper mpiBasicInfoMapper = null;
         try {
             mpiBasicInfoMapper = this.getExternalPort().sendMpiBasicInfoRun(activityMpiBasicInfo);
-        } catch (WebClientRequestException e) {
-            log.error("[{}][{}] MPI 기준 정보 조회 오류: {}", mid, wtid, e.getMessage());
-            throw e;
+        } catch (CustomException ex) {
+            if(Objects.nonNull(ex.getData()) && (ex.getData() instanceof MpiBasicInfoMapper)) {
+                mpiBasicInfoMapper = (MpiBasicInfoMapper) ex.getData();
+                log.info("CustomException Data : {}", mpiBasicInfoMapper.toString());
+            }
+            throw ex;
         } finally {
             /* MPI 통신 이력 저장 */
             if(Objects.nonNull(mpiBasicInfoMapper)){
@@ -84,7 +86,6 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
                         .rspsGrmConts(mpiBasicInfoMapper.getMessage())
                         .payRsltCd(mpiBasicInfoMapper.getSendMpiBasicInfoResult().getResultCode())
                         .build());
-
                 this.getPersistencePort().recodeActivitiesRun(activityMpiBasicInfo);
             }
         }

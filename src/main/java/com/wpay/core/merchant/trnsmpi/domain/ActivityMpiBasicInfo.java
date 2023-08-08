@@ -1,15 +1,15 @@
 package com.wpay.core.merchant.trnsmpi.domain;
 
 import com.wpay.common.global.dto.BaseCommand;
+import com.wpay.common.global.dto.SelfValidating;
 import com.wpay.common.global.enums.JobCodes;
-import com.wpay.core.merchant.trnsmpi.application.port.in.dto.MpiBasicInfoCommand;
 import lombok.*;
 
 
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = false)
-public class ActivityMpiBasicInfo {
+public class ActivityMpiBasicInfo extends SelfValidating<ActivityMpiBasicInfo> {
     private final JobCodes jobCodes;
     private final String mid;
     private final String serverName;

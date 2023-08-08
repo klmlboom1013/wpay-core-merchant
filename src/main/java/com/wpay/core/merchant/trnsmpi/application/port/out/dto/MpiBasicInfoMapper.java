@@ -4,7 +4,6 @@ import lombok.*;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.util.Strings;
 
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,8 +17,13 @@ public class MpiBasicInfoMapper {
     private final String wtid;
     private final String mid;
     private final String message;
-    private final String url;
+
     private SendMpiBasicInfoResult sendMpiBasicInfoResult;
+
+
+    @Setter private String url;
+
+
 
     @Builder
     public MpiBasicInfoMapper(String wtid, String mid, String message, String url) {
@@ -32,7 +36,7 @@ public class MpiBasicInfoMapper {
     /**
      * MPI 통신 응답 중 불필요한 필드는 삭제 하여 message 를 재작성 한다.
      */
-    private String convertMessage(@NotBlank(message = "MPI 기준 정보 조회 응답 정보가 없습니다.") String message) {
+    private String convertMessage(@NonNull String message) {
         final List<String> list = new ArrayList<>();
         Arrays.stream(message.split("\\|")).iterator().forEachRemaining(e -> {
             e = e.trim();
@@ -72,6 +76,7 @@ public class MpiBasicInfoMapper {
         this.sendMpiBasicInfoResult = SendMpiBasicInfoResult.builder()
                 .resultCode(resultCode.get())
                 .midStatus(mpiStatus.get())
+                .message(message)
                 .build();
 
         String result = sb.toString();
@@ -91,15 +96,22 @@ public class MpiBasicInfoMapper {
     public static class SendMpiBasicInfoResult {
         String resultCode;
         String midStatus;
+        String errorMsg;
         MpiReceiveResult mpiReceiveResult;
         MpiReceiveMpiStatus mpiReceiveMpiStatus;
 
         @Builder
-        public SendMpiBasicInfoResult(String resultCode, String midStatus){
+        public SendMpiBasicInfoResult(String resultCode, String midStatus, String message){
             this.resultCode=resultCode;
             this.midStatus=midStatus;
             this.mpiReceiveResult = MpiReceiveResult.getInstance(resultCode);
-            this.mpiReceiveMpiStatus = MpiReceiveMpiStatus.getInstance(midStatus);
+            if(MpiReceiveResult.RETCODE_SUCCESS.equals(this.mpiReceiveResult)){
+                this.mpiReceiveMpiStatus = MpiReceiveMpiStatus.getInstance(midStatus);
+                this.errorMsg = "";
+            } else {
+                this.mpiReceiveMpiStatus = null;
+                this.errorMsg = resultCode.replace("retcode="+this.resultCode+"\\|", "").replace("\\|", "");
+            }
         }
     }
 
