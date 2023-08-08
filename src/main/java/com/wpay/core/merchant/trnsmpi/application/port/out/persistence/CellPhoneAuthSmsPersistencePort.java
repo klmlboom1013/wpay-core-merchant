@@ -2,8 +2,7 @@ package com.wpay.core.merchant.trnsmpi.application.port.out.persistence;
 
 import com.wpay.common.global.enums.JobCodes;
 import com.wpay.common.global.port.out.PersistencePort;
-import com.wpay.core.merchant.trnsmpi.domain.ActivityCellPhoneAuth;
-import com.wpay.core.merchant.trnsmpi.domain.ActivityTrnsCellPhoneAuth;
+import com.wpay.core.merchant.trnsmpi.domain.RecodeCellPhoneAuthTrns;
 
 public interface CellPhoneAuthSmsPersistencePort extends PersistencePort {
     @Override default JobCodes getJobCode() { return JobCodes.JOB_CODE_18; }
@@ -13,5 +12,5 @@ public interface CellPhoneAuthSmsPersistencePort extends PersistencePort {
      */
     Integer countBySmsAuthNumb(String wtid);
 
-    void saveTrnsSmsAuthNumbRun (ActivityTrnsCellPhoneAuth activityTrnsCellPhoneAuth);
+    void saveTrnsSmsAuthNumbRun (RecodeCellPhoneAuthTrns recodeCellPhoneAuthTrns);
 }

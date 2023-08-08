@@ -13,7 +13,7 @@ import java.util.Date;
 @Getter
 @ToString
 @EqualsAndHashCode(callSuper = false)
-public class ActivityTrnsCellPhoneAuth extends SelfValidating<ActivityTrnsCellPhoneAuth> {
+public class RecodeCellPhoneAuthTrns extends SelfValidating<RecodeCellPhoneAuthTrns> {
     private final String wtid;
     private final String idcDvdCd;
     private final String jobDvdCd;
@@ -43,7 +43,7 @@ public class ActivityTrnsCellPhoneAuth extends SelfValidating<ActivityTrnsCellPh
      * 모빌리언스 연동 요청 데이터 세팅
      */
     @Builder
-    public ActivityTrnsCellPhoneAuth(@NonNull ActivityCellPhoneAuth activityCellPhoneAuth) {
+    public RecodeCellPhoneAuthTrns(@NonNull ActivityCellPhoneAuth activityCellPhoneAuth) {
         this.wtid = activityCellPhoneAuth.getMpiTrnsId().getWtid();
         this.otrnsWtid = activityCellPhoneAuth.getMpiTrnsId().getWtid();
         this.idcDvdCd = activityCellPhoneAuth.getServerName();

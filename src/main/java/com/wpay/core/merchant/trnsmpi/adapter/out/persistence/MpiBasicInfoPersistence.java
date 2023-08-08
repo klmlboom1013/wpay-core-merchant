@@ -1,11 +1,12 @@
 package com.wpay.core.merchant.trnsmpi.adapter.out.persistence;
 
 import com.wpay.common.global.annotation.PersistenceAdapter;
-import com.wpay.common.global.functions.DateFunctions;
+import com.wpay.common.global.functions.DataFunctions;
 import com.wpay.core.merchant.trnsmpi.application.port.out.dto.MpiBasicInfoMapper;
 import com.wpay.core.merchant.trnsmpi.application.port.out.persistence.MpiBasicInfoPersistencePort;
 import com.wpay.core.merchant.trnsmpi.application.port.out.persistence.MpiBasicInfoPersistenceVersion;
 import com.wpay.core.merchant.trnsmpi.domain.ActivityMpiBasicInfo;
+import com.wpay.core.merchant.trnsmpi.domain.RecodeMpiBasicInfoTrns;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -42,29 +43,26 @@ class MpiBasicInfoPersistence implements MpiBasicInfoPersistencePort {
     }
 
     @Override
-    public void recodeActivitiesRun(@NonNull ActivityMpiBasicInfo activityMpiBasicInfo) {
-        final String wtid = activityMpiBasicInfo.getMpiTrnsId().getWtid();
-        final String mid = activityMpiBasicInfo.getMid();
-
-        final String[] datetime = DateFunctions.getDateAndTime.apply(new Date());
-
+    public void recodeActivitiesRun(@NonNull RecodeMpiBasicInfoTrns recodeMpiBasicInfoTrns) {
+        final String wtid = recodeMpiBasicInfoTrns.getWtid();
+        final String mid = recodeMpiBasicInfoTrns.getJnoffcId();
+        log.info("[{}][{}] MPI_TRNS SAVE 시작", mid, wtid);
         final MpiTrnsJpaEntity mpiTrnsJpaEntity = MpiTrnsJpaEntity.builder()
-                .wtid(activityMpiBasicInfo.getMpiTrnsId().getWtid())
-                .srlno(activityMpiBasicInfo.getMpiTrnsId().getSrlno())
-                .connUrl(activityMpiBasicInfo.getActivitySendMpi().getConnUrl())
-                .jnoffcId(activityMpiBasicInfo.getMid())
-                .idcDvdCd(activityMpiBasicInfo.getServerName())
-                .jobDvdCd(activityMpiBasicInfo.getJobCodes().getCode())
-                .payRsltCd(activityMpiBasicInfo.getActivitySendMpi().getPayRsltCd())
-                .rspsGrmConts(activityMpiBasicInfo.getActivitySendMpi().getRspsGrmConts())
-                .otransWtid(activityMpiBasicInfo.getMpiTrnsId().getWtid())
-                .regiDt(datetime[0])
-                .regiTm(datetime[1])
-                .chngDt(datetime[0])
-                .chngTm(datetime[1])
+                .wtid(recodeMpiBasicInfoTrns.getWtid())
+                .srlno(DataFunctions.makeSrlno.apply(new Date()))
+                .connUrl(recodeMpiBasicInfoTrns.getConnUrl())
+                .jnoffcId(recodeMpiBasicInfoTrns.getJnoffcId())
+                .idcDvdCd(recodeMpiBasicInfoTrns.getIdcDvdCd())
+                .jobDvdCd(recodeMpiBasicInfoTrns.getJobDvdCd())
+                .payRsltCd(recodeMpiBasicInfoTrns.getPayRsltCd())
+                .rspsGrmConts(recodeMpiBasicInfoTrns.getRspsGrmConts())
+                .otransWtid(recodeMpiBasicInfoTrns.getOtransWtid())
+                .regiDt(recodeMpiBasicInfoTrns.getRegiDt())
+                .regiTm(recodeMpiBasicInfoTrns.getRegiTm())
+                .chngDt(recodeMpiBasicInfoTrns.getChngDt())
+                .chngTm(recodeMpiBasicInfoTrns.getChngTm())
                 .build();
-        log.info("[{}][{}] Entity Save Set {}", mid, wtid, mpiTrnsJpaEntity);
-
         this.mpiTrnsRepository.save(mpiTrnsJpaEntity);
+        log.info("[{}][{}] MPI_TRNS SAVE 완료: [{}]", mid, wtid, mpiTrnsJpaEntity.toString());
     }
 }

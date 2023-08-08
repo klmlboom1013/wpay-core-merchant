@@ -18,11 +18,9 @@ public class MpiBasicInfoMapper {
     private final String mid;
     private final String message;
 
-    private SendMpiBasicInfoResult sendMpiBasicInfoResult;
-
+    @Setter private SendMpiBasicInfoResult sendMpiBasicInfoResult;
 
     @Setter private String url;
-
 
 
     @Builder
@@ -76,7 +74,6 @@ public class MpiBasicInfoMapper {
         this.sendMpiBasicInfoResult = SendMpiBasicInfoResult.builder()
                 .resultCode(resultCode.get())
                 .midStatus(mpiStatus.get())
-                .message(message)
                 .build();
 
         String result = sb.toString();
@@ -101,16 +98,20 @@ public class MpiBasicInfoMapper {
         MpiReceiveMpiStatus mpiReceiveMpiStatus;
 
         @Builder
-        public SendMpiBasicInfoResult(String resultCode, String midStatus, String message){
+        public SendMpiBasicInfoResult(String resultCode, String midStatus, String errorMsg){
             this.resultCode=resultCode;
             this.midStatus=midStatus;
             this.mpiReceiveResult = MpiReceiveResult.getInstance(resultCode);
+
             if(MpiReceiveResult.RETCODE_SUCCESS.equals(this.mpiReceiveResult)){
                 this.mpiReceiveMpiStatus = MpiReceiveMpiStatus.getInstance(midStatus);
                 this.errorMsg = "";
-            } else {
+            } else if(Strings.isBlank(errorMsg)) {
                 this.mpiReceiveMpiStatus = null;
                 this.errorMsg = resultCode.replace("retcode="+this.resultCode+"\\|", "").replace("\\|", "");
+            } else {
+                this.mpiReceiveMpiStatus = null;
+                this.errorMsg = errorMsg;
             }
         }
     }

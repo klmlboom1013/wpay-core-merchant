@@ -5,7 +5,6 @@ import com.wpay.common.global.dto.BaseResponse;
 import com.wpay.common.global.exception.CustomException;
 import com.wpay.common.global.exception.CustomExceptionData;
 import com.wpay.common.global.exception.ErrorCode;
-import com.wpay.common.global.functions.DataFunctions;
 import com.wpay.common.global.port.PortOutFactory;
 import com.wpay.core.merchant.trnsmpi.application.port.in.usecase.MpiBasicInfoUseCasePort;
 import com.wpay.core.merchant.trnsmpi.application.port.in.usecase.MpiBasicInfoUseCaseVersion;
@@ -14,12 +13,12 @@ import com.wpay.core.merchant.trnsmpi.application.port.out.external.MpiBasicInfo
 import com.wpay.core.merchant.trnsmpi.application.port.out.persistence.MpiBasicInfoPersistencePort;
 import com.wpay.core.merchant.trnsmpi.domain.ActivityMpiBasicInfo;
 import com.wpay.core.merchant.trnsmpi.domain.CompleteMpiBasicInfo;
+import com.wpay.core.merchant.trnsmpi.domain.RecodeMpiBasicInfoTrns;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Date;
 import java.util.Objects;
 
 @Log4j2
@@ -64,6 +63,10 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
         final String mid = activityMpiBasicInfo.getMid();
         log.info("[{}][{}] Set ActivityMpiBasicInfo - [{}]", mid, wtid, activityMpiBasicInfo);
 
+        /* MPI 연동 트랜잭션 이력 저장 도매인 생성 */
+        final RecodeMpiBasicInfoTrns recodeMpiBasicInfoTrns = RecodeMpiBasicInfoTrns.builder()
+                .activityMpiBasicInfo(activityMpiBasicInfo).build();
+
         /* MPI 통신 기준 정보 조회 요청 */
         MpiBasicInfoMapper mpiBasicInfoMapper = null;
         try {
@@ -71,22 +74,17 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
         } catch (CustomException ex) {
             if(Objects.nonNull(ex.getData()) && (ex.getData() instanceof MpiBasicInfoMapper)) {
                 mpiBasicInfoMapper = (MpiBasicInfoMapper) ex.getData();
-                log.info("CustomException Data : {}", mpiBasicInfoMapper.toString());
+            } else {
+                mpiBasicInfoMapper = MpiBasicInfoMapper.builder().build();
+                mpiBasicInfoMapper.setSendMpiBasicInfoResult(MpiBasicInfoMapper.SendMpiBasicInfoResult.builder()
+                        .resultCode(String.valueOf(ex.getErrorCode().getStatus())).errorMsg(ex.getDbRecodeMessage()).build());
             }
             throw ex;
         } finally {
-            /* MPI 통신 이력 저장 */
+            /* MPI 연동 트랜잭션 이력 저장 도매인 저장 */
             if(Objects.nonNull(mpiBasicInfoMapper)){
-                activityMpiBasicInfo.setMpiTrnsId(ActivityMpiBasicInfo.MpiTrnsId.builder()
-                        .wtid(wtid)
-                        .srlno(DataFunctions.makeSrlno.apply(new Date()))
-                        .build());
-                activityMpiBasicInfo.setActivitySendMpi(ActivityMpiBasicInfo.ActivitySendMpi.builder()
-                        .connUrl(mpiBasicInfoMapper.getUrl())
-                        .rspsGrmConts(mpiBasicInfoMapper.getMessage())
-                        .payRsltCd(mpiBasicInfoMapper.getSendMpiBasicInfoResult().getResultCode())
-                        .build());
-                this.getPersistencePort().recodeActivitiesRun(activityMpiBasicInfo);
+                recodeMpiBasicInfoTrns.setResultMapper(mpiBasicInfoMapper);
+                this.getPersistencePort().recodeActivitiesRun(recodeMpiBasicInfoTrns);
             }
         }
 
