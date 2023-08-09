@@ -14,6 +14,10 @@ import java.util.concurrent.atomic.AtomicReference;
 @ToString
 @EqualsAndHashCode
 public class MpiBasicInfoMapper {
+
+    public static final String MPI_RSLT_CD_SUCCESS = "000";
+    public static final String MPI_STATUS_CD_ACTIVE = "0";
+
     private final String wtid;
     private final String mid;
     private final String message;
@@ -28,11 +32,45 @@ public class MpiBasicInfoMapper {
         this.wtid = wtid;
         this.mid = mid;
         this.url = url;
-        this.message = this.convertMessage(message);
+
+        /* 기준정보 조회 결과 코드 Fetch */
+        final String[] resultCode = new String[1];
+        Arrays.stream(message.trim().split("\\|")).anyMatch(str -> {
+            if (Strings.isBlank(str) || Boolean.FALSE.equals(str.contains("="))) { return false; } // continue
+            final String[] data = str.split("=");
+            if(Boolean.FALSE.equals("retcode".equals(data[0]))) { return false; } // continue
+            resultCode[0] = data[1];
+            return true; // break;
+        });
+        log.info("MPI 기준정보 조회 결과 코드 [resultCode:{}]", resultCode[0]);
+
+        /* MPI 응답 성공 코드 "000" */
+        if (MPI_RSLT_CD_SUCCESS.equals(resultCode[0])) {
+            this.message = this.convertMessage(message);
+            return; // 불 필요한 MPI 응답 메시지 제거 후 Mapper 생성자 프로세스 종료.
+        }
+
+        /* MPI 기준정보 조회 응답 실패 코드면 에러 메시지 Fetch 진행 */
+        final String[] resultMsg = new String[1];
+        Arrays.stream(message.trim().split("\\|")).anyMatch(str -> {
+            if (Strings.isBlank(str) || str.contains("=")) { return false; } // continue
+            resultMsg[0] = str.trim();
+            return true; // break;
+        });
+
+        this.sendMpiBasicInfoResult = SendMpiBasicInfoResult.builder()
+                .resultCode(resultCode[0])
+                .errorMsg(String.format("[%s] %s", resultCode[0], resultMsg[0]))
+                .midStatus("")
+                .build();
+
+        this.message = message.trim();
+
+        log.info("MPI 기준정보 조회 결과 메시지 [resultCode:{}]", resultMsg[0]);
     }
 
     /**
-     * MPI 통신 응답 중 불필요한 필드는 삭제 하여 message 를 재작성 한다.
+     * MPI 통신 응답 중 불 필요한 필드는 삭제 하여 message 를 재작성 한다.
      */
     private String convertMessage(@NonNull String message) {
         final List<String> list = new ArrayList<>();
@@ -94,59 +132,17 @@ public class MpiBasicInfoMapper {
         String resultCode;
         String midStatus;
         String errorMsg;
-        MpiReceiveResult mpiReceiveResult;
-        MpiReceiveMpiStatus mpiReceiveMpiStatus;
 
         @Builder
-        public SendMpiBasicInfoResult(String resultCode, String midStatus, String errorMsg){
+        public SendMpiBasicInfoResult(String resultCode, String midStatus, String errorMsg) {
             this.resultCode=resultCode;
             this.midStatus=midStatus;
-            this.mpiReceiveResult = MpiReceiveResult.getInstance(resultCode);
-
-            if(MpiReceiveResult.RETCODE_SUCCESS.equals(this.mpiReceiveResult)){
-                this.mpiReceiveMpiStatus = MpiReceiveMpiStatus.getInstance(midStatus);
-                this.errorMsg = "";
-            } else if(Strings.isBlank(errorMsg)) {
-                this.mpiReceiveMpiStatus = null;
-                this.errorMsg = resultCode.replace("retcode="+this.resultCode+"\\|", "").replace("\\|", "");
-            } else {
-                this.mpiReceiveMpiStatus = null;
-                this.errorMsg = errorMsg;
-            }
-        }
-    }
-
-    /**
-     * MPI 응답 코드
-     */
-    @Getter
-    @AllArgsConstructor
-    public enum MpiReceiveResult {
-        RETCODE_SUCCESS("000"),
-        RETCODE_FAIL(""),;
-        private final String code;
-        public boolean equals(String code) { return this.code.equals(code); }
-        public static MpiReceiveResult getInstance(String code) {
-            for(MpiReceiveResult o : MpiReceiveResult.values())
-                if(o.getCode().equals(code)) return o;
-            return RETCODE_FAIL;
-        }
-    }
-
-    /**
-     * MPI 응답 MPI 상태 코드
-     */
-    @Getter
-    @AllArgsConstructor
-    public enum MpiReceiveMpiStatus {
-        STATUS_OK("0"),
-        STATUS_FAIL("");
-        private final String code;
-        public boolean equals(String code) { return this.code.equals(code); }
-        public static MpiReceiveMpiStatus getInstance(String code) {
-            for(MpiReceiveMpiStatus o : MpiReceiveMpiStatus.values())
-                if(o.getCode().equals(code)) return o;
-            return STATUS_FAIL;
+            String tempErrorMsg = MPI_RSLT_CD_SUCCESS.equals(resultCode) ? "" : errorMsg;
+            if (Boolean.FALSE.equals(MPI_RSLT_CD_SUCCESS.equals(this.resultCode)) && Strings.isBlank(tempErrorMsg))
+                tempErrorMsg = String.format("[%s] MID 기준정보 조회가 실패 했습니다. 관리자에게 문의 바랍니다.", this.resultCode);
+            else if(MPI_RSLT_CD_SUCCESS.equals(this.resultCode) && Boolean.FALSE.equals(MPI_STATUS_CD_ACTIVE.equals(this.midStatus)))
+                tempErrorMsg = String.format("[%s][%s] MID 기준정보 조회는 정상이나, 사용 가능한 MID 상태 값이 아닙니다. 관리자에게 문의 바랍니다.", this.resultCode, this.midStatus);
+            this.errorMsg = tempErrorMsg;
         }
     }
 }

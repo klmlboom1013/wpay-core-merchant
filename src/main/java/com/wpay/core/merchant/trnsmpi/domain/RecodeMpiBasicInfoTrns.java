@@ -1,6 +1,7 @@
 package com.wpay.core.merchant.trnsmpi.domain;
 
 import com.wpay.common.global.dto.SelfValidating;
+import com.wpay.common.global.functions.DataFunctions;
 import com.wpay.common.global.functions.DateFunctions;
 import com.wpay.core.merchant.trnsmpi.application.port.out.dto.MpiBasicInfoMapper;
 import lombok.*;
@@ -13,6 +14,7 @@ import java.util.Date;
 public class RecodeMpiBasicInfoTrns extends SelfValidating<RecodeMpiBasicInfoTrns> {
 
     private final String wtid;
+    private final Long srlno;
     private final String jnoffcId;
     private final String idcDvdCd;
     private final String jobDvdCd;
@@ -22,6 +24,7 @@ public class RecodeMpiBasicInfoTrns extends SelfValidating<RecodeMpiBasicInfoTrn
 
     private String connUrl;
     private String payRsltCd;
+    private String rsltMsgConts;
     private String rspsGrmConts;
     private String chngDt;
     private String chngTm;
@@ -33,6 +36,7 @@ public class RecodeMpiBasicInfoTrns extends SelfValidating<RecodeMpiBasicInfoTrn
         this.idcDvdCd = activityMpiBasicInfo.getServerName();
         this.jobDvdCd = activityMpiBasicInfo.getJobCodes().getCode();
         this.otransWtid = this.wtid;
+        this.srlno = DataFunctions.makeSrlno.apply(new Date());
 
         final String[] datetime = DateFunctions.getDateAndTime.apply(new Date());
         this.regiDt = datetime[0];
@@ -41,7 +45,8 @@ public class RecodeMpiBasicInfoTrns extends SelfValidating<RecodeMpiBasicInfoTrn
 
     public void setResultMapper (@NonNull MpiBasicInfoMapper mpiBasicInfoMapper){
         this.connUrl = mpiBasicInfoMapper.getUrl();
-        this.payRsltCd = mpiBasicInfoMapper.getSendMpiBasicInfoResult().getMpiReceiveResult().getCode();
+        this.payRsltCd = mpiBasicInfoMapper.getSendMpiBasicInfoResult().getResultCode();
+        this.rsltMsgConts = mpiBasicInfoMapper.getSendMpiBasicInfoResult().getErrorMsg();
         this.rspsGrmConts = mpiBasicInfoMapper.getMessage();
 
         final String[] datetime = DateFunctions.getDateAndTime.apply(new Date());

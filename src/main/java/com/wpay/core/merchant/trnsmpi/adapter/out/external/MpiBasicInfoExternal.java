@@ -71,8 +71,8 @@ class MpiBasicInfoExternal implements MpiBasicInfoExternalPort {
 
         // 응답 데이터 Mapper 세팅.
         return MpiBasicInfoMapper.builder()
-                .wtid(activityMpiBasicInfo.getMpiTrnsId().getWtid())
-                .mid(activityMpiBasicInfo.getMid())
+                .wtid(wtid)
+                .mid(mid)
                 .message(result)
                 .url(uri.toString())
                 .build();

@@ -1,7 +1,6 @@
 package com.wpay.core.merchant.trnsmpi.adapter.out.persistence;
 
 import com.wpay.common.global.annotation.PersistenceAdapter;
-import com.wpay.common.global.functions.DataFunctions;
 import com.wpay.core.merchant.trnsmpi.application.port.out.dto.MpiBasicInfoMapper;
 import com.wpay.core.merchant.trnsmpi.application.port.out.persistence.MpiBasicInfoPersistencePort;
 import com.wpay.core.merchant.trnsmpi.application.port.out.persistence.MpiBasicInfoPersistenceVersion;
@@ -10,9 +9,9 @@ import com.wpay.core.merchant.trnsmpi.domain.RecodeMpiBasicInfoTrns;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Date;
 
 @Log4j2
 @PersistenceAdapter
@@ -46,23 +45,13 @@ class MpiBasicInfoPersistence implements MpiBasicInfoPersistencePort {
     public void recodeActivitiesRun(@NonNull RecodeMpiBasicInfoTrns recodeMpiBasicInfoTrns) {
         final String wtid = recodeMpiBasicInfoTrns.getWtid();
         final String mid = recodeMpiBasicInfoTrns.getJnoffcId();
-        log.info("[{}][{}] MPI_TRNS SAVE 시작", mid, wtid);
-        final MpiTrnsJpaEntity mpiTrnsJpaEntity = MpiTrnsJpaEntity.builder()
-                .wtid(recodeMpiBasicInfoTrns.getWtid())
-                .srlno(DataFunctions.makeSrlno.apply(new Date()))
-                .connUrl(recodeMpiBasicInfoTrns.getConnUrl())
-                .jnoffcId(recodeMpiBasicInfoTrns.getJnoffcId())
-                .idcDvdCd(recodeMpiBasicInfoTrns.getIdcDvdCd())
-                .jobDvdCd(recodeMpiBasicInfoTrns.getJobDvdCd())
-                .payRsltCd(recodeMpiBasicInfoTrns.getPayRsltCd())
-                .rspsGrmConts(recodeMpiBasicInfoTrns.getRspsGrmConts())
-                .otransWtid(recodeMpiBasicInfoTrns.getOtransWtid())
-                .regiDt(recodeMpiBasicInfoTrns.getRegiDt())
-                .regiTm(recodeMpiBasicInfoTrns.getRegiTm())
-                .chngDt(recodeMpiBasicInfoTrns.getChngDt())
-                .chngTm(recodeMpiBasicInfoTrns.getChngTm())
-                .build();
-        this.mpiTrnsRepository.save(mpiTrnsJpaEntity);
-        log.info("[{}][{}] MPI_TRNS SAVE 완료: [{}]", mid, wtid, mpiTrnsJpaEntity.toString());
+        log.info("[{}][{}] MPI_TRNS SAVE 시작.\n[{}]", mid, wtid, recodeMpiBasicInfoTrns.toString());
+
+        final MpiTrnsJpaEntity mpiTrnsJpaEntity = new MpiTrnsJpaEntity();
+        BeanUtils.copyProperties(recodeMpiBasicInfoTrns, mpiTrnsJpaEntity);
+        log.info("[{}][{}] Set Entity => [{}]", mid, wtid, mpiTrnsJpaEntity.toString());
+
+        MpiTrnsJpaEntity resultEntity = this.mpiTrnsRepository.save(mpiTrnsJpaEntity);
+        log.info("[{}][{}] MPI_TRNS SAVE 완료: [{}]", mid, wtid, resultEntity.toString());
     }
 }

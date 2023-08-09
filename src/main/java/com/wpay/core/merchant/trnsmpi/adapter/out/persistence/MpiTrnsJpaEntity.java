@@ -1,13 +1,6 @@
 package com.wpay.core.merchant.trnsmpi.adapter.out.persistence;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -18,12 +11,7 @@ import javax.persistence.Index;
 import javax.persistence.Table;
 import java.io.Serializable;
 
-@Builder
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper=false)
-@Getter
-@ToString
+
 @Entity
 @Table(
         name="WPAY_MPI_TRNS",
@@ -33,6 +21,10 @@ import java.io.Serializable;
         }
 )
 @IdClass(MpiTrnsJpaEntity.MpiTrnsId.class)
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(callSuper=false)
 public class MpiTrnsJpaEntity {
 
     @Id @Column(name="WTID", length=64, unique=true)

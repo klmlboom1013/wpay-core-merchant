@@ -4,6 +4,7 @@ import com.wpay.common.global.annotation.Crypto;
 import com.wpay.common.global.dto.SelfValidating;
 import com.wpay.common.global.enums.JobCodes;
 import com.wpay.common.global.exception.customs.JobCodeException;
+import com.wpay.common.global.functions.DataFunctions;
 import com.wpay.common.global.functions.DateFunctions;
 import com.wpay.core.merchant.global.enums.MobiliansMsgType;
 import lombok.*;
@@ -15,6 +16,7 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = false)
 public class RecodeCellPhoneAuthTrns extends SelfValidating<RecodeCellPhoneAuthTrns> {
     private final String wtid;
+    private final Long srlno;
     private final String idcDvdCd;
     private final String jobDvdCd;
     private final String regiDt;
@@ -30,7 +32,6 @@ public class RecodeCellPhoneAuthTrns extends SelfValidating<RecodeCellPhoneAuthT
     private final String ecdBthDt;
 
     private final String otrnsWtid;
-
     private String mobilTransNo; // mobilId
     private String payRsltCd;
     private String rsltMsgConts;
@@ -53,6 +54,7 @@ public class RecodeCellPhoneAuthTrns extends SelfValidating<RecodeCellPhoneAuthT
         this.buyerNm = activityCellPhoneAuth.getSendSmsAuthNumb().getUserNm();
         this.ecdCphno = activityCellPhoneAuth.getSendSmsAuthNumb().getPhoneNo();
         this.ecdBthDt = activityCellPhoneAuth.getSendSmsAuthNumb().getUserSocNo();
+        this.srlno = DataFunctions.makeSrlno.apply(new Date());
 
         final String[] datetime = DateFunctions.getDateAndTime.apply(new Date());
         this.regiDt = datetime[0];

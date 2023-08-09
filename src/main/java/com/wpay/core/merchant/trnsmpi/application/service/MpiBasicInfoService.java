@@ -89,29 +89,26 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
         }
 
         /* MPI 통신 기준 정보 조회 결과 코드 및 상태 검증 */
-        final String resultCode = mpiBasicInfoMapper.getSendMpiBasicInfoResult().getMpiReceiveResult().getCode();
-        final String midStatus = mpiBasicInfoMapper.getSendMpiBasicInfoResult().getMpiReceiveMpiStatus().getCode();
+        final String resultCode = mpiBasicInfoMapper.getSendMpiBasicInfoResult().getResultCode();
+        final String midStatus = mpiBasicInfoMapper.getSendMpiBasicInfoResult().getMidStatus();
         log.info("[{}][{}] MPI 통신 기준 정보 조회 결과 [resultCode:{}][midStatus:{}]", mid, wtid, resultCode, midStatus);
 
-        if(MpiBasicInfoMapper.MpiReceiveResult.RETCODE_FAIL.equals(resultCode))
+        if (Boolean.FALSE.equals(MpiBasicInfoMapper.MPI_RSLT_CD_SUCCESS.equals(resultCode)
+                && MpiBasicInfoMapper.MPI_STATUS_CD_ACTIVE.equals(midStatus))) {
             throw new CustomException(CustomExceptionData.builder()
-                    .errorCode(ErrorCode.HTTP_STATUS_500).message("MPI 통신 기준 정보 조회 결과 응답 코드 실패.").mid(mid).wtid(wtid)
+                    .errorCode(ErrorCode.HTTP_STATUS_503)
+                    .message(mpiBasicInfoMapper.getSendMpiBasicInfoResult().getErrorMsg())
+                    .mid(mid).wtid(wtid)
                     .build());
-        if(MpiBasicInfoMapper.MpiReceiveMpiStatus.STATUS_FAIL.equals(midStatus))
-            throw new CustomException(CustomExceptionData.builder()
-                    .errorCode(ErrorCode.HTTP_STATUS_500).message("MPI 통신 기준 정보 조히 결과 MID 상태 오류.").mid(mid).wtid(wtid)
-                    .build());
-
-        /* Client 로 전달 DTO 세팅 */
-        final CompleteMpiBasicInfo completeMpiBasicInfo = CompleteMpiBasicInfo.builder()
-                .wtid(mpiBasicInfoMapper.getWtid())
-                .mid(mpiBasicInfoMapper.getMid())
-                .message(mpiBasicInfoMapper.getMessage())
-                .build();
+        }
 
         return BaseResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .data(completeMpiBasicInfo)
+                .data(CompleteMpiBasicInfo.builder()
+                        .wtid(mpiBasicInfoMapper.getWtid())
+                        .mid(mpiBasicInfoMapper.getMid())
+                        .message(mpiBasicInfoMapper.getMessage())
+                        .build())
                 .build();
     }
 

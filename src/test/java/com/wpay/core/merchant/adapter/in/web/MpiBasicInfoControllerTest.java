@@ -25,7 +25,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @Import(SecurityConfig.class)
-class CompleteMpiBasicInfoControllerTest {
+class MpiBasicInfoControllerTest {
 
     @Autowired
     private MockMvc mvc;
@@ -49,6 +49,7 @@ class CompleteMpiBasicInfoControllerTest {
     private String getMpiBasicInfoCommandJsonStr() throws Exception {
         MpiBasicInfoCommand mpiBasicInfoCommand = new MpiBasicInfoCommand();
         String mid = "INIwpayT03";
+//        String mid = "INIwpayTTT";
         Field field1 = BaseCommand.class.getDeclaredField("mid");
         field1.setAccessible(true);
         field1.set(mpiBasicInfoCommand, mid);
