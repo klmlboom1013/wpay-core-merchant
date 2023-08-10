@@ -93,7 +93,7 @@ class MpiBasicInfoService implements MpiBasicInfoUseCasePort {
         if (Boolean.FALSE.equals(MpiBasicInfoMapper.MPI_RSLT_CD_SUCCESS.equals(resultCode)
                 && MpiBasicInfoMapper.MPI_STATUS_CD_ACTIVE.equals(midStatus))) {
             throw new CustomException(CustomExceptionData.builder()
-                    .errorCode(ErrorCode.HTTP_STATUS_503)
+                    .errorCode(ErrorCode.HTTP_STATUS_501)
                     .message(mpiBasicInfoMapper.getSendMpiBasicInfoResult().getErrorMsg())
                     .jnoffcId(jnoffcId).wtid(wtid)
                     .build());

@@ -48,8 +48,8 @@ class MpiBasicInfoControllerTest {
 
     private String getMpiBasicInfoCommandJsonStr() throws Exception {
         MpiBasicInfoCommand mpiBasicInfoCommand = new MpiBasicInfoCommand();
-        String mid = "INIwpayT03";
-//        String mid = "INIwpayTTT";
+//        String mid = "INIwpayT03";
+        String mid = "INIwpayTTT";
         Field field1 = BaseCommand.class.getDeclaredField("jnoffcId");
         field1.setAccessible(true);
         field1.set(mpiBasicInfoCommand, mid);

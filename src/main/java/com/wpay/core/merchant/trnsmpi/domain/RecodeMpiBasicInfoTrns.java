@@ -32,12 +32,14 @@ public class RecodeMpiBasicInfoTrns extends SelfValidating<RecodeMpiBasicInfoTrn
     @Builder
     public RecodeMpiBasicInfoTrns(@NonNull ActivityMpiBasicInfo activityMpiBasicInfo) {
         this.wtid = activityMpiBasicInfo.getMpiTrnsId().getWtid();
+        this.jobDvdCd = activityMpiBasicInfo.getJobCodes().getCode();
+
         this.jnoffcId = activityMpiBasicInfo.getJnoffcId();
         this.idcDvdCd = activityMpiBasicInfo.getIdcDvdCd();
-        this.jobDvdCd = activityMpiBasicInfo.getJobCodes().getCode();
-        this.otransWtid = this.wtid;
-        this.srlno = DataFunctions.makeSrlno.apply(new Date());
 
+        this.otransWtid = this.wtid;
+
+        this.srlno = DataFunctions.makeSrlno.apply(new Date());
         final String[] datetime = DateFunctions.getDateAndTime.apply(new Date());
         this.regiDt = datetime[0];
         this.regiTm = datetime[1];

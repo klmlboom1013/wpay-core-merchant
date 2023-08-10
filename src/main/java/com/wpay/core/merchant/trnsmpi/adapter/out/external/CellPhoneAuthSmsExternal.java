@@ -38,7 +38,7 @@ public class CellPhoneAuthSmsExternal implements CellPhoneAuthSmsExternalPort {
          * 모빌리언스 응답 코드와 MOBILIANS_RESULT_SUCCESS_CODE 비교한 결과 리턴 하면 됩.
          * 응답 데이터 중 mobilId 받아 activityCellPhoneAuth.sendSmsAuthNumb 에 저장 한다.
          */
-        activityCellPhoneAuth.getSendSmsAuthNumb().setMobilId("sampleMobilId001");
+        activityCellPhoneAuth.getSendSmsAuthNumb().setMobilTransNo("sampleMobilId001");
 
         return true;
     }
@@ -52,7 +52,7 @@ public class CellPhoneAuthSmsExternal implements CellPhoneAuthSmsExternalPort {
         if ("Y".equals(activityCellPhoneAuth.getSendSmsAuthNumb().getAltteul()) &&
                 Boolean.FALSE.equals(this.sendConfirmMvnoCompanyRun(activityCellPhoneAuth))) {
             log.error("[{}][{}] ", jnoffcId, wtid);
-            throw new CustomException(ErrorCode.HTTP_STATUS_500, "모빌리언스 측 알뜰폰 사업자 번호 조회가 원활 하지않 습니다. 잠시 후 다시 시도 해 주세요.");
+            throw new CustomException(ErrorCode.HTTP_STATUS_500, "모빌리언스 알뜰폰 사업자 번호 조회가 원활 하지않 습니다. 잠시 후 다시 시도 해 주세요.");
         }
         log.info("[{}][{}] 모빌리언스 휴대폰 본인인증 SMS 인증번호 발송 요청 External 시작.", jnoffcId, wtid);
 
@@ -63,7 +63,7 @@ public class CellPhoneAuthSmsExternal implements CellPhoneAuthSmsExternalPort {
          */
         activityCellPhoneAuth.setReceiveMobiliansCellPhoneAuth(
                 ActivityCellPhoneAuth.ReceiveMobiliansCellPhoneAuth.builder()
-                        .mobileId(activityCellPhoneAuth.getSendSmsAuthNumb().getMobilId())
+                        .mobileId(activityCellPhoneAuth.getSendSmsAuthNumb().getMobilTransNo())
                         .resultCode(MOBILIANS_SMS_RESULT_SUCCESS_CODE)
                         .resultMsg("")
                         .authToken("123456")

@@ -64,7 +64,7 @@ public class MpiBasicInfoMapper {
 
         this.message = message.trim();
 
-        log.info("MPI 기준정보 조회 결과 메시지 [resultCode:{}]", resultMsg[0]);
+        log.info("MPI 기준정보 조회 결과 메시지 [resultMsg:{}]", resultMsg[0]);
     }
 
     /**
