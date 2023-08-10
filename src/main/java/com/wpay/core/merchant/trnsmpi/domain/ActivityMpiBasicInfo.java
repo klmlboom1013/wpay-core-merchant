@@ -11,18 +11,18 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = false)
 public class ActivityMpiBasicInfo extends SelfValidating<ActivityMpiBasicInfo> {
     private final JobCodes jobCodes;
-    private final String mid;
-    private final String serverName;
 
+    @Setter private String jnoffcId;
+    @Setter private String idcDvdCd;
     @Setter private MpiTrnsId mpiTrnsId;
     @Setter private ActivitySendMpi activitySendMpi;
 
     @Builder
     public ActivityMpiBasicInfo(BaseCommand<?> baseCommand) {
         this.jobCodes = baseCommand.getJobCodes();
-        this.mid = baseCommand.getMid();
+        this.jnoffcId = baseCommand.getJnoffcId();
+        this.idcDvdCd = baseCommand.getIdcDvdCd();
         this.mpiTrnsId = MpiTrnsId.builder().wtid(baseCommand.getWtid()).build();
-        this.serverName = baseCommand.getServerName();
     }
 
     /**

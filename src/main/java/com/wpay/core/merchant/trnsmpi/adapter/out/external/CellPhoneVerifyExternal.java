@@ -28,8 +28,8 @@ public class CellPhoneVerifyExternal implements CellPhoneAuthVerifyExternalPort 
     @Override
     public boolean sendVerifyAuthNumbRun(@NonNull ActivityCellPhoneAuth activityCellPhoneAuth) {
         final String wtid = activityCellPhoneAuth.getMpiTrnsId().getWtid();
-        final String mid = activityCellPhoneAuth.getMid();
-        log.info("[{}][{}] 모빌리언스 휴대폰 본인인증 인증번호 확인 요청 External 시작.", mid, wtid);
+        final String jnoffcId = activityCellPhoneAuth.getJnoffcId();
+        log.info("[{}][{}] 모빌리언스 휴대폰 본인인증 인증번호 확인 요청 External 시작.", jnoffcId, wtid);
 
         // 응답 데이터 Mapper 세팅.
         activityCellPhoneAuth.setReceiveMobiliansCellPhoneAuth(

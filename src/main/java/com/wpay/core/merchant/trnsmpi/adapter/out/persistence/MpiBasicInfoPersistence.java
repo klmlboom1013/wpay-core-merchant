@@ -25,18 +25,18 @@ class MpiBasicInfoPersistence implements MpiBasicInfoPersistencePort {
     @Override
     public MpiBasicInfoMapper loadActivitiesRun(@NonNull ActivityMpiBasicInfo activityMpiBasicInfo) {
         final String wtid = activityMpiBasicInfo.getMpiTrnsId().getWtid();
-        final String mid = activityMpiBasicInfo.getMid();
+        final String jnoffcId = activityMpiBasicInfo.getJnoffcId();
         final Long srlno = this.mpiTrnsRepository.getMpiTrnsByWtid(wtid);
-        log.info("[{}][{}] MPI_TRNS SRLNO 조회 완료 [wtid:{}][srlno:{}]", mid, wtid, wtid, srlno);
+        log.info("[{}][{}] MPI_TRNS SRLNO 조회 완료 [wtid:{}][srlno:{}]", jnoffcId, wtid, wtid, srlno);
 
         final MpiTrnsJpaEntity mpiTrnsJpaEntity = this.mpiTrnsRepository
                 .findById(new MpiTrnsJpaEntity.MpiTrnsId(wtid, srlno))
                 .orElseThrow(() -> new EntityNotFoundException("MpiTrns 조회 결과가 없습니다."));
-        log.info("[{}][{}] MPI_TRNS 조회 결과 : {}", mid, wtid, mpiTrnsJpaEntity);
+        log.info("[{}][{}] MPI_TRNS 조회 결과 : {}", jnoffcId, wtid, mpiTrnsJpaEntity);
 
         return MpiBasicInfoMapper.builder()
                 .wtid(activityMpiBasicInfo.getMpiTrnsId().getWtid())
-                .mid(activityMpiBasicInfo.getMid())
+                .jnoffcId(activityMpiBasicInfo.getJnoffcId())
                 .message(mpiTrnsJpaEntity.getRspsGrmConts())
                 .build();
     }
@@ -44,14 +44,14 @@ class MpiBasicInfoPersistence implements MpiBasicInfoPersistencePort {
     @Override
     public void recodeActivitiesRun(@NonNull RecodeMpiBasicInfoTrns recodeMpiBasicInfoTrns) {
         final String wtid = recodeMpiBasicInfoTrns.getWtid();
-        final String mid = recodeMpiBasicInfoTrns.getJnoffcId();
-        log.info("[{}][{}] MPI_TRNS SAVE 시작.\n[{}]", mid, wtid, recodeMpiBasicInfoTrns.toString());
+        final String jnoffcId = recodeMpiBasicInfoTrns.getJnoffcId();
+        log.info("[{}][{}] MPI_TRNS SAVE 시작.\n[{}]", jnoffcId, wtid, recodeMpiBasicInfoTrns.toString());
 
         final MpiTrnsJpaEntity mpiTrnsJpaEntity = new MpiTrnsJpaEntity();
         BeanUtils.copyProperties(recodeMpiBasicInfoTrns, mpiTrnsJpaEntity);
-        log.info("[{}][{}] Set Entity => [{}]", mid, wtid, mpiTrnsJpaEntity.toString());
+        log.info("[{}][{}] Set Entity => [{}]", jnoffcId, wtid, mpiTrnsJpaEntity.toString());
 
         MpiTrnsJpaEntity resultEntity = this.mpiTrnsRepository.save(mpiTrnsJpaEntity);
-        log.info("[{}][{}] MPI_TRNS SAVE 완료: [{}]", mid, wtid, resultEntity.toString());
+        log.info("[{}][{}] MPI_TRNS SAVE 완료: [{}]", jnoffcId, wtid, resultEntity.toString());
     }
 }

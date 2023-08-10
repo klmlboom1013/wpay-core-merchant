@@ -18,19 +18,17 @@ public class MpiBasicInfoMapper {
     public static final String MPI_RSLT_CD_SUCCESS = "000";
     public static final String MPI_STATUS_CD_ACTIVE = "0";
 
-    private final String wtid;
-    private final String mid;
     private final String message;
 
+    @Setter private String wtid;
+    @Setter private String jnoffcId;
+    @Setter private String url;
     @Setter private SendMpiBasicInfoResult sendMpiBasicInfoResult;
 
-    @Setter private String url;
-
-
     @Builder
-    public MpiBasicInfoMapper(String wtid, String mid, String message, String url) {
+    public MpiBasicInfoMapper(String wtid, String jnoffcId, String message, String url) {
         this.wtid = wtid;
-        this.mid = mid;
+        this.jnoffcId = jnoffcId;
         this.url = url;
 
         /* 기준정보 조회 결과 코드 Fetch */

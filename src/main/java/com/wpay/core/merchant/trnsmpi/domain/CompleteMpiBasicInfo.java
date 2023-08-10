@@ -1,8 +1,7 @@
 package com.wpay.core.merchant.trnsmpi.domain;
 
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 import lombok.extern.log4j.Log4j2;
 
 import javax.validation.constraints.NotBlank;
@@ -10,16 +9,23 @@ import java.util.*;
 
 @Log4j2
 @Getter
+@ToString
 @EqualsAndHashCode(callSuper = false)
 public class CompleteMpiBasicInfo {
-    private final String wtid;
-    private final String mid;
+
+    @Setter
+    private String wtid;
+
+    @Setter
+    @JsonProperty("mid")
+    private String jnoffcId;
+
     private final Map<String, Object> mpiBasicInfos = new HashMap<>();
 
     @Builder
-    public CompleteMpiBasicInfo(String wtid, String mid, String message) {
+    public CompleteMpiBasicInfo(String wtid, String jnoffcId, String message) {
         this.wtid = wtid;
-        this.mid = mid;
+        this.jnoffcId = jnoffcId;
         this.setMapperData(message);
     }
 

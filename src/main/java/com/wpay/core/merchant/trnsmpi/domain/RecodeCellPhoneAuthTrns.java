@@ -47,9 +47,9 @@ public class RecodeCellPhoneAuthTrns extends SelfValidating<RecodeCellPhoneAuthT
     public RecodeCellPhoneAuthTrns(@NonNull ActivityCellPhoneAuth activityCellPhoneAuth) {
         this.wtid = activityCellPhoneAuth.getMpiTrnsId().getWtid();
         this.otrnsWtid = activityCellPhoneAuth.getMpiTrnsId().getWtid();
-        this.idcDvdCd = activityCellPhoneAuth.getServerName();
+        this.idcDvdCd = activityCellPhoneAuth.getIdcDvdCd();
         this.jobDvdCd = activityCellPhoneAuth.getJobCodes().getCode();
-        this.jnoffcId = activityCellPhoneAuth.getMid();
+        this.jnoffcId = activityCellPhoneAuth.getJnoffcId();
         this.mmtTccoDvdCd = activityCellPhoneAuth.getSendSmsAuthNumb().getCommandId().name();
         this.buyerNm = activityCellPhoneAuth.getSendSmsAuthNumb().getUserNm();
         this.ecdCphno = activityCellPhoneAuth.getSendSmsAuthNumb().getPhoneNo();
@@ -65,7 +65,7 @@ public class RecodeCellPhoneAuthTrns extends SelfValidating<RecodeCellPhoneAuthT
         else if ((JobCodes.JOB_CODE_19.equals(activityCellPhoneAuth.getJobCodes())))
             this.authReqTypeCd = MobiliansMsgType.CERTIFICATION.getCode();
         else
-            throw new JobCodeException(activityCellPhoneAuth.getMpiTrnsId().getWtid(), activityCellPhoneAuth.getMid());
+            throw new JobCodeException(activityCellPhoneAuth.getMpiTrnsId().getWtid(), activityCellPhoneAuth.getJnoffcId());
     }
 
     /**

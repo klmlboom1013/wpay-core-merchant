@@ -35,11 +35,11 @@ public class CellPhoneAuthSmsService implements CellPhoneAuthUseCasePort {
     @Override
     public BaseNoDataResponse sendMobiliansRun(@NonNull ActivityCellPhoneAuth activityCellPhoneAuth){
         final String wtid = activityCellPhoneAuth.getMpiTrnsId().getWtid();
-        final String mid = activityCellPhoneAuth.getMid();
-        log.info("[{}][{}] 휴대폰 본인인증 SMS 인증번호 발송 요청 Service 시작.", mid, wtid);
+        final String jnoffcId = activityCellPhoneAuth.getJnoffcId();
+        log.info("[{}][{}] 휴대폰 본인인증 SMS 인증번호 발송 요청 Service 시작.", jnoffcId, wtid);
 
         final int sendSmsCount = this.getPersistence().countBySmsAuthNumb(wtid);
-        if(LIMIT_SEND_SMS_AUTH_NUMB <= sendSmsCount) {throw new LimitSendSmsException(wtid, mid, LIMIT_SEND_SMS_AUTH_NUMB, sendSmsCount);}
+        if(LIMIT_SEND_SMS_AUTH_NUMB <= sendSmsCount) {throw new LimitSendSmsException(wtid, jnoffcId, LIMIT_SEND_SMS_AUTH_NUMB, sendSmsCount);}
 
         /* 휴대폰 본인인증 연동 트랜잭션 Activity 생성. */
         final RecodeCellPhoneAuthTrns recodeCellPhoneAuthTrns =

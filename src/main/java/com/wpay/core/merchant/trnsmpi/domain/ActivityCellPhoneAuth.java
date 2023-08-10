@@ -18,8 +18,8 @@ import javax.validation.constraints.NotBlank;
 @EqualsAndHashCode(callSuper = false)
 public class ActivityCellPhoneAuth {
     private final JobCodes jobCodes;
-    private final String mid;
-    private final String serverName;
+    private final String jnoffcId;
+    private final String idcDvdCd;
     private final MpiTrnsId mpiTrnsId;
     private final SendSmsAuthNumb sendSmsAuthNumb;
     private final SendVerifyAuthNumb sendVerifyAuthNumb;
@@ -33,8 +33,8 @@ public class ActivityCellPhoneAuth {
     @Builder
     public ActivityCellPhoneAuth(BaseCommand<?> baseCommand) {
         this.jobCodes = baseCommand.getJobCodes();
-        this.mid = baseCommand.getMid();
-        this.serverName = baseCommand.getServerName();
+        this.jnoffcId = baseCommand.getJnoffcId();
+        this.idcDvdCd = baseCommand.getIdcDvdCd();
         this.mpiTrnsId = MpiTrnsId.builder().wtid(baseCommand.getWtid()).build();
 
         if(JobCodes.JOB_CODE_18.equals(this.jobCodes)) {
@@ -44,7 +44,7 @@ public class ActivityCellPhoneAuth {
             this.sendVerifyAuthNumb = SendVerifyAuthNumb.builder().cellPhoneAuthVerifyCommand((CellPhoneAuthVerifyCommand) baseCommand).build();
             this.sendSmsAuthNumb = SendSmsAuthNumb.builder().build();
         } else {
-            throw new JobCodeException(this.mpiTrnsId.getWtid(), this.mid);
+            throw new JobCodeException(this.mpiTrnsId.getWtid(), this.jnoffcId);
         }
     }
 

@@ -6,7 +6,6 @@ import com.wpay.common.global.enums.JobCodes;
 import com.wpay.common.global.port.PortOutFactory;
 import com.wpay.core.merchant.trnsmpi.application.port.in.usecase.CellPhoneAuthUseCasePort;
 import com.wpay.core.merchant.trnsmpi.application.port.in.usecase.CellPhoneAuthVerifyUseCaseVersion;
-import com.wpay.core.merchant.trnsmpi.application.port.out.dto.MobiliansCellPhoneAuthMapper;
 import com.wpay.core.merchant.trnsmpi.application.port.out.external.CellPhoneAuthVerifyExternalPort;
 import com.wpay.core.merchant.trnsmpi.application.port.out.external.CellPhoneAuthVerifyExternalVersion;
 import com.wpay.core.merchant.trnsmpi.application.port.out.persistence.CellPhoneAuthVerifyPersistencePort;
@@ -30,8 +29,8 @@ public class CellPhoneAuthVerifyService implements CellPhoneAuthUseCasePort {
     @Override
     public BaseResponse sendMobiliansRun(ActivityCellPhoneAuth activityCellPhoneAuth){
         final String wtid = activityCellPhoneAuth.getMpiTrnsId().getWtid();
-        final String mid = activityCellPhoneAuth.getMid();
-        log.info("[{}][{}] 휴대폰 본인인증 인증번호 확인 요청 Service 시작.", mid, wtid);
+        final String jnoffcId = activityCellPhoneAuth.getJnoffcId();
+        log.info("[{}][{}] 휴대폰 본인인증 인증번호 확인 요청 Service 시작.", jnoffcId, wtid);
 
 
         /* 모빌리언스 본인인증 인증번호 확인 요청 연동 */
@@ -42,7 +41,7 @@ public class CellPhoneAuthVerifyService implements CellPhoneAuthUseCasePort {
 
         return BaseResponse.builder()
                 .httpStatus(HttpStatus.OK)
-                .data(CompleteCellPhoneAuth.builder().mid(mid).wtid(wtid).build())
+                .data(CompleteCellPhoneAuth.builder().jnoffcId(jnoffcId).wtid(wtid).build())
                 .build();
     }
 

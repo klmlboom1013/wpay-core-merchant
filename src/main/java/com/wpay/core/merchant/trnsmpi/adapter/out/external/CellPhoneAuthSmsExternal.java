@@ -30,8 +30,8 @@ public class CellPhoneAuthSmsExternal implements CellPhoneAuthSmsExternalPort {
     @Override
     public boolean sendConfirmMvnoCompanyRun(@NonNull ActivityCellPhoneAuth activityCellPhoneAuth) {
         final String wtid = activityCellPhoneAuth.getMpiTrnsId().getWtid();
-        final String mid = activityCellPhoneAuth.getMid();
-        log.info("[{}][{}] 모빌리언스 휴대폰 본인인증 통신사 MVNO 사업자 확인 요청 External 시작.", mid, wtid);
+        final String jnoffcId = activityCellPhoneAuth.getJnoffcId();
+        log.info("[{}][{}] 모빌리언스 휴대폰 본인인증 통신사 MVNO 사업자 확인 요청 External 시작.", jnoffcId, wtid);
 
         // TODO 모빌리언스 MVNO 통신사 사업자 확인 요청 연동 구현 해 주세요.
         /*
@@ -46,15 +46,15 @@ public class CellPhoneAuthSmsExternal implements CellPhoneAuthSmsExternalPort {
     @Override
     public boolean sendSmsAuthNumbRun(@NonNull ActivityCellPhoneAuth activityCellPhoneAuth) {
         final String wtid = activityCellPhoneAuth.getMpiTrnsId().getWtid();
-        final String mid = activityCellPhoneAuth.getMid();
+        final String jnoffcId = activityCellPhoneAuth.getJnoffcId();
 
         /* KTR, LGR 알뜰폰 사업자 확인 (SKR은 알뜰폰 사업자 확인 제외) */
         if ("Y".equals(activityCellPhoneAuth.getSendSmsAuthNumb().getAltteul()) &&
                 Boolean.FALSE.equals(this.sendConfirmMvnoCompanyRun(activityCellPhoneAuth))) {
-            log.error("[{}][{}] ", mid, wtid);
+            log.error("[{}][{}] ", jnoffcId, wtid);
             throw new CustomException(ErrorCode.HTTP_STATUS_500, "모빌리언스 측 알뜰폰 사업자 번호 조회가 원활 하지않 습니다. 잠시 후 다시 시도 해 주세요.");
         }
-        log.info("[{}][{}] 모빌리언스 휴대폰 본인인증 SMS 인증번호 발송 요청 External 시작.", mid, wtid);
+        log.info("[{}][{}] 모빌리언스 휴대폰 본인인증 SMS 인증번호 발송 요청 External 시작.", jnoffcId, wtid);
 
         // TODO 모빌리언스 휴대폰 본인인증 인증번호 SMS 발송 요청 구현 해 주세요.
         /*

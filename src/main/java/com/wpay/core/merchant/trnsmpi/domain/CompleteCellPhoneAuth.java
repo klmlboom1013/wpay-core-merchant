@@ -9,7 +9,5 @@ import lombok.*;
 @EqualsAndHashCode
 public class CompleteCellPhoneAuth {
     String wtid;
-    String mid;
-
-
+    String jnoffcId;
 }

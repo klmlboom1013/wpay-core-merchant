@@ -31,15 +31,15 @@ public class CellPhoneAuthSmsPersistence implements CellPhoneAuthSmsPersistenceP
     @Override
     public void saveTrnsSmsAuthNumbRun (RecodeCellPhoneAuthTrns recodeCellPhoneAuthTrns) {
         final String wtid = recodeCellPhoneAuthTrns.getWtid();
-        final String mid = recodeCellPhoneAuthTrns.getJnoffcId();
+        final String jnoffcId = recodeCellPhoneAuthTrns.getJnoffcId();
         log.info("[{}][{}] 모빌리언스 연동 휴대폰 본인인증 SMS 인증번호 발송 Transaction DB 처리 시작.\n[{}]",
-                mid, wtid, recodeCellPhoneAuthTrns.toString());
+                jnoffcId, wtid, recodeCellPhoneAuthTrns.toString());
 
         final MpiTrnsJpaEntity entity = new MpiTrnsJpaEntity();
         BeanUtils.copyProperties(recodeCellPhoneAuthTrns, entity);
-        log.info("[{}][{}] Entity Save Set {}", mid, wtid, entity);
+        log.info("[{}][{}] Entity Save Set {}", jnoffcId, wtid, entity);
 
         final MpiTrnsJpaEntity resultEntity = this.mpiTrnsRepository.save(entity);
-        log.info("[{}][{}] MPI_TRNS SAVE 완료: [{}]", mid, wtid, resultEntity.toString());
+        log.info("[{}][{}] MPI_TRNS SAVE 완료: [{}]", jnoffcId, wtid, resultEntity.toString());
     }
 }

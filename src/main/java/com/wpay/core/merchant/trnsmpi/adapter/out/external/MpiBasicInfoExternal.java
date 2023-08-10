@@ -40,17 +40,17 @@ class MpiBasicInfoExternal implements MpiBasicInfoExternalPort {
     @Override
     public MpiBasicInfoMapper sendMpiBasicInfoRun(@NonNull ActivityMpiBasicInfo activityMpiBasicInfo) {
         final String wtid = activityMpiBasicInfo.getMpiTrnsId().getWtid();
-        final String mid = activityMpiBasicInfo.getMid();
-        log.info("[{}][{}] 가맹점 기준정보 조회 MPI 통신 연동 시작.", mid, wtid);
+        final String jnoffcId = activityMpiBasicInfo.getJnoffcId();
+        log.info("[{}][{}] 가맹점 기준정보 조회 MPI 통신 연동 시작.", jnoffcId, wtid);
 
-        final String mpiFullUrl = String.format("%s?mid=%s&ch=WPAY", mpiBasicInfoUrl, mid);
-        log.info("[{}][{}] MPI 통신 URL: {}", mid, wtid, mpiFullUrl);
+        final String mpiFullUrl = String.format("%s?mid=%s&ch=WPAY", mpiBasicInfoUrl, jnoffcId);
+        log.info("[{}][{}] MPI 통신 URL: {}", jnoffcId, wtid, mpiFullUrl);
 
         URI uri;
         try {
             uri = new URI(mpiFullUrl);
         } catch (URISyntaxException e) {
-            log.error("[{}][{}] MPI URL \"{}\" URISyntaxException: {}", mid, wtid, mpiFullUrl, e.getMessage());
+            log.error("[{}][{}] MPI URL \"{}\" URISyntaxException: {}", jnoffcId, wtid, mpiFullUrl, e.getMessage());
             throw new CustomException(CustomExceptionData.builder().errorCode(ErrorCode.HTTP_STATUS_500).e(e).build());
         }
 
@@ -58,13 +58,13 @@ class MpiBasicInfoExternal implements MpiBasicInfoExternalPort {
         try {
             result = this.webClientUseTemplate.httpGetSendRetrieveToAppForm(this.mpiWebClient, uri);
         } catch (CustomWebClientRequestException ex) {
-            ex.setMapper(MpiBasicInfoMapper.builder().wtid(wtid).mid(mid).url(uri.toString()).message(ex.getMessage()).build());
+            ex.setMapper(MpiBasicInfoMapper.builder().wtid(wtid).jnoffcId(jnoffcId).url(uri.toString()).message(ex.getMessage()).build());
             throw ex;
         } catch (CustomWebClientResponseException ex) {
-            ex.setMapper(MpiBasicInfoMapper.builder().wtid(wtid).mid(mid).url(uri.toString()).message(ex.getMessage()).build());
+            ex.setMapper(MpiBasicInfoMapper.builder().wtid(wtid).jnoffcId(jnoffcId).url(uri.toString()).message(ex.getMessage()).build());
             throw ex;
         } catch (CustomWebClientTimeoutException ex) {
-            ex.setMapper(MpiBasicInfoMapper.builder().wtid(wtid).mid(mid).url(uri.toString()).message(ex.getMessage()).build());
+            ex.setMapper(MpiBasicInfoMapper.builder().wtid(wtid).jnoffcId(jnoffcId).url(uri.toString()).message(ex.getMessage()).build());
             throw ex;
         }
         log.info(">> Send MPI Response : [{}]", result);
@@ -72,7 +72,7 @@ class MpiBasicInfoExternal implements MpiBasicInfoExternalPort {
         // 응답 데이터 Mapper 세팅.
         return MpiBasicInfoMapper.builder()
                 .wtid(wtid)
-                .mid(mid)
+                .jnoffcId(jnoffcId)
                 .message(result)
                 .url(uri.toString())
                 .build();

@@ -19,7 +19,7 @@ public class CellPhoneAuthVerifyPersistence implements CellPhoneAuthVerifyPersis
     @Override
     public void saveTrnsVerifyAuthNumbRun (ActivityCellPhoneAuth ActivityCellPhoneAuth) {
         final String wtid = ActivityCellPhoneAuth.getMpiTrnsId().getWtid();
-        final String mid = ActivityCellPhoneAuth.getMid();
-        log.info("[{}][{}] 모빌리언스 연동 휴대폰 본인인증 인증번호 확인 Transaction DB 처리 시작.", mid, wtid);
+        final String jnoffcId = ActivityCellPhoneAuth.getJnoffcId();
+        log.info("[{}][{}] 모빌리언스 연동 휴대폰 본인인증 인증번호 확인 Transaction DB 처리 시작.", jnoffcId, wtid);
     }
 }
