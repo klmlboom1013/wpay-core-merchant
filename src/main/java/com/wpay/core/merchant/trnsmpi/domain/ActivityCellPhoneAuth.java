@@ -70,7 +70,7 @@ public class ActivityCellPhoneAuth {
         private String buyerNm; /* 이름 */
         private String ecdCphno; /* 휴대폰 번호 */
         private String socialNo2; /* 주민번호 7번째 자리 (성별) */
-        private String birthDay; /* 6자리 또는 8자리 생년월일 */
+        private String ecdBthDt; /* 6자리 또는 8자리 생년월일 */
         private String mobilTransNo; /* 통신사업자 ID (알뜰폰 인증번호 요청 시 필수) */
         private String mmtTccoDvdCd; /* 통신사 */
 
@@ -86,7 +86,7 @@ public class ActivityCellPhoneAuth {
             this.altteul = this.mobileCarrier.getAltteul();
             this.gender = PrivacyFunctions.findGenderCode.apply(Integer.parseInt(socialNo2));
             this.foreiner = PrivacyFunctions.findForeignerYN.apply(socialNo2);
-            this.userSocNo = (birthDay.length() == 8) ? birthDay : PrivacyFunctions.findBirthdayFirstYY.apply(socialNo2) + birthDay;
+            this.userSocNo = (ecdBthDt.length() == 8) ? ecdBthDt : PrivacyFunctions.findBirthdayFirstYY.apply(socialNo2) + ecdBthDt;
         }
     }
 
