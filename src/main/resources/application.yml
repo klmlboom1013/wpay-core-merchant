@@ -1,11 +1,24 @@
 server:
-  port: 80
+  context-path: /merchant
+  port: 18081
+  shutdown: graceful
 
-logging:
-  # log4j2 설정 .yml 파일 경로 설정
-  config: classpath:log4j2.yml
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+    secure-port-enabled: false
 
 spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 60s
+  application:
+    name: wpay-core-merchant
+
   #######################
   # 404 HttpStatus Handling
   #######################
@@ -50,3 +63,6 @@ spring:
       # H2 Console Path [example: http://localhost/h2-console]
       path: /h2-console
 
+logging:
+  # log4j2 설정 .yml 파일 경로 설정
+  config: classpath:log4j2.yml

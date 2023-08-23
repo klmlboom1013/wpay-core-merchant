@@ -28,7 +28,7 @@ Configutation:
         pattern: ${pattern}
       Policies:
         SizeBasedTriggeringPolicy:
-          size: "200KB"
+          size: "500MB"
         TimeBasedTriggeringPolicy:
           interval: "1"
       DefaultRollOverStrategy:
