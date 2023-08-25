@@ -1,6 +1,6 @@
 server:
   context-path: /merchant
-  port: 18081
+  port: 18081 # 18080, 18081
   shutdown: graceful
 
 eureka:
@@ -14,10 +14,16 @@ eureka:
     secure-port-enabled: false
 
 spring:
-  lifecycle:
-    timeout-per-shutdown-phase: 60s
   application:
     name: wpay-core-merchant
+  profiles:
+    active: local     # 애플리케이션 환경 = local, dev....
+  config:
+    import: #optional:configserver:http://localhost:8888/resource # import:optional:config-server 사용 -> Spring cloud config server 주소
+      - optional:configserver:http://localhost:8888/resource
+      - optional:configserver:http://localhost:8888/ecomerce
+  lifecycle:
+    timeout-per-shutdown-phase: 60s
 
   #######################
   # 404 HttpStatus Handling
@@ -28,12 +34,7 @@ spring:
   web:
     resources:
       add-mappings: false
-  #######################
-  # property 설정 파일 등록
-  #######################
-  config:
-    import:
-      - classpath:props/dev/external-mpi-dev.yml
+
   #######################
   # DB 접속 정보 설정
   #######################
@@ -42,12 +43,13 @@ spring:
     driver-class-name: org.h2.Driver # Database H2로 사용 하겠다.
     username: wpay # H2 접속 시 입력할 username 정보 (원하는 것으로 입력)
     password: wpay123! # H2 접속 시 입력할 password 정보 (원하는 것으로 입력)
+
   #######################
   # JPA 설정
   #######################
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create # h2 DB 연결 시만 사용.
     show-sql: true
     properties:
       hibernate:
@@ -62,6 +64,13 @@ spring:
       enabled: true
       # H2 Console Path [example: http://localhost/h2-console]
       path: /h2-console
+
+# 클라이언트 코드에서 Actuator 설정 (spring cloud config 사용을 위한 설정)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 
 logging:
   # log4j2 설정 .yml 파일 경로 설정

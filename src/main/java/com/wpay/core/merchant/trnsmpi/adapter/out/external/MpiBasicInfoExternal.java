@@ -8,6 +8,7 @@ import com.wpay.common.global.exception.webclient.CustomWebClientRequestExceptio
 import com.wpay.common.global.exception.webclient.CustomWebClientResponseException;
 import com.wpay.common.global.exception.webclient.CustomWebClientTimeoutException;
 import com.wpay.common.global.infra.WebClientUseTemplate;
+import com.wpay.core.merchant.global.cfgclient.ResourceEnv;
 import com.wpay.core.merchant.trnsmpi.application.port.out.dto.MpiBasicInfoMapper;
 import com.wpay.core.merchant.trnsmpi.application.port.out.external.MpiBasicInfoExternalPort;
 import com.wpay.core.merchant.trnsmpi.application.port.out.external.MpiBasicInfoExternalVersion;
@@ -16,7 +17,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.net.URI;
@@ -32,8 +32,7 @@ class MpiBasicInfoExternal implements MpiBasicInfoExternalPort {
 
     private final WebClientUseTemplate webClientUseTemplate;
 
-    @Value("${external.target.mpi.basic-info-url}")
-    private String mpiBasicInfoUrl;
+    private final ResourceEnv resourceEnv;
 
     @Override public MpiBasicInfoExternalVersion getVersionCode() { return MpiBasicInfoExternalVersion.v1; }
 
@@ -43,7 +42,7 @@ class MpiBasicInfoExternal implements MpiBasicInfoExternalPort {
         final String jnoffcId = activityMpiBasicInfo.getJnoffcId();
         log.info("[{}][{}] 가맹점 기준정보 조회 MPI 통신 연동 시작.", jnoffcId, wtid);
 
-        final String mpiFullUrl = String.format("%s?mid=%s&ch=WPAY", mpiBasicInfoUrl, jnoffcId);
+        final String mpiFullUrl = String.format("%s?mid=%s&ch=WPAY", resourceEnv.getMpiUrl(), jnoffcId);
         log.info("[{}][{}] MPI 통신 URL: {}", jnoffcId, wtid, mpiFullUrl);
 
         URI uri;

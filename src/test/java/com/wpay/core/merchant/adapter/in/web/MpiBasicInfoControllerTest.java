@@ -2,7 +2,7 @@ package com.wpay.core.merchant.adapter.in.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wpay.common.global.dto.BaseCommand;
-import com.wpay.core.merchant.global.config.SecurityConfig;
+import com.wpay.core.merchant.global.beans.SecurityBeans;
 import com.wpay.core.merchant.trnsmpi.application.port.in.dto.MpiBasicInfoCommand;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +24,7 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
-@Import(SecurityConfig.class)
+@Import(SecurityBeans.class)
 class MpiBasicInfoControllerTest {
 
     @Autowired

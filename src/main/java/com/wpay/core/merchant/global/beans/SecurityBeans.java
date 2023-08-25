@@ -1,12 +1,12 @@
-package com.wpay.core.merchant.global.config;
+package com.wpay.core.merchant.global.beans;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration(value = "merchantSecurityConfig")
-public class SecurityConfig {
+@Configuration(value = "merchantSecurityBeans")
+public class SecurityBeans {
 
     /**
      * Spring Security 설정

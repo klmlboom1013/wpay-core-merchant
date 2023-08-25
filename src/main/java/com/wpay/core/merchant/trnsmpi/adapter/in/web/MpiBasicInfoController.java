@@ -2,6 +2,7 @@ package com.wpay.core.merchant.trnsmpi.adapter.in.web;
 
 import com.wpay.common.global.annotation.WebAdapter;
 import com.wpay.common.global.port.PortInFactory;
+import com.wpay.core.merchant.global.cfgclient.EcomerceEnv;
 import com.wpay.core.merchant.trnsmpi.application.port.in.dto.MpiBasicInfoCommand;
 import com.wpay.core.merchant.trnsmpi.application.port.in.usecase.MpiBasicInfoUseCaseVersion;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +19,15 @@ class MpiBasicInfoController {
 
     private final PortInFactory portInFactory;
 
+    private final EcomerceEnv ecomerceEnv;
+
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(path = "/merchant/{version}/mpi-basic-info")
     ResponseEntity<?> merchantInfoRun (@PathVariable String version,
                                        @RequestBody MpiBasicInfoCommand mpiBasicInfoCommand) {
+
+        log.info(">>>> properties tokenExpirationTime : {}", ecomerceEnv.getTokenExpirationTime());
+
         return ResponseEntity.ok().body(
                 portInFactory.getUseCasePort(
                         MpiBasicInfoUseCaseVersion.getInstance(version).name(),
