@@ -3,7 +3,7 @@ package com.wpay.core.merchant.adapter.in.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wpay.common.global.dto.BaseCommand;
 import com.wpay.core.merchant.global.beans.SecurityBeans;
-import com.wpay.core.merchant.trnsmpi.application.port.in.dto.MpiBasicInfoCommand;
+import com.wpay.core.merchant.application.port.in.dto.MpiBasicInfoCommand;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
