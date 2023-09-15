@@ -9,7 +9,7 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @RefreshScope
 @ConfigClient
 public class EcomerceEnv {
-    @Value("${token.expiration_time}")
+    @Value("${token.expiration}")
     private String tokenExpirationTime;
     @Value("${token.secret}")
     private String tokenSecret;

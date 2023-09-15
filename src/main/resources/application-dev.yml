@@ -1,6 +1,6 @@
 server:
   context-path: /merchant
-  port: 18081 # 18080, 18081
+  port: 18080 # 18080, 18081
   shutdown: graceful
 
 eureka:
@@ -55,7 +55,6 @@ management: # 클라이언트 코드에서 Actuator 설정 (spring cloud config 
   endpoints:
     web:
       exposure:
-#        include: refresh, health, beans
         include: "*"
 
 logging:

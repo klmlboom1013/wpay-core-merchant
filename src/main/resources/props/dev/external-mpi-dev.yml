@@ -1,9 +1,0 @@
-external:
-  source:
-    connection-timeout-mills: 3000
-    read-timeout-sec: 5
-    write-timeout-sec: 5
-  target:
-    mpi:
-      basic-info-url: http://relay.inicis.com/iniwallet60/INIwallet60.jsp
-      #basic-info-url: http://webdev.inicis.com/iniwallet60/INIwallet60.jsp
